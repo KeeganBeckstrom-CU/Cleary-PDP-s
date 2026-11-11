@@ -744,8 +744,8 @@ body.gated{overflow:hidden}
 .progseg{width:min(440px,100%);background:rgba(255,255,255,.08);border-color:rgba(255,255,255,.2)}
 .progseg button{color:#C9CACC;font:700 14px var(--display);letter-spacing:.08em;text-transform:uppercase;padding:9px 6px}
 .progseg button[aria-pressed="true"]{background:var(--maroon);color:#fff}
-#tab-becks-plan > .rail{display:none!important}
-#tab-becks-plan.grid2{grid-template-columns:minmax(0,1fr)}
+#tab-daily-work > .rail{display:none!important}
+#tab-daily-work.grid2{grid-template-columns:minmax(0,1fr)}
 .editweek{display:inline-flex!important}
 .pnums{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-top:14px}
 .pnums div{background:var(--bg);border:1px solid var(--line);border-radius:12px;padding:8px 10px;min-width:0}
@@ -1222,11 +1222,11 @@ body.trk-rtt #editWeek,body.trk-rtt #ovOff,body.trk-rtt #ovNT,body.trk-rtt #ovLi
       <div class="acct-row"><span class="acct-role" id="acctRole"></span><span class="sync saved" id="syncState">Saved</span><button type="button" class="acct-out" id="helpOpen">Help</button><button type="button" class="acct-out" id="acctOpen">Account</button><button type="button" class="acct-out" id="signOut">Sign out</button></div>
     </div>
   </div>
-  <div class="progwrap"><div class="seg progseg" role="group" aria-label="Program"><button type="button" data-prog="becks">Cleary's Program</button><button type="button" data-prog="personal">Personal Program</button></div></div>
+  <div class="progwrap"><div class="seg progseg" role="group" aria-label="Program"><button type="button" data-prog="team">Cleary's Program</button><button type="button" data-prog="personal">Personal Program</button></div></div>
   <div class="coachbar" id="coachBar" hidden></div>
   <nav class="tabs" aria-label="Sections">
     <a href="#home" data-tab="home"><span class="tl">Home</span></a>
-    <a href="#becks-plan" data-tab="becks-plan"><span class="tl long">Daily Work</span><span class="ts">Daily</span></a>
+    <a href="#daily-work" data-tab="daily-work"><span class="tl long">Daily Work</span><span class="ts">Daily</span></a>
     <a href="#month" data-tab="month"><span class="tl">Month</span></a>
     <a href="#personal-plan" data-tab="personal-plan"><span class="tl">Log</span></a>
     <a href="#schedule" data-tab="schedule"><span class="tl long">Schedule</span><span class="ts">Games</span></a>
@@ -1247,8 +1247,8 @@ body.trk-rtt #editWeek,body.trk-rtt #ovOff,body.trk-rtt #ovNT,body.trk-rtt #ovLi
 <main id="tab-chat" hidden><div class="content" id="chatBody"></div></main>
 <main id="tab-profile" hidden><div class="content" id="profBody"></div></main>
 
-<!-- ============ BECK'S PLAN ============ -->
-<main id="tab-becks-plan" class="grid2">
+<!-- ============ DAILY WORK ============ -->
+<main id="tab-daily-work" class="grid2">
   <aside class="rail">
     <section class="panel stack" aria-label="Your throwing days">
       <div class="railhead"><div><h2 class="h2" style="font-size:22px">Your throwing days</h2><p class="railsum" id="railSum"></p><p class="hint railhint" style="margin-top:2px">Pick when you can throw lives, bullpens and short boxes. Your plan builds around them.</p></div><button type="button" class="btn ghost sm railtog" id="railTog" aria-expanded="false">Change</button></div>
@@ -1575,7 +1575,6 @@ function clearyBlock(a){
 let pickSel=null, pickQ='';
 function takenIds(){ const t=new Set(); for(const id in C.athletes){ const a=C.athletes[id]; if(!a.pre&&a.pid) t.add(a.pid); } (window.TAKEN_PIDS||[]).forEach(x=>t.add(x)); return t; }
 function renderPicker(){
-  if(S.coachReq||window.CR_FORM){ coachReqScreen(); return; }
   const taken=takenIds(), q=pickQ.trim().toLowerCase();
   const list=CLEARY_ROSTER.filter(r=>!q||r.n.toLowerCase().includes(q)).slice().sort((x,y)=>x.n.split(' ').slice(-1)[0].localeCompare(y.n.split(' ').slice(-1)[0]));
   const sel=pickSel&&ROSTER_BY_ID[pickSel];
@@ -1584,22 +1583,20 @@ function renderPicker(){
     <h3 id="acctH">Pick your profile</h3>
     <p class="hint" style="margin:4px 0 0">Your coaches already built a profile for every fall 2026 pitcher. Find your name, check it's you, and it's yours: your stats, pitch shapes and plan come with it.</p>
     <div class="field" style="margin-top:12px"><label for="pkQ">Search</label><input id="pkQ" type="search" placeholder="Type your name" value="${esc(pickQ)}" autocomplete="off"></div>
-    <div class="pklist" role="listbox" aria-label="Fall 2026 Cleary pitchers">${list.map(r=>{ const tk=taken.has(r.id); return `<button type="button" role="option" class="pkrow ${pickSel===r.id?'on':''}" data-pk="${r.id}" aria-selected="${pickSel===r.id}" ${tk?'disabled':''}><span class="ava sm">${esc(initials(r.n))}</span><span class="pkn"><b>${esc(r.n)}</b><small>${esc([CLASS_BY_GRAD[r.g]?GRADE_LONG[CLASS_BY_GRAD[r.g]]:'',r.h?(r.h==='L'?'LHP':'RHP'):'',r.town].filter(Boolean).join(' · '))}</small></span>${tk?'<em>Taken</em>':pickSel===r.id?'<em class="ok">✓</em>':r.test?'<em>Test profile</em>':''}</button>`; }).join('')||'<p class="hint">No pitcher by that name. Check the spelling, or ask Coach Beckstrom to add you.</p>'}</div>
-    ${sel?`<div class="pkconf"><p><b>${esc(sel.n)}</b>${sel.town?' · '+esc(sel.town):''}</p><button type="button" class="btn big" id="pkGo">This is me, claim my profile</button></div>`:'<p class="hint">Not on the list? Ask Coach Beckstrom to add you.</p>'}
-    <button type="button" class="linkbtn" id="pkCoach" style="margin-top:10px;display:block">I'm a coach, not a pitcher</button>
+    <div class="pklist" role="listbox" aria-label="Fall 2026 Cleary pitchers">${list.map(r=>{ const tk=taken.has(r.id); return `<button type="button" role="option" class="pkrow ${pickSel===r.id?'on':''}" data-pk="${r.id}" aria-selected="${pickSel===r.id}" ${tk?'disabled':''}><span class="ava sm">${esc(initials(r.n))}</span><span class="pkn"><b>${esc(r.n)}</b><small>${esc([CLASS_BY_GRAD[r.g]?GRADE_LONG[CLASS_BY_GRAD[r.g]]:'',r.h?(r.h==='L'?'LHP':'RHP'):'',r.town].filter(Boolean).join(' · '))}</small></span>${tk?'<em>Taken</em>':pickSel===r.id?'<em class="ok">✓</em>':r.test?'<em>Test profile</em>':''}</button>`; }).join('')||'<p class="hint">No pitcher by that name. Check the spelling, or ask your coaches to add you.</p>'}</div>
+    ${sel?`<div class="pkconf"><p><b>${esc(sel.n)}</b>${sel.town?' · '+esc(sel.town):''}</p><button type="button" class="btn big" id="pkGo">This is me, claim my profile</button></div>`:'<p class="hint">Not on the list? Ask your coaches to add you.</p>'}
     ${window.CLOUD_MODE?'':'<button type="button" class="linkbtn" id="pkSkip" style="margin-top:10px">Just looking around (coach preview)</button>'}`;
   const qi=document.getElementById('pkQ');
   qi.oninput=()=>{ pickQ=qi.value; const pos=qi.selectionStart; renderPicker(); const n=document.getElementById('pkQ'); n.focus(); try{ n.setSelectionRange(pos,pos); }catch(e){} };
   document.querySelectorAll('[data-pk]').forEach(b=>b.onclick=()=>{ pickSel=b.dataset.pk; renderPicker(); const go=document.getElementById('pkGo'); if(go) go.scrollIntoView({block:'nearest'}); });
   const go=document.getElementById('pkGo'); if(go) go.onclick=()=>claimProfile(pickSel);
-  const pc=document.getElementById('pkCoach'); if(pc) pc.onclick=()=>{ window.CR_FORM=true; coachReqScreen(); };
   const sk=document.getElementById('pkSkip'); if(sk) sk.onclick=()=>{ window.PICK_SKIPPED=true; try{ localStorage.setItem('clyPickSkip','1'); }catch(e){} acctSetup=false; closeAccount(); };
 }
 function claimProfile(pid){
   const r=ROSTER_BY_ID[pid]; if(!r) return;
   const st=rosterSettings(r);
   for(const k in st){ if(st[k]===undefined||st[k]===null||st[k]==='') delete S[k]; else S[k]=st[k]; }
-  S.pid=pid; S.name=r.n; S.pickAt=new Date().toISOString(); delete S.coachReq; clearCache(); save();
+  S.pid=pid; S.name=r.n; S.pickAt=new Date().toISOString(); clearCache(); save();
   const rail=document.getElementById('name'); if(rail){ rail.value=r.n; }
   if(window.CLOUD_MODE && ME && sb){ ME.full_name=r.n; sb.from('profiles').update({full_name:r.n}).eq('id',ME.id).then(()=>{},()=>{}); const hn=document.getElementById('heyName'); if(hn) hn.textContent=firstName(r.n); }
   const pre=C.athletes['pre-'+pid]; if(pre && !window.CLOUD_MODE){ /* demo: keep the coach list as is */ }
@@ -1631,7 +1628,7 @@ function demoPitcher(){ try{ return !window.CLOUD_MODE && !window.VIEW_AS && !(t
 
 // ===== PLAN DATABASE: the monthly calendars from the "26-27 Cleary PDPs" sheet =====
 // Coaches see these files under Coach's View > Plans and assign pitchers to them.
-// Pitchers never see the list of files; a month only reaches a pitcher once the head coach assigns him a plan AND shows that month to players.
+// Pitchers never see the list of files; a month only reaches a pitcher once a coach assigns him a plan AND shows that month to players.
 // Cell text is kept as the sheet has it, one line per '|': Mobility letter | Pre-Throw n | Plyo n | post-throw routine | mound work.
 const PLAN_DB=(()=>{
   const c=(mob,n,post,ev)=>['Mobility '+mob,'Pre-Throw '+n,'Plyo '+n,post,ev].filter(Boolean).join('|');
@@ -2049,7 +2046,7 @@ document.addEventListener('toggle',e=>{ const d=e.target; if(d&&d.id==='hprofD')
 
 function welcomeLine(coach){
   const d=todayD; let me=''; try{ me=(ME&&ME.full_name)||''; }catch(e){}
-  me=realName(me); const nm=coach?(me?'Coach '+me.trim().split(/\s+/).slice(-1)[0]:'Coach'):String(S.name||me||'').trim();
+  me=realName(me); const nm=coach?(me?me.trim().split(/\s+/)[0]:'Coach'):String(S.name||me||'').trim();
   return `<div class="welcome"><div><span>Welcome,</span><b>${esc(nm||'pitcher')}</b></div><em>${DOWL[d.getDay()]}, ${MON[d.getMonth()].slice(0,3)} ${d.getDate()}</em></div>`;
 }
 // Dates the plan calls Pen/Live (the pitcher can throw the bullpen live), and one-off days the sheet sets by hand
@@ -2119,7 +2116,7 @@ document.addEventListener('click',e=>{ if(!e.target.closest('#demoLeave')) retur
 // ===== Coaches can edit a pitcher's whole page =====
 // A coach cannot write a pitcher's own saved data, so each change rides along in the coach's note to that pitcher (coach.patch)
 // with a time stamp. The pitcher's app applies newer changes the next time it opens; the coach's app applies them right away.
-const PATCH_SKIP=new Set(['coach','logs','pre','ex','seedV','patchAt','msgs','msgRead','msgSeen','handled','planAssign','planLive','teamNote','coachReq','pickAt','pid']);
+const PATCH_SKIP=new Set(['coach','logs','pre','ex','seedV','patchAt','msgs','msgRead','msgSeen','handled','planAssign','planLive','teamNote','pickAt','pid']);
 const jz=v=>JSON.stringify(v===undefined?null:v);
 function patchSnap(a){ const s={f:{},l:{}}; for(const k in a) if(!PATCH_SKIP.has(k)) s.f[k]=jz(a[k]); for(const k in (a.logs||{})) s.l[k]=jz(a.logs[k]); return s; }
 function coachPatchSave(){
@@ -2350,7 +2347,7 @@ function sendChatT(){
   const t=String(inp.value||'').trim(), to=b.dataset.to, at=isoNow(); if(!t) return; inp.value='';
   if(to==='me'){ S.msgs=[...(S.msgs||[]),{t,at}].slice(-100); S.msgRead=at; save(); }
   else { const a=C.athletes[to]; if(!a) return; a.coach=a.coach||{weeks:{},overrides:{}}; const nm=String(coachS().name||'').trim();
-    a.coach.msgs=[...(a.coach.msgs||[]),{t,at,by:nm?'Coach '+nm.split(/\s+/).slice(-1)[0]:'Coach'}].slice(-100); coachChanged(to); markSeen(to); }
+    a.coach.msgs=[...(a.coach.msgs||[]),{t,at,by:coachBy()}].slice(-100); coachChanged(to); markSeen(to); }
   renderChat(); const i=document.getElementById('chatInT'); if(i) i.focus();
 }
 async function openInbox(id){
@@ -2374,6 +2371,8 @@ function coachInboxCard(){
     ${nr.length?`<div class="chips" style="margin-top:8px">${nr.map(r=>`<button type="button" class="nchip" data-gochat="1" data-inbox="${r.id}" style="padding:5px 12px">💬 ${esc(r.a.name)} <b class="newbadge">${r.n}</b></button>`).join('')}</div>`:'<p class="hint" style="margin-top:6px">No new replies from your pitchers.</p>'}</section>`;
 }
 setInterval(chatBadge,3000);
+
+function coachBy(){ let n=''; try{ n=realName(coachS().name)||realName(ME&&ME.full_name); }catch(e){} return n?'Coach '+n.split(/\s+/)[0]:'Coach'; }
 
 // ===== Lift tab: Phase 3 Strength-Hypertrophy, one sheet per player (saved in his own settings as S.lift) =====
 let liftKey=null, liftT=null;
@@ -2520,56 +2519,21 @@ function renderReport(){
   document.getElementById('repPrint').onclick=()=>window.print();
 }
 
-// ===== Coach access on request, and profile picks only the head coach can undo =====
-// A new account either claims a pitcher profile or asks for coach access. The head coach approves coach requests
-// (database function approve_coach) and is the only one who can clear a pitcher's profile pick.
+// ===== Profile picks only the head coach can undo =====
+// Coaches are set by sign-in email in the database (see the Supabase setup script). Everyone else claims a pitcher profile.
 const emailStem=()=>{ try{ return String((ME&&ME.email)||window.ME_EMAIL||'').split('@')[0].toLowerCase(); }catch(e){ return ''; } };
 const realName=n=>{ n=String(n||'').trim(); return (n&&!/\s/.test(n)&&n.toLowerCase()===emailStem())?'':n; };   // a sign-in email is not a name
 const niceFirst=n=>realName(n).split(/\s+/)[0]||'';
-function coachReqScreen(){
-  const r=S.coachReq;
-  document.getElementById('acctBody').innerHTML=r?`
-    <p class="eyebrow2">Cleary Pitching</p><h3 id="acctH">Coach access requested</h3>
-    <p class="hint" style="margin:6px 0 0">Thanks, ${esc(String(r.name||'').split(/\s+/)[0]||'Coach')}. Coach Beckstrom has to approve your request. Once he does, close and reopen the app and you will have the coaches' side.</p>
-    <div class="row" style="margin-top:14px"><button type="button" class="btn sm" id="crCheck">Check again</button><button type="button" class="btn ghost sm" id="crCancel">Cancel request</button></div>`
-  :`<p class="eyebrow2">Cleary Pitching</p><h3 id="acctH">Request coach access</h3>
-    <p class="hint" style="margin:6px 0 0">For Cleary coaches only. Coach Beckstrom approves each request before the coaches' side opens.</p>
-    <div class="field" style="margin-top:12px"><label for="crName">Your name</label><input id="crName" type="text" autocomplete="name" placeholder="First and last name" value="${esc(realName(ME&&ME.full_name))}"></div>
-    <div class="row" style="margin-top:12px"><button type="button" class="btn" id="crSend">Send request</button><button type="button" class="btn ghost" id="crBack">Back to pitcher profiles</button></div>`;
-  const q=id=>document.getElementById(id);
-  if(q('crSend')) q('crSend').onclick=()=>{ const nm=q('crName').value.trim(); if(nm.split(/\s+/).length<2){ toast('Enter your first and last name'); return; }
-    S.coachReq={name:nm,at:isoNow()}; S.name=nm; save(); try{ if(window.CLOUD_MODE&&ME&&sb){ ME.full_name=nm; sb.from('profiles').update({full_name:nm}).eq('id',ME.id).then(()=>{},()=>{}); const hn=q('heyName'); if(hn) hn.textContent=niceFirst(nm)||'there'; } }catch(e){} coachReqScreen(); };
-  if(q('crBack')) q('crBack').onclick=()=>{ window.CR_FORM=false; renderPicker(); };
-  if(q('crCancel')) q('crCancel').onclick=()=>{ delete S.coachReq; save(); window.CR_FORM=false; renderPicker(); };
-  if(q('crCheck')) q('crCheck').onclick=()=>location.reload();
-}
 // Pitcher side: follow what the head coach decided
 setInterval(()=>{ try{ if(typeof VIEW!=='undefined'&&VIEW) return; if(window.VIEW_AS) return; const c=S.coach||{};
-  if(S.coachReq&&c.coachDenied&&c.coachDenied>S.coachReq.at){ delete S.coachReq; save(); window.CR_FORM=false; toast('Your coach request was not approved'); if(!S.pid) openAccount(true); }
   if(S.pid&&c.unpick&&c.unpick>(S.pickAt||'')){ delete S.pid; delete S.track; S.pickAt=c.unpick; save(); toast('Your coach reset your profile. Pick it again.'); openAccount(true); }
 }catch(e){} },4000);
-// Head coach: requests waiting
-function coachReqCard(){
-  const L=(window.COACH_REQS||[]).filter(r=>!r.done); if(!window.IS_HEAD||!L.length) return '';
-  return `<section class="panel stack chatcard unread" style="gap:8px"><span class="lbl">Coach access requests <b class="newbadge">${L.length}</b></span>
-    ${L.map(r=>`<div class="reqrow"><div><b>${esc(r.name||'No name given')}</b><small>Asked ${esc(fmtAt(r.at))}</small></div><div class="row"><button type="button" class="btn sm" data-crok="${r.id}">Approve</button><button type="button" class="btn ghost sm" data-crno="${r.id}">Decline</button></div></div>`).join('')}
-    <p class="hint" style="margin:0">Approving gives the full coaches' side: every pitcher's page, logs, lifting and chat.</p></section>`;
-}
-document.addEventListener('click',async e=>{
-  const ok=e.target.closest('[data-crok]'), no=e.target.closest('[data-crno]'); if(!ok&&!no) return;
-  const id=(ok||no).dataset[ok?'crok':'crno'], r=(window.COACH_REQS||[]).find(x=>x.id===id); if(!r||!sb) return;
-  try{
-    if(ok){ const {error}=await sb.rpc('approve_coach',{target:id}); if(error) throw error; toast(`${r.name||'Coach'} approved`); }
-    else { const {error}=await sb.from('player_data').update({coach_edits:{coachDenied:isoNow()}}).eq('user_id',id); if(error) throw error; toast('Request declined'); }
-    r.done=true; renderHome();
-  }catch(err){ toast('Could not save: '+(err.message||err)); }
-});
 // Head coach, on a pitcher's Profile: undo his profile pick
 function pickLockCard(){
   if(!VIEWING()) return ''; const a=C.athletes[window.VIEW_AS]; if(!a||a.pre) return '';
-  return `<section class="panel stack" style="gap:8px"><div class="lrow"><span class="lbl">Profile pick · head coach only</span><span class="chip of">🔒 Locked</span></div>
+  return `<section class="panel stack" style="gap:8px"><div class="lrow"><span class="lbl">Profile pick · coaches only</span><span class="chip of">🔒 Locked</span></div>
     <p class="hint" style="margin:0">This account is tied to <b>${esc(a.name)}</b>'s profile. The player cannot switch profiles himself.</p>
-    ${window.IS_HEAD?`<div class="row"><button type="button" class="btn ghost sm" id="pickReset">Reset his pick</button></div><p class="hint" style="margin:0">Use this if someone claimed the wrong profile. He picks again the next time he opens the app.</p>`:'<p class="hint" style="margin:0">Only the head coach can reset it.</p>'}</section>`;
+    ${window.IS_HEAD?`<div class="row"><button type="button" class="btn ghost sm" id="pickReset">Reset his pick</button></div><p class="hint" style="margin:0">Use this if someone claimed the wrong profile. He picks again the next time he opens the app.</p>`:'<p class="hint" style="margin:0">Only a coach can reset it.</p>'}</section>`;
 }
 let pickResetArm=0;
 document.addEventListener('click',e=>{ const b=e.target.closest('#pickReset'); if(!b||!window.IS_HEAD) return; const id=window.VIEW_AS, a=C.athletes[id]; if(!a) return;
@@ -2747,7 +2711,7 @@ document.addEventListener('click',e=>{
   if(!m||m.hidden) return;
   if(!e.target.closest('#hMenu')){ m.hidden=true; return; }
   const o=e.target.closest('[data-hm]'); if(o){ const k=m.dataset.k, cur=pickedKind(effectiveCfg(S,weekKeyOf(parse(k))),parse(k).getDay(),k); const v=o.dataset.hm; const nk=(v===cur&&!o.closest('.hmrec'))?null:(v||null); setDayKind(k, nk); renderDayMenu(); if(nk&&!isPersonal()&&earlyNote(nk,k)) toast(earlyNote(nk,k)); return; }
-  const g=e.target.closest('[data-hgo]'); if(g){ m.hidden=true; selected=g.dataset.hgo; goWeek(parse(selected)); location.hash='becks-plan'; return; }
+  const g=e.target.closest('[data-hgo]'); if(g){ m.hidden=true; selected=g.dataset.hgo; goWeek(parse(selected)); location.hash='daily-work'; return; }
   if(e.target.closest('[data-hmclose]')) m.hidden=true;
 });
 document.addEventListener('keydown',e=>{ if(e.key==='Escape') closeDayMenu(); });
@@ -2797,7 +2761,7 @@ function hStatus(id,a){
 const todayChip=r=>r.p?planChip(r.p):(r.a.program==='personal'?'<span class="chip of">Own program</span>':planChip(null));
 function coachHome(){
   seedExamples();
-  { const j=C.athletes['ex-2']; if(j&&j.ex&&!j.msgs){ j.coach=j.coach||{weeks:{},overrides:{}}; if(!j.coach.msgs) j.coach.msgs=[{t:"How's the elbow feeling today?",at:ymd(addDays(todayD,-1))+'T17:05:00.000Z',by:'Coach Beckstrom'}]; j.msgs=[{t:"Still a little sore on the inside. Going to see the trainer tomorrow.",at:ymd(addDays(todayD,-1))+'T19:42:00.000Z'}]; } }
+  { const j=C.athletes['ex-2']; if(j&&j.ex&&!j.msgs){ j.coach=j.coach||{weeks:{},overrides:{}}; if(!j.coach.msgs) j.coach.msgs=[{t:"How's the elbow feeling today?",at:ymd(addDays(todayD,-1))+'T17:05:00.000Z',by:'Coach'}]; j.msgs=[{t:"Still a little sore on the inside. Going to see the trainer tomorrow.",at:ymd(addDays(todayD,-1))+'T19:42:00.000Z'}]; } }
   const all=staff(), ex=all.some(x=>x.a.ex);
   const rows=all.map(({id,a})=>{ const s=hStatus(id,a), m=cvM(a); return {id,a,...s,m,p:planFor(a,TODAY),x:a.logs[TODAY]}; });
   const logged=rows.filter(r=>r.x), notLogged=rows.filter(r=>!r.x&&!(r.p&&r.p.kind==='off'));
@@ -2848,7 +2812,7 @@ function coachHome(){
 function renderHome(){
   const el=document.getElementById('homeBody'); if(!el||document.getElementById('tab-home').hidden) return;
   const coach=showCoachHome();
-  el.innerHTML=(coach&&!VIEWING())?welcomeLine(true)+coachReqCard()+coachInboxCard()+coachLiftCard()+`<section class="panel"><div class="lrow"><span class="lbl">Weekly report</span><button type="button" class="btn ghost sm" data-goreport="1">Open report</button></div><p class="hint" style="margin-top:6px">Logs, arm feel, pain flags, pitches and lifting for the week, on one page.</p></section>`+coachHome():pitcherHome(false);
+  el.innerHTML=(coach&&!VIEWING())?welcomeLine(true)+coachInboxCard()+coachLiftCard()+`<section class="panel"><div class="lrow"><span class="lbl">Weekly report</span><button type="button" class="btn ghost sm" data-goreport="1">Open report</button></div><p class="hint" style="margin-top:6px">Logs, arm feel, pain flags, pitches and lifting for the week, on one page.</p></section>`+coachHome():pitcherHome(false);
   if(!newsSeen()){ const wl=el.querySelector('.welcome'); (wl||el).insertAdjacentHTML(wl?'afterend':'afterbegin',`<div class="newsbanner"><div><b>New version of the app.</b><span class="hint"> See what changed.</span></div><span class="row"><button type="button" class="btn sm" data-help="news">What's new</button><button type="button" class="btn ghost sm" id="hNewsOk">Got it</button></span></div>`); document.getElementById('hNewsOk').onclick=()=>{ markNewsSeen(); renderHome(); }; }
   const hv=document.getElementById('hView'); if(hv) hv.onclick=e=>{ const b=e.target.closest('button'); if(!b) return; hView=b.dataset.v; try{ localStorage.setItem('clyHomeView',hView); }catch(err){} renderHome(); window.scrollTo(0,0); };
   const so=document.getElementById('hSort'); if(so){ so.value=hSort; so.onchange=()=>{ hSort=so.value; renderHome(); }; }
@@ -2880,9 +2844,9 @@ document.addEventListener('click',e=>{
 document.addEventListener('keydown',e=>{ if((e.key==='Enter'||e.key===' ')&&e.target.matches&&e.target.matches('.pcard[data-hpid]')){ e.preventDefault(); openPitcher(e.target.dataset.hpid); } });
 
 // ---------- program toggle (Cleary's Program / Personal Program) ----------
-function renderProgSeg(){ document.querySelectorAll('[data-prog]').forEach(b=>b.setAttribute('aria-pressed',(isPersonal()?'personal':'becks')===b.dataset.prog)); }
+function renderProgSeg(){ document.querySelectorAll('[data-prog]').forEach(b=>b.setAttribute('aria-pressed',(isPersonal()?'personal':'team')===b.dataset.prog)); }
 function setProgram(v){
-  if((isPersonal()?'personal':'becks')===v) return;
+  if((isPersonal()?'personal':'team')===v) return;
   if(v==='personal') S.program='personal'; else delete S.program;
   save(); clearCache(); render(); renderHome(); renderProgSeg();
   toast(v==='personal'?"Personal Program: log your own work. Cleary's workouts are hidden.":"Cleary's Program: your daily work is back.");
@@ -2893,7 +2857,7 @@ document.addEventListener('click',e=>{ const b=e.target.closest('[data-prog]'); 
 function personalWorkCard(){
   return `<div class="pwork"><p class="eyebrow2">Personal program</p><h3>You're on your own program</h3>
     <p>You follow your own pitching coach's workouts, so Cleary's Plan workouts and videos are hidden here. Keep logging every day, including bullpens, lives, how your arm feels and any pain or soreness, so Coach can see your workload.</p>
-    <div class="row"><button type="button" class="btn big" id="logThis">Log today</button><button type="button" class="btn ghost" data-prog="becks">Switch to Cleary's Program</button></div></div>`;
+    <div class="row"><button type="button" class="btn big" id="logThis">Log today</button><button type="button" class="btn ghost" data-prog="team">Switch to Cleary's Program</button></div></div>`;
 }
 function dayStepsHTML(p,k){ return dayStepsCore(p,k)+(typeof liftDayRow==='function'?liftDayRow(k):''); }
 function dayStepsCore(p,k){
@@ -3152,11 +3116,12 @@ document.addEventListener('click',e=>{
 });
 
 // ===== Coaches: Coach's View mode, or any pitcher's full page (view only; the head coach can change Set My Week) =====
-const HEAD_COACH_SHA256=['e72b622bba431ed486f5b31de8d82f1dfa17556dd4fc8cf6c854b3dc295ded63','052e2801d426064c043ce54cbd12533810cc3d902769d9f17433732e07070ca3'];   // sha256 of the head coach's sign-in email (lowercase)
+const HEAD_COACH_SHA256=['e72b622bba431ed486f5b31de8d82f1dfa17556dd4fc8cf6c854b3dc295ded63'];   // sha256 of the head coach's sign-in email (lowercase)
 let VIEW=null;
 const isCoachUser=()=>!!window.IS_COACH||isLocalDemo();
 async function checkHead(){
   if(isLocalDemo()){ window.IS_HEAD=true; return; }
+  if(window.IS_COACH){ window.IS_HEAD=true; renderModeBar(); return; }
   try{ const em=String((window.ME_EMAIL||'')).trim().toLowerCase(); if(!em){ window.IS_HEAD=false; return; }
     const buf=await crypto.subtle.digest('SHA-256',new TextEncoder().encode(em));
     const hex=[...new Uint8Array(buf)].map(b=>b.toString(16).padStart(2,'0')).join('');
@@ -3243,7 +3208,7 @@ function sendChat(t){
   t=String(t||'').trim(); if(!t) return;
   const at=isoNow();
   if(chatId==='me'){ S.msgs=[...(S.msgs||[]),{t,at}].slice(-100); S.msgRead=at; save(); }
-  else { const a=C.athletes[chatId]; a.coach=a.coach||{weeks:{},overrides:{}}; a.coach.msgs=[...(a.coach.msgs||[]),{t,at,by:(coachS().name&&cvName(coachS().name))?'Coach '+String(coachS().name).trim().split(/\s+/).slice(-1)[0]:'Coach'}].slice(-100); coachChanged(chatId); markSeen(chatId); }
+  else { const a=C.athletes[chatId]; a.coach=a.coach||{weeks:{},overrides:{}}; a.coach.msgs=[...(a.coach.msgs||[]),{t,at,by:coachBy()}].slice(-100); coachChanged(chatId); markSeen(chatId); }
   renderChatSheet(); renderHome(); setTimeout(()=>{ const i=document.getElementById('chatIn'); if(i) i.focus(); },50);
 }
 function markSeen(id){ const cs=coachS(); cs.msgSeen={...(cs.msgSeen||{}),[id]:isoNow()}; if(!VIEW) save(); }
@@ -3418,7 +3383,7 @@ function openHelp(){
     <div class="news"><b>${esc(NEWS.title)}</b><ul>${NEWS.items.map(x=>`<li>${x}</li>`).join('')}</ul></div>
     ${HELP.map(([q,a])=>`<details><summary><span>${esc(q)}</span>${svg('chev','chev')}</summary>${a}</details>`).join('')}
     <div class="sec"><h4>Color key</h4><div class="ckey" style="margin-top:4px">${colorKey()}</div></div>
-    <p class="hint" style="margin-top:14px">Still stuck? Ask Coach Beckstrom.</p>
+    <p class="hint" style="margin-top:14px">Still stuck? Ask one of your coaches.</p>
   </div>`, 'Help');
   if(!newsSeen()) markNewsSeen();
 }
@@ -3429,7 +3394,7 @@ document.addEventListener('click',e=>{
   if(t.dataset.int){ openIntInfo(t.dataset.int); return; }
   if(t.dataset.help){ openHelp(); return; }
   if(t.dataset.goto){ selected=t.dataset.goto; goWeek(parse(selected));
-    if((location.hash||'#home')!=='#becks-plan'){ location.hash='becks-plan'; return; }
+    if((location.hash||'#home')!=='#daily-work'){ location.hash='daily-work'; return; }
     render(); document.getElementById('detail').scrollIntoView({behavior:'smooth',block:'start'}); }
 });
 ['helpOpen','helpOpenL'].forEach(id=>{ const b=document.getElementById(id); if(b) b.addEventListener('click',openHelp); });
@@ -3978,7 +3943,7 @@ document.getElementById('wToday').addEventListener('click',()=>{ goWeek(todayD);
 document.getElementById('mPrev').addEventListener('click',()=>{ const i=mIdx(curMonth()); if(i>0){ goMonth(MONTHS[i-1]); render(); } });
 document.getElementById('mNext').addEventListener('click',()=>{ const i=mIdx(curMonth()); if(i<MONTHS.length-1){ goMonth(MONTHS[i+1]); render(); } });
 document.getElementById('week').addEventListener('click',e=>{ const c=e.target.closest('[data-k]'); if(!c) return; selected=c.dataset.k; render(); });
-document.getElementById('monthGrid').addEventListener('click',e=>{ const c=e.target.closest('[data-k]'); if(!c) return; selected=c.dataset.k; viewWeek=weekStart(parse(selected)); if(location.hash==='#month') location.hash='becks-plan'; else render(); });
+document.getElementById('monthGrid').addEventListener('click',e=>{ const c=e.target.closest('[data-k]'); if(!c) return; selected=c.dataset.k; viewWeek=weekStart(parse(selected)); if(location.hash==='#month') location.hash='daily-work'; else render(); });
 document.getElementById('detail').addEventListener('click',e=>{
   const tick=e.target.closest('[data-tick]');
   if(tick){ e.preventDefault(); e.stopPropagation(); const n=tick.dataset.tick; S.done=S.done||{}; const cur=new Set(S.done[selected]||[]); cur.has(n)?cur.delete(n):cur.add(n); S.done[selected]=[...cur]; if(!S.done[selected].length) delete S.done[selected]; save();
@@ -4638,12 +4603,12 @@ renderPenBanner();
 function showTab(){
   const t=(location.hash||'#home').slice(1);
   const coachU=isCoachUser(), viewing=!!window.VIEW_AS;
-  const PT=['home','becks-plan','month','personal-plan','schedule','lift','chat','profile'];
+  const PT=['home','daily-work','month','personal-plan','schedule','lift','chat','profile'];
   const allowed=coachU?(viewing?PT:['home','schedule','lift','chat','report','coach-view']):PT;
   document.querySelectorAll('.tabs a[data-tab]').forEach(a=>{ a.hidden=!allowed.includes(a.dataset.tab); });
   renderModeBar();
   const tab=allowed.includes(t)?t:'home';
-  ['home','becks-plan','month','personal-plan','schedule','lift','chat','report','profile','coach-view'].forEach(n=>{ document.getElementById('tab-'+n).hidden=n!==tab; });
+  ['home','daily-work','month','personal-plan','schedule','lift','chat','report','profile','coach-view'].forEach(n=>{ document.getElementById('tab-'+n).hidden=n!==tab; });
   document.querySelectorAll('.tabs a').forEach(a=>a.setAttribute('aria-current',a.dataset.tab===tab?'page':'false'));
   render();
   if(tab==='coach-view') renderCoach();
@@ -4748,10 +4713,8 @@ async function loadTeam(){
   if(error){ note.innerHTML=`<h2 class="h2" style="font-size:20px">Couldn't load the staff</h2><p class="hint">${esc(error.message)}</p>`; return; }
   C.athletes={}; C.examplesRemoved=true;
   if(window.HAS_COACH_COL===false) toast('Coach edits are off until the Supabase setup step is run.');
-  window.COACH_REQS=[];
   (data||[]).filter(p=>p.role!=='coach').forEach(p=>{
     const pd=Array.isArray(p.player_data)?p.player_data[0]:p.player_data; const st=(pd&&pd.settings)||{};
-    if(st.coachReq&&!st.pid){ const ce=(pd&&pd.coach_edits)||{}; if(!(ce.coachDenied&&ce.coachDenied>st.coachReq.at)) window.COACH_REQS.push({id:p.id,name:st.coachReq.name||p.full_name,at:st.coachReq.at}); return; }
     if(!st.pid) return;   // signed up but has not picked a profile yet
     C.athletes['u-'+p.id]={ ...st, pid:st.pid||null, name:p.full_name||'Unnamed pitcher', role:st.role||'SP', grade:st.grade||null, penDay:(st.penDay==null?null:st.penDay), team:st.team||null, ht:st.ht||null, wt:st.wt||null, velo:st.velo||null, throws:st.throws||null, phone:st.phone||null, arsenal:st.arsenal||[], program:st.program||null, weeks:st.weeks||{}, overrides:st.overrides||{}, coach:(pd&&pd.coach_edits)||{weeks:{},overrides:{}}, logs:(pd&&pd.logs)||{}, sent:pd&&pd.updated_at?pd.updated_at.slice(0,10):null };
   });
