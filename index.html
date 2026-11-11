@@ -1731,29 +1731,38 @@ function applyPlanDB(st,wk,out){
 
 // ---------- coach: assign pitchers, show a month to players ----------
 function assignPlan(id,mk,pid){
-  const a=C.athletes[id]; if(!a||!window.IS_HEAD) return;
+  const a=C.athletes[id]; if(!a||!isCoachUser()) return; const now=new Date().toISOString();
   a.coach=a.coach||{weeks:{},overrides:{}}; a.coach.plans={...(a.coach.plans||{})};
   if(pid) a.coach.plans[mk]=pid; else delete a.coach.plans[mk];
-  a.coach.planLive={...(S.planLive||{})};
-  if(a.pid){ S.planAssign=S.planAssign||{}; S.planAssign[a.pid]={...(S.planAssign[a.pid]||{})}; if(pid) S.planAssign[a.pid][mk]=pid; else delete S.planAssign[a.pid][mk]; save(); }   // kept by roster profile, so it sticks before he signs up
+  a.coach.plansAt=now; a.coach.planLive={...(S.planLive||{})}; if(S.planLiveAt) a.coach.planLiveAt=S.planLiveAt;
+  if(a.pid){ S.planAssign=S.planAssign||{}; S.planAssign[a.pid]={...a.coach.plans}; S.planAssignAt={...(S.planAssignAt||{}),[a.pid]:now}; save(); }   // kept by roster profile, so it sticks before he signs up
   coachChanged(id);
 }
 function setMonthShown(mk,on){
-  if(!window.IS_HEAD) return;
-  S.planLive={...(S.planLive||{}),[mk]:!!on}; save();
-  staff().forEach(({id,a})=>{ a.coach=a.coach||{weeks:{},overrides:{}}; a.coach.planLive={...S.planLive}; if(a.pre&&window.CLOUD_MODE) planCaches.delete(a); else coachChanged(id); });
+  if(!isCoachUser()) return; const now=new Date().toISOString();
+  S.planLive={...(S.planLive||{}),[mk]:!!on}; S.planLiveAt=now; save();
+  staff().forEach(({id,a})=>{ a.coach=a.coach||{weeks:{},overrides:{}}; a.coach.planLive={...S.planLive}; a.coach.planLiveAt=now; if(a.pre&&window.CLOUD_MODE) planCaches.delete(a); else coachChanged(id); });
 }
-// Bring every pitcher's saved copy in line with the head coach's assignments (covers pitchers who signed up after being assigned)
+// Keep every coach's app and every pitcher's saved copy on the same plan assignments. Any coach can change them; the newest change wins.
+// (Also covers pitchers who signed up after being assigned.)
 function syncPlans(){
-  if(!window.IS_HEAD||window.VIEW_AS||typeof C==='undefined') return;
-  const want=S.planAssign||{}, live=S.planLive||{};
+  if(!isCoachUser()||window.VIEW_AS||typeof C==='undefined') return;
+  const js=o=>JSON.stringify(o||{}), has=o=>!!o&&Object.keys(o).length>0; let dirty=false;
+  // show / hide a month: take the newest choice any coach made
+  { let at=S.planLiveAt||'', src=null;
+    for(const id in C.athletes){ const c=C.athletes[id].coach; if(c&&c.planLiveAt&&c.planLiveAt>at){ at=c.planLiveAt; src=c.planLive||{}; } }
+    if(!src&&!S.planLiveAt&&!has(S.planLive)){ for(const id in C.athletes){ const c=C.athletes[id].coach; if(c&&has(c.planLive)){ src=c.planLive; break; } } }
+    if(src){ S.planLive={...src}; if(at) S.planLiveAt=at; dirty=true; } }
+  const live=S.planLive||{}, liveAt=S.planLiveAt||'';
+  S.planAssign=S.planAssign||{}; S.planAssignAt=S.planAssignAt||{};
   for(const id in C.athletes){ const a=C.athletes[id]; if(!a.pid) continue;
-    const w=want[a.pid]||{}, cur=(a.coach&&a.coach.plans)||{}, curL=(a.coach&&a.coach.planLive)||{};
-    if(JSON.stringify(w)===JSON.stringify(cur)&&JSON.stringify(live)===JSON.stringify(curL)) continue;
-    if(!Object.keys(w).length&&!Object.keys(cur).length&&!Object.keys(live).length) continue;
-    a.coach=a.coach||{weeks:{},overrides:{}}; a.coach.plans={...w}; a.coach.planLive={...live}; planCaches.delete(a);
-    if(!(a.pre&&window.CLOUD_MODE)) coachChanged(id);
+    const c=a.coach||{}, his=c.plans||{}, hisAt=c.plansAt||'', mine=S.planAssign[a.pid], mineAt=S.planAssignAt[a.pid]||''; let ch=false;
+    if(mine&&mineAt>=hisAt){ if(js(mine)!==js(his)){ a.coach=a.coach||{weeks:{},overrides:{}}; a.coach.plans={...mine}; if(mineAt) a.coach.plansAt=mineAt; ch=true; } }
+    else if(has(his)||hisAt){ if(js(mine)!==js(his)||mineAt!==hisAt){ S.planAssign[a.pid]={...his}; S.planAssignAt[a.pid]=hisAt; dirty=true; } }
+    if(js(live)!==js(c.planLive)&&liveAt>=(c.planLiveAt||'')){ a.coach=a.coach||{weeks:{},overrides:{}}; a.coach.planLive={...live}; if(liveAt) a.coach.planLiveAt=liveAt; ch=true; }
+    if(ch){ planCaches.delete(a); if(!(a.pre&&window.CLOUD_MODE)) coachChanged(id); }
   }
+  if(dirty) save();
 }
 
 // ---------- Coach's View > Plans ----------
@@ -1776,7 +1785,7 @@ function planCalendar(P){
 function renderPlans(){
   syncPlans();
   if(!plMonth){ const mk=TODAY.slice(0,7); plMonth=PLAN_MONTHS.includes(mk)?mk:PLAN_MONTHS[0]; }
-  const head=!!window.IS_HEAD, plans=plansIn(plMonth), can=monthAssignable(plMonth), shown=!!(S.planLive&&S.planLive[plMonth]);
+  const head=isCoachUser(), plans=plansIn(plMonth), can=monthAssignable(plMonth), shown=!!(S.planLive&&S.planLive[plMonth]);
   const list=staff().sort((x,y)=>x.a.name.split(' ').slice(-1)[0].localeCompare(y.a.name.split(' ').slice(-1)[0]));
   const on=id=>list.filter(({a})=>assignedPlan(a,plMonth)===id);
   const un=can?list.filter(({a})=>!assignedPlan(a,plMonth)):[];
@@ -1794,7 +1803,7 @@ function renderPlans(){
         <button type="button" class="btn ghost sm" data-plopen="${P.id}" style="align-self:flex-start">${open?'Hide calendar':'Show calendar'}</button>
         ${open?planCalendar(P):''}</section>`; }).join('')}
     ${can?`<section class="panel stack" style="gap:8px"><div class="lrow"><h2 class="h2" style="font-size:19px">Assign pitchers · ${mName}</h2><span class="hint">${list.length-un.length} of ${list.length} assigned</span></div>
-      ${head?'':'<p class="hint">Only the head pitching coach can change assignments.</p>'}
+      
       <div class="plassign">${list.map(({id,a})=>{ const cur=assignedPlan(a,plMonth)||'';
         return `<label class="plrow"><span><b>${esc(a.name)}</b><small>${esc([a.throws?(a.throws==='L'?'LHP':'RHP'):'',a.pre?'no account yet':''].filter(Boolean).join(' · '))}</small></span>
           <select data-plassign="${id}" ${head?'':'disabled'} class="${cur?'':'unset'}"><option value="">Not assigned</option>${plans.map(P=>`<option value="${P.id}" ${cur===P.id?'selected':''}>${esc(P.file)}</option>`).join('')}</select></label>`; }).join('')}</div></section>`:''}`;
@@ -2137,7 +2146,7 @@ function applyPatchTo(st,logs,patch){
   if(ch) st.patchAt=latest; return ch;
 }
 setInterval(()=>{ try{ if(window.VIEW_AS||window.IS_COACH||!S.coach||!S.coach.patch) return;
-  if(applyPatchTo(S,LOG.entries,S.coach.patch)){ save(); saveLog(); clearCache(); render(); renderHome(); toast('Your coach updated your page'); } }catch(e){} },4000);
+  if(applyPatchTo(S,LOG.entries,S.coach.patch)){ save(); saveLog(); clearCache(); render(); renderHome(); if(window.syncMyName) window.syncMyName(); toast('Your coach updated your page'); } }catch(e){} },4000);
 // A pitcher's own change to a week or day wins over an older coach change; a newer coach change wins again.
 const ownNewer=(st,stamp)=>!!stamp&&!(st.coach&&st.coach.schedAt&&st.coach.schedAt>stamp);
 const coachWeekOf=(st,key)=>{ const cw=st.coach&&st.coach.weeks&&st.coach.weeks[key]; return cw&&!ownNewer(st,st.ownWk&&st.ownWk[key])?cw:null; };
@@ -2533,10 +2542,10 @@ function pickLockCard(){
   if(!VIEWING()) return ''; const a=C.athletes[window.VIEW_AS]; if(!a||a.pre) return '';
   return `<section class="panel stack" style="gap:8px"><div class="lrow"><span class="lbl">Profile pick · coaches only</span><span class="chip of">🔒 Locked</span></div>
     <p class="hint" style="margin:0">This account is tied to <b>${esc(a.name)}</b>'s profile. The player cannot switch profiles himself.</p>
-    ${window.IS_HEAD?`<div class="row"><button type="button" class="btn ghost sm" id="pickReset">Reset his pick</button></div><p class="hint" style="margin:0">Use this if someone claimed the wrong profile. He picks again the next time he opens the app.</p>`:'<p class="hint" style="margin:0">Only a coach can reset it.</p>'}</section>`;
+    ${isCoachUser()?`<div class="row"><button type="button" class="btn ghost sm" id="pickReset">Reset his pick</button></div><p class="hint" style="margin:0">Use this if someone claimed the wrong profile. He picks again the next time he opens the app.</p>`:'<p class="hint" style="margin:0">Only a coach can reset it.</p>'}</section>`;
 }
 let pickResetArm=0;
-document.addEventListener('click',e=>{ const b=e.target.closest('#pickReset'); if(!b||!window.IS_HEAD) return; const id=window.VIEW_AS, a=C.athletes[id]; if(!a) return;
+document.addEventListener('click',e=>{ const b=e.target.closest('#pickReset'); if(!b||!isCoachUser()) return; const id=window.VIEW_AS, a=C.athletes[id]; if(!a) return;
   if(Date.now()-pickResetArm>4000){ pickResetArm=Date.now(); b.textContent='Tap again to confirm'; return; }
   a.coach=a.coach||{weeks:{},overrides:{}}; a.coach.unpick=isoNow(); if(S.coach&&S.coach!==a.coach) S.coach.unpick=a.coach.unpick; coachChanged(id); toast(`${cvName(a.name)} will be asked to pick again`); renderProfile(); });
 
@@ -2769,7 +2778,7 @@ function coachHome(){
   const mound=rows.filter(r=>onMound(r.p));
   const own=rows.filter(r=>r.a.program==='personal').length;
   const alerts=rows.flatMap(r=>r.al.map(al=>({r,al}))).filter(x=>x.al.sev!=='of').sort((x,y)=>SEV_RANK[x.al.sev]-SEV_RANK[y.al.sev]||x.r.a.name.localeCompare(y.r.a.name));
-  const note=S.teamNote;
+  const note=S.teamNote||staff().map(x=>x.a.coach&&x.a.coach.note).filter(Boolean).sort((x,y)=>String(y.on).localeCompare(String(x.on)))[0]||null;
   const SR={hi:0,mo:1,of:2,ok:3};
   let list=rows.filter(r=>hGrade==='all'||r.a.grade===hGrade);
   const armOf=r=>r.m.armLast==null?99:r.m.armLast;
@@ -4551,7 +4560,7 @@ const hasPen=()=>S.penDay!=null && S.penDay!=='';
 const needsSetup=()=>!S.pid && !window.PICK_SKIPPED;
 const PEN_DAYS=[0,1,2,3,4,5,6];
 function renderAccount(){
-  const coach=!!(ME&&ME.role==='coach'), setup=acctSetup&&!coach;
+  const coach=!!(ME&&ME.role==='coach')&&!VIEWING(), setup=acctSetup&&!coach&&!VIEWING();
   if(setup && !S.pid){ renderPicker(); return; }
   document.getElementById('acctBody').innerHTML=`
     <p class="eyebrow2">${setup?'Before you start':'Account'}</p>
@@ -4566,7 +4575,7 @@ function renderAccount(){
       <div class="field"><label for="aPrev">Previous college (if any)</label><input id="aPrev" type="text" value="${esc(S.prev||'')}" placeholder="Junior college or transfer school"></div>
       <div class="field"><label for="aGrad">Grad year</label><input id="aGrad" type="text" inputmode="numeric" maxlength="4" value="${esc(S.grad||'')}" placeholder="2028"></div>`}
       ${!window.CLOUD_MODE&&S.pid?'<button type="button" class="btn ghost sm" id="aSwitch" style="align-self:flex-start">Preview: switch profile or go back to coach</button>':''}
-      <p class="hint">${ME?`Signed in as ${esc(ME.email||ME.full_name||'')} · ${coach?'Coach':'Pitcher'} account. Changes save to your account.`:'Saved on this device.'}</p>
+      <p class="hint">${VIEWING()?`You are editing ${esc(cvName(S.name))}'s profile. Changes save to his app.`:ME?`Signed in as ${esc(ME.email||ME.full_name||'')} · ${coach?'Coach':'Pitcher'} account. Changes save to your account.`:'Saved on this device.'}</p>
       <span class="hint" id="aSaved" role="status"></span>
       ${setup?`<button type="button" class="btn big" id="aDone" ${needsSetup()?'disabled':''}>Continue to the app</button>`:''}
     </div>`;
@@ -4808,9 +4817,11 @@ if(CLOUD){
     const was=S.coach||{weeks:{},overrides:{}};
     if(JSON.stringify(nc)!==JSON.stringify(was)){ const strip=o=>JSON.stringify({...o,note:null,msgs:null}), planSame=strip(nc)===strip(was), newMsg=JSON.stringify(nc.msgs||[])!==JSON.stringify(was.msgs||[]); S.coach=nc; clearCache(); render(); renderHome(); toast(planSame?(newMsg?'New message from your coach':'New note from your coach'):'Your coach updated your plan'); }
   };
+  window.syncMyName=()=>{ if(!ME||!sb||window.VIEW_AS||ME.role==='coach') return; const n=String(S.name||'').trim(); if(!n||n===ME.full_name) return; ME.full_name=n; const hn=document.getElementById('heyName'); if(hn) hn.textContent=niceFirst(n)||'there'; const rail=document.getElementById('name'); if(rail) rail.value=n; sb.from('profiles').update({full_name:n}).eq('id',ME.id).then(()=>{},()=>{}); };
   document.getElementById('signOut').addEventListener('click',async()=>{ clearTimeout(syncTimer); await pushNow(); await sb.auth.signOut(); });
   document.getElementById('name').addEventListener('input',e=>{
-    if(!ME) return; ME.full_name=e.target.value; document.getElementById('heyName').textContent=niceFirst(ME.full_name)||'there';
+    if(!ME||window.VIEW_AS) return;   // a coach renaming a pitcher must not rename the coach's own account
+    ME.full_name=e.target.value; document.getElementById('heyName').textContent=niceFirst(ME.full_name)||'there';
     clearTimeout(nameTimer); nameTimer=setTimeout(()=>sb.from('profiles').update({full_name:ME.full_name}).eq('id',ME.id),900);
   });
 }
