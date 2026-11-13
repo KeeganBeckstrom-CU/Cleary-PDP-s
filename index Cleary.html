@@ -2620,11 +2620,11 @@ function nlText(a,k){ return nlInGrace(a,k)?'No log · can still log today':'No 
 
 // ===== Coach reactions to a pitcher's log (stored with the coach's edits: coach.rx[day][coach name] = emoji) =====
 const RX_EMOJI=['🔥','💪','👏','👀'];
-const rxOf=(a,k)=>((a&&a.coach&&a.coach.rx&&a.coach.rx[k])||{});
+const rxOf=(a,k)=>{ const r=(a&&a.coach&&a.coach.rx&&a.coach.rx[k])||{}, o={}; for(const n in r) o[byFix(n)]=r[n]; return o; };
 function rxBar(id,k,a){ const cur=rxOf(a,k), me=coachBy()||'Coach', others=Object.keys(cur).filter(n=>n!==me);
   return `<div class="rxbar" data-rxbar>${RX_EMOJI.map(e=>`<span class="rxb ${cur[me]===e?'on':''}" role="button" tabindex="0" aria-pressed="${cur[me]===e}" aria-label="React ${e}" data-rx="${esc(id)}|${k}|${e}">${e}</span>`).join('')}${Object.keys(cur).length?`<span class="rxwho">${[...(cur[me]?[me]:[]),...others].map(n=>`${cur[n]} ${esc(n)}`).join(' · ')}</span>`:''}</div>`; }
 function rxShow(a,k){ const cur=rxOf(a,k), ns=Object.keys(cur); return ns.length?`<div class="rxbar got">${ns.map(n=>`<span class="rxgot">${cur[n]} <b>${esc(n)}</b></span>`).join('')}</div>`:''; }
-function rxSet(id,k,e){ const a=C.athletes[id]; if(!a||!isCoachUser()) return; a.coach=a.coach||{weeks:{},overrides:{}}; a.coach.rx=a.coach.rx||{}; const me=coachBy()||'Coach', day={...(a.coach.rx[k]||{})};
+function rxSet(id,k,e){ const a=C.athletes[id]; if(!a||!isCoachUser()) return; a.coach=a.coach||{weeks:{},overrides:{}}; a.coach.rx=a.coach.rx||{}; const me=coachBy()||'Coach', day={...rxOf(a,k)};
   if(day[me]===e) delete day[me]; else day[me]=e; if(Object.keys(day).length) a.coach.rx[k]=day; else delete a.coach.rx[k];
   Object.keys(a.coach.rx).sort().slice(0,-60).forEach(d=>delete a.coach.rx[d]);   // keep the last 60 days of reactions
   if(a.ex||(a.pre&&!window.CLOUD_MODE)){ C.edits[id]=a.coach; saveC(); } else if(a.pre){ toast(`${cvName(a.name)} has no account yet.`); } else if(window.saveCoachEdits) window.saveCoachEdits(id,a); }
@@ -3046,7 +3046,8 @@ function coachInboxCard(){
 }
 setInterval(chatBadge,3000);
 
-function coachBy(){ let n=''; try{ n=realName(coachS().name)||realName(ME&&ME.full_name); }catch(e){} n=String(n||'').trim(); return n?(/\s/.test(n)?'Coach '+n.split(/\s+/)[0]:n):'Coach'; }   // a one-word account name (like a nickname) shows as is, with no "Coach" in front
+const byFix=n=>/^(coach\s+)?keegan(\s+beckstrom)?$/i.test(String(n||'').trim())?'Beck':n;   // he goes by Beck, never "Coach Keegan" (also fixes names saved on older messages and reactions)
+function coachBy(){ let n=''; try{ n=realName(coachS().name)||realName(ME&&ME.full_name); }catch(e){} n=String(n||'').trim(); if(byFix(n)!==n) return byFix(n); return n?(/\s/.test(n)?'Coach '+n.split(/\s+/)[0]:n):'Coach'; }   // a one-word account name (like a nickname) shows as is, with no "Coach" in front
 
 // ===== Lift tab: Phase 3 Strength-Hypertrophy, one sheet per player (saved in his own settings as S.lift) =====
 let liftKey=null, liftT=null;
@@ -3228,7 +3229,7 @@ function renderReport(){
 // Coaches are set by sign-in email in the database (see the Supabase setup script). Everyone else claims a pitcher profile.
 const emailStem=()=>{ try{ return String((ME&&ME.email)||window.ME_EMAIL||'').split('@')[0].toLowerCase(); }catch(e){ return ''; } };
 const realName=n=>{ n=String(n||'').trim(); return (n&&!/\s/.test(n)&&n.toLowerCase()===emailStem())?'':n; };   // a sign-in email is not a name
-const niceFirst=n=>realName(n).split(/\s+/)[0]||'';
+const niceFirst=n=>{ const r=realName(n); return byFix(r)!==r?byFix(r):(r.split(/\s+/)[0]||''); };
 // Pitcher side: follow what the head coach decided
 setInterval(()=>{ try{ if(typeof VIEW!=='undefined'&&VIEW) return; if(window.VIEW_AS) return; const c=S.coach||{};
   if(S.pid&&c.unpick&&c.unpick>(S.pickAt||'')){ delete S.pid; delete S.track; S.pickAt=c.unpick; save(); toast('Your coach reset your profile. Pick it again.'); openAccount(true); }
@@ -3898,7 +3899,7 @@ let chatId=null;   // athlete id when the coach is chatting; 'me' for a pitcher
 function bubbles(list,coachSide){
   if(!list.length) return `<p class="hint chatempty">${coachSide?'No messages yet. Say something below.':'No messages from your coach yet.'}</p>`;
   return list.map(m=>{ const mine=coachSide?m.who==='coach':m.who==='player';
-    return `<div class="bub ${mine?'mine':'theirs'}"><p>${esc(m.t)}</p><small>${m.who==='coach'?esc(m.by||'Coach'):''}${m.who==='coach'?' · ':''}${fmtAt(m.at)}</small></div>`; }).join('');
+    return `<div class="bub ${mine?'mine':'theirs'}"><p>${esc(m.t)}</p><small>${m.who==='coach'?esc(byFix(m.by)||'Coach'):''}${m.who==='coach'?' · ':''}${fmtAt(m.at)}</small></div>`; }).join('');
 }
 function renderChatSheet(){
   const coachSide=chatId!=='me', a=coachSide?C.athletes[chatId]:S; if(!a) return;
@@ -5523,7 +5524,7 @@ async function afterLogin(user){
     if(ME.role==='coach') await loadTeam();
     hideGate();
     render(); showTab();
-    toast(`Hey, ${firstName(ME.full_name)||'there'}!`);
+    toast(`Hey, ${niceFirst(ME.full_name)||'there'}!`);
     maybePick();
   }catch(err){
     showGate('in','Signed in, but your profile could not load: '+(err.message||err)+'. Ask your coach to check the database setup.');
