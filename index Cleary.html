@@ -2199,7 +2199,7 @@ function dayGlance(p){
   if(p.rtt||p.nt){ if(p.kind==='off') return '<div class="glance"><div><span>Today</span><b>Day off.</b></div></div>';
     const wu=[p.mobility,p.preThrow].filter(Boolean).join(' → '), thr=p.kind!=='nothrow'; let j=0;
     const rw=(t,v,c)=>v?`<div><i>${++j}</i><span>${t}</span><b${c?' class="rttg"':''}>${v}</b></div>`:'';
-    return `<div class="glance">${rw('Warm-up',esc(wu))}${thr?rw('Throw',rttThrowHTML(p),1):rw('No throw','No throwing today')}${rw(thr?'After you throw':'Arm care',p.post?esc(p.post):'')}${rw('Your arm care sheet',p.cond?esc(p.cond):'')}</div>`; }
+    return `<div class="glance">${rw('Warm-up',esc(wu))}${rw('Nerve glides',p.nerve?'Follow the video':'')}${thr?rw('Throw',rttThrowHTML(p),1):rw('No throw','No throwing today')}${rw(thr?'After you throw':'Arm care',p.post?esc(p.post):'')}${rw('Your arm care sheet',p.cond?esc(p.cond):'')}</div>`; }
   if(p.kind==='off') return '<div class="glance"><div><span>Today</span><b>Off day. No throwing or training.</b></div></div>';
   const rx=RX[p.intensity]||{}, pcn=((p.event||'').match(/· (\d+) pitches/)||[])[1];
   const before=[p.mobility,p.preThrow,p.plyo].filter(Boolean).join(' → ');
@@ -2868,6 +2868,8 @@ const RTT_PHASE=d=>d<=42?1:d<=126?2:d<=147?3:d<=189?4:5;
 const RTT_PHASE_NAME=['','Stretching out and building a base','Extending distance','Pull-downs','Mound ramp-up','Building pitch count'];
 const RTT_MOUND={22:[20,10],23:[20,15],24:[20,20],25:[25,20],26:[30,20],27:[35,20]};
 const RTT_CARE='Recovery Arm Care';
+const NERVE_GLIDES='Nerve Glides', NERVE_PIDS=['knott'];   // nerve glides: every day with work on it (never on an off day)
+const nerveFor=st=>!!st&&st.track==='rtt'&&NERVE_PIDS.includes(st.pid);
 const rttLad=s=>(RTT_L[s]||s).split(',').map(x=>{ const [n,d]=x.split('@'); return [+n,d]; });
 function rttDay(st,k){
   if(!st.rttStart) return null;
@@ -2896,7 +2898,7 @@ const NT=st=>!!st&&(st.track==='rtt'||st.track==='rehab');
 // Team week in, non-thrower week out: keep the team's mobility, pre-throw and post-throw, drop every throw and the plyo.
 function ntWeek(st,wk,base){ const o={};
   for(let i=0;i<7;i++){ const k=ymd(addDays(parse(wk),i)), t=base&&base[k], r=st.track==='rtt'?rttDay(st,k):null;
-    const teamOn=!!t&&t.kind!=='off', rout=teamOn?{mobility:t.mobility,preThrow:t.preThrow,post:t.post}:{}, care=st.track==='rtt'?{cond:RTT_CARE}:{};
+    const teamOn=!!t&&t.kind!=='off', rout=teamOn?{mobility:t.mobility,preThrow:t.preThrow,post:t.post}:{}, care=st.track==='rtt'?{cond:RTT_CARE,...(nerveFor(st)?{nerve:NERVE_GLIDES}:{})}:{};
     if(r&&r.kind!=='off'){ o[k]={...r,...rout,...care,nt:true}; continue; }
     if(!teamOn){ o[k]={date:k,auto:false,manual:false,tag:'nt',nt:true,kind:'off',intensity:'off',...(r?{rtt:r.rtt}:{})}; continue; }
     o[k]={date:k,auto:false,manual:false,tag:'nt',nt:true,kind:'nothrow',intensity:'none',...rout,...care,...(r?{rtt:r.rtt}:{})};
@@ -2918,13 +2920,15 @@ function rttStepsHTML(p,k){
   let n=0; const step=(cls,title,sub,body)=>`<div class="step ${cls}"><div class="stephead"><span class="snum">${++n}</span><div><b>${title}</b><small>${sub}</small></div></div>${body?`<div class="stepbody">${body}</div>`:''}</div>`;
   return `<div class="steps"><div class="lrow"><span class="lbl">Today's work, in order</span><span class="hint">${r?`Week ${r.week} · day ${r.day}`:'Tap ✓ when a routine is done'}</span></div>
     ${pre.length?step('pre','Warm-up','Mobility, then pre-throw. Same as the team.',pre.map(x=>routineRow(x,k)).join('')):''}
+    ${p.nerve?step('pre','Nerve glides','Every day you have work. Slow and easy, never push into pain or tingling.',routineRow(p.nerve,k)):''}
     ${throws?step('thr','Throw','Arc and easy "massage" throws. Self-regulate: stop or back off if anything feels wrong.',`<div class="throwc ${RX[p.intensity].cls} rttc"><div>${rttThrowHTML(p)}</div></div>`)
       :step('thr','No throw',r&&r.opt?'Rest, or an easy light throw if your arm feels good.':'No throwing today.',`<div class="throwc no"><b>No throwing today</b><span>${r?'A rest day in your throwing plan.':'Everything else on the page is the same work the team does.'}</span></div>`)}
     ${p.post?step('post',throws?'After you throw':'Arm care','The team\'s post-throw routine: rotator cuff, scap and mobility work.',routineRow(p.post,k)):''}
     ${p.cond?step('cond','Your arm care sheet','Your own exercises. Follow the sets and reps on your sheet.',routineRow(p.cond,k)):''}
   </div>${r?`<p class="hint" style="margin-top:8px">Throwing progression from the <a href="${RTT_SRC}" target="_blank" rel="noopener">Jaeger Sports Return to Throwing schedule</a>.</p>`:''}`;
 }
-document.addEventListener('DOMContentLoaded',()=>{ try{ LIB[RTT_CARE]=[['Push Up Ts','per your sheet'],['Yoga Push Ups','per your sheet'],['Quadruped Arm Pumps','per your sheet'],['Side Plank Arm Pumps','per your sheet'],["Child's Pose Arm Lifts",'per your sheet'],["TRX I's, Y's, T's",'per your sheet'],['TRX Face Pulls','per your sheet'],['Windmills','per your sheet'],['OH TB Presses','per your sheet']];
+document.addEventListener('DOMContentLoaded',()=>{ try{ LIB[NERVE_GLIDES]=[['Nerve Glides','Follow the video']]; LINKS.nerveglides='https://youtu.be/Xlom_o0Qt9g'; }catch(e){}
+  try{ LIB[RTT_CARE]=[['Push Up Ts','per your sheet'],['Yoga Push Ups','per your sheet'],['Quadruped Arm Pumps','per your sheet'],['Side Plank Arm Pumps','per your sheet'],["Child's Pose Arm Lifts",'per your sheet'],["TRX I's, Y's, T's",'per your sheet'],['TRX Face Pulls','per your sheet'],['Windmills','per your sheet'],['OH TB Presses','per your sheet']];
   Object.assign(LINKS,{pushupts:'https://www.youtube.com/watch?v=-SgeUqvNzag',yogapushups:'https://www.youtube.com/watch?v=HvghDKEkT6w',childsposearmlifts:'https://www.youtube.com/watch?v=4fDatYPJgm8',trxisysts:'https://www.youtube.com/watch?v=1-TP3ZXK26A',trxfacepulls:'https://www.youtube.com/watch?v=Jbyoxer58j4',windmills:'https://www.youtube.com/watch?v=RX21NOL61OE',ohtbpresses:'https://www.youtube.com/watch?v=nwjQIADavj8'}); }catch(e){} });
 // Home panel for a pitcher who is not on the team throwing plan (replaces Set My Week)
 function rttPanel(){
@@ -3279,7 +3283,8 @@ const ROUTINE_INFO = {
   'Pre-Throw':    '<b>Gets your body moving in the right order</b> with the Tidal Tank and med ball. Do it after mobility, before you pick up a ball.',
   'Plyo':         '<b>Weighted balls into a wall to warm your arm up step by step</b>, from heavy to light. Do it right before you throw.',
   'Post-throw':   '<b>Arm care after you throw.</b> It builds the small muscles that protect your shoulder and elbow. Do it after throwing.',
-  'Conditioning': '<b>Running or cardio.</b> Do it last.'
+  'Conditioning': '<b>Running or cardio.</b> Do it last.',
+  'Nerve glides': '<b>Gentle glides that keep the nerves in your arm moving freely.</b> Follow the video. Slow and smooth, and back off if you feel tingling or pain.'
 };
 const HELP = [
   ['What do I do each day?', `<p>Open <b>Daily Work</b>. It lists today's work in order: <b>1. Before you throw</b> (mobility, pre-throw, plyo), <b>2. Throw</b>, <b>3. After you throw</b> (rotator cuff, scap, mobility), then conditioning if it's on your card. Tap the ✓ on each routine when it's done.</p>`],
@@ -3423,9 +3428,9 @@ function pitcherHome(preview){
   let st=0, d=new Date(todayD); if(!lg[ymd(d)]) d=addDays(d,-1); while(lg[ymd(d)]){ st++; d=addDays(d,-1); }
   const ws=weekStart(todayD), wdays=[...Array(7)].map((_,i)=>ymd(addDays(ws,i)));
   const past=wdays.filter(x=>x<=TODAY), loggedN=past.filter(x=>lg[x]).length;
-  let rDone=0, rTot=0; past.forEach(x=>{ const pp=dayPlan(x); if(!pp) return; const names=[pp.mobility,pp.mobility2,pp.preThrow,pp.plyo,pp.post,pp.cond].filter(Boolean); rTot+=names.length; rDone+=(S.done&&S.done[x]||[]).filter(n=>names.includes(n)).length; });
+  let rDone=0, rTot=0; past.forEach(x=>{ const pp=dayPlan(x); if(!pp) return; const names=[pp.mobility,pp.mobility2,pp.preThrow,pp.plyo,pp.post,pp.cond,pp.nerve].filter(Boolean); rTot+=names.length; rDone+=(S.done&&S.done[x]||[]).filter(n=>names.includes(n)).length; });
   const th7=dayKeysBack(todayD,7).reduce((s,x)=>s+(lg[x]?num(lg[x].t):0),0);
-  const doneToday=p?(S.done&&S.done[k]||[]).length:0, totToday=p?[p.mobility,p.mobility2,p.preThrow,p.plyo,p.post,p.cond].filter(Boolean).length:0;
+  const doneToday=p?(S.done&&S.done[k]||[]).length:0, totToday=p?[p.mobility,p.mobility2,p.preThrow,p.plyo,p.post,p.cond,p.nerve].filter(Boolean).length:0;
   const todayCard = personal
     ? `<section class="panel stack htoday ${p?RX[p.intensity].cls:'of'}">
         <div class="lrow"><span class="lbl">Today · ${DOWL[todayD.getDay()]}</span>${lg[k]?'<span class="lg-yes">✓ Logged</span>':'<span class="lg-no">Not logged yet</span>'}</div>
@@ -4329,7 +4334,7 @@ const EQUIP={
 const PLYO_W={Green:1000,Blue:450,Red:225,Yellow:150,Gray:100};
 const PLYO_HEX={Green:'#2E8B57',Blue:'#2F6FD1',Red:'#D0352B',Yellow:'#E8B10C',Gray:'#98999B'};
 const plyoText=s=>s.replace(/\b(Green|Blue|Red|Yellow|Gray)\b/g,(m)=>`${m} ${PLYO_W[m]}g`);
-const SECTION_OF=n=>/^Mobility [A-D]$/.test(n)?'Mobility':/^(Pre-Throw|Med Ball|Dynamic Warm Up)/.test(n)?'Pre-Throw':/^Plyo/.test(n)?'Plyo':/^Conditioning/.test(n)?'Conditioning':'Post-throw';
+const SECTION_OF=n=>n==='Nerve Glides'?'Nerve glides':/^Mobility [A-D]$/.test(n)?'Mobility':/^(Pre-Throw|Med Ball|Dynamic Warm Up)/.test(n)?'Pre-Throw':/^Plyo/.test(n)?'Plyo':/^Conditioning/.test(n)?'Conditioning':'Post-throw';
 const RX = {
   high:{label:'High intensity', rpe:'85-100%', dist:"180'–max", vol:'75+ throws', cls:'hi', pill:'p-high'},
   mod:{label:'Moderate intensity', rpe:'70-85%', dist:"90'–150'", vol:'45-75 throws', cls:'mo', pill:'p-mod'},
@@ -4592,7 +4597,7 @@ function renderWeek(){
     if(!p) return `<div class="wd of"><span class="wd-d">${DOW[d.getDay()]} ${d.getDate()}</span><span class="wd-l">—</span></div>`;
     counts[p.intensity]++;
     const pc=p.event&&/· (\d+) pitches/.exec(p.event);
-    const done=(S.done&&S.done[k]||[]).length, total=[p.mobility,p.mobility2,p.preThrow,p.plyo,p.post,p.cond].filter(Boolean).length;
+    const done=(S.done&&S.done[k]||[]).length, total=[p.mobility,p.mobility2,p.preThrow,p.plyo,p.post,p.cond,p.nerve].filter(Boolean).length;
     return `<button type="button" class="wd ${RX[p.intensity].cls} ${k===TODAY?'today':''}" data-k="${k}" aria-pressed="${k===selected}">
       <span class="wd-d">${DOW[d.getDay()]} <b>${d.getDate()}</b>${k===TODAY?'<i>Today</i>':''}</span>
       <span class="wd-i">${kindIcon(p.kind)}</span>
@@ -4649,7 +4654,7 @@ function renderDetail(){
   const editBtn=`<button class="btn ghost editweek" type="button" id="editWeek">${svg('edit')}Change my week</button>`;
   if(!p){ el.className='panel hero of'; el.innerHTML=`<div class="hero-top"><div><p class="hero-date">${dateTxt}</p><h3>Nothing scheduled</h3></div></div><div class="hero-body"><div class="row">${logBtn}${editBtn}</div></div>`; return; }
   const rx=RX[p.intensity], isHigh=['live','pen','sb','toss'].includes(p.kind);
-  const names=[p.mobility,p.mobility2,p.preThrow,p.plyo,p.post,p.cond].filter(Boolean);
+  const names=[p.mobility,p.mobility2,p.preThrow,p.plyo,p.post,p.cond,p.nerve].filter(Boolean);
   const doneList=(S.done&&S.done[k]||[]).filter(n=>names.includes(n));
   let ovr='';
   if(byCoachDay) ovr='';
@@ -4731,7 +4736,7 @@ document.getElementById('railDone').addEventListener('click',()=>{ closeRail(); 
 document.getElementById('copyWeek').addEventListener('click',async()=>{
   const lines=[`${S.name||'Pitcher'}: week of ${viewWeek.getMonth()+1}/${viewWeek.getDate()}`];
   for(let i=0;i<7;i++){ const d=addDays(viewWeek,i), p=dayPlan(ymd(d)); if(!p) continue;
-    const parts=[p.mobility,p.mobility2,p.preThrow,p.plyo,p.post,p.cond].filter(Boolean).join(', ');
+    const parts=[p.mobility,p.mobility2,p.preThrow,p.plyo,p.post,p.cond,p.nerve].filter(Boolean).join(', ');
     lines.push(`${DOW[d.getDay()]} ${d.getMonth()+1}/${d.getDate()}: ${(p.event&&p.kind!=='nothrow'?p.event:label(p)).toUpperCase()}${parts?' | '+parts:''}`); }
   try{ await navigator.clipboard.writeText(lines.join('\n')); toast('Week copied'); }catch(err){ toast('Copy was blocked by the browser'); }
 });
@@ -4827,7 +4832,7 @@ function planLine(k){
   if(isPersonal()) return `<span class="lbl">Personal program · ${DOW[d.getDay()]} ${d.getMonth()+1}/${d.getDate()}</span>${p?`<span class="chip ${RX[p.intensity].cls}">${label(p)}</span>${p.event&&p.kind!=='nothrow'?`<b>${esc(p.event)}</b>`:''}`:''}<span class="hint">Log what your program had you do: throws, mound work, how your arm felt.</span>`;
   if(!p) return `<span class="hint">No Cleary's Plan for this date.</span>`;
   const rx=RX[p.intensity];
-  return `<span class="lbl">Cleary's Plan · ${DOW[d.getDay()]} ${d.getMonth()+1}/${d.getDate()}</span><span class="chip ${rx.cls}">${label(p)}</span>${p.event&&p.kind!=='nothrow'?`<b>${esc(p.event)}</b>`:''}<span>${esc([p.mobility,p.mobility2,p.preThrow,p.plyo,p.post,p.cond].filter(Boolean).join(' · '))}</span>${rx.rpe?`<span class="hint">RPE ${rx.rpe} · ${rx.dist} · ${rx.vol}</span>`:''}`;
+  return `<span class="lbl">Cleary's Plan · ${DOW[d.getDay()]} ${d.getMonth()+1}/${d.getDate()}</span><span class="chip ${rx.cls}">${label(p)}</span>${p.event&&p.kind!=='nothrow'?`<b>${esc(p.event)}</b>`:''}<span>${esc([p.mobility,p.mobility2,p.preThrow,p.plyo,p.post,p.cond,p.nerve].filter(Boolean).join(' · '))}</span>${rx.rpe?`<span class="hint">RPE ${rx.rpe} · ${rx.dist} · ${rx.vol}</span>`:''}`;
 }
 function renderPPForm(){
   const x=LOG.entries[selected]||{};
