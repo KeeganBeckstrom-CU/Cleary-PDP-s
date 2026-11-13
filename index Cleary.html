@@ -379,7 +379,7 @@ input[type=email],input[type=password]{background:var(--bg);border:1px solid var
 .acct-out{background:none;border:1px solid rgba(255,255,255,.35);color:#fff;border-radius:999px;padding:6px 12px;cursor:pointer;font-weight:600}
 .acct-out:hover{border-color:#fff}
 @media (max-width:640px){ .acct{align-items:flex-start;text-align:left;width:100%} .hey{font-size:28px} header .wrap{gap:12px} }
-body.gated{overflow:hidden}
+body.gated,body.drawer-open{overflow:hidden}
 .gate{position:fixed;inset:0;z-index:30;display:grid;place-items:center;padding:20px;overflow:auto;background:
   radial-gradient(120% 90% at 80% 0%, #001A3D 0%, rgba(179,8,56,.5) 35%, rgba(0,0,0,0) 70%), #050405}
 .gate-card{width:min(420px,100%);background:var(--surface);color:var(--ink);border-radius:20px;padding:24px 22px 20px;box-shadow:0 20px 60px rgba(0,0,0,.5);display:flex;flex-direction:column;gap:12px;text-align:center;border-top:5px solid #002B5C}
@@ -5300,8 +5300,8 @@ window.addEventListener('resize',()=>{ document.getElementById('cvMenu').hidden=
 
 // ======== Pitcher details (side panel) ========
 let dId=null, dReturn=null;
-function openPitcher(id){ dId=id; dReturn=document.activeElement; document.getElementById('cvMenu').hidden=true; const d=document.getElementById('cvDrawer'); d.hidden=false; renderPitcher(); requestAnimationFrame(()=>d.classList.add('on')); document.body.classList.add('gated'); setTimeout(()=>{ const x=document.getElementById('dX'); if(x) x.focus(); },60); }
-function closePitcher(){ const d=document.getElementById('cvDrawer'); d.classList.remove('on'); document.body.classList.remove('gated'); setTimeout(()=>{ d.hidden=true; if(dReturn&&dReturn.focus) dReturn.focus(); },220); }
+function openPitcher(id){ dId=id; dReturn=document.activeElement; document.getElementById('cvMenu').hidden=true; const d=document.getElementById('cvDrawer'); d.hidden=false; renderPitcher(); requestAnimationFrame(()=>d.classList.add('on')); document.body.classList.add('drawer-open'); setTimeout(()=>{ const x=document.getElementById('dX'); if(x) x.focus(); },60); }
+function closePitcher(){ const d=document.getElementById('cvDrawer'); d.classList.remove('on'); document.body.classList.remove('drawer-open'); setTimeout(()=>{ d.hidden=true; if(dReturn&&dReturn.focus) dReturn.focus(); },220); }
 function renderPitcher(){
   const a=C.athletes[dId]; if(!a){ closePitcher(); return; }
   const m=cvM(a), rs=ratioState(m.ratio), sp=splitAlerts(dId,a,m), al=sp.open, wl=weekLogged(a,weekStart(todayD)), h=(S.handled&&S.handled[dId])||{open:{},log:[]};
