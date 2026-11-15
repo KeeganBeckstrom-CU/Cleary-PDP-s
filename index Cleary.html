@@ -2019,7 +2019,7 @@ function startDatesPanel(){
   const left=k=>Math.round((parse(k)-todayD)/864e5);
   const row=(t,wkOf,first,more)=>{ const n=left(first); return `<div class="sdrow ${n<=0?'done':''}"><div><b>${t}</b><span>${wkOf}</span><small>${more}</small></div><em>${n<=0?'✓ Started':n===1?'Tomorrow':`In ${n} days`}</em></div>`; };
   return `<section class="panel stack sdates" style="gap:8px"><div class="lrow"><span class="lbl">When mound work starts</span><span class="hint">2026-27 plan</span></div>
-    ${row('Marty’s Short Boxes','Week of Nov 16','2026-11-20','First one Fri 11/20 · 20 pitches · 10-15 ft in front of home plate at 80% RPE, still off the mound')}
+    ${row('Marty’s Short Boxes','Week of Nov 16','2026-11-20','First one Fri 11/20 · 20 pitches · catcher stays at the plate, you move up on the mound (still on the slope) at 80% RPE')}
     ${row('Bullpens','Week of Nov 30','2026-12-04','First one Fri 12/4 · 20 pitches, building to 30')}
     ${row('Lives','Week of Jan 4','2027-01-04','30 pitches to start. Pen/Live days (your choice) are Fri 12/18, Sat 12/26 and Fri 1/1')}
     <p class="hint">You can still add a Marty’s Short Box or bullpen earlier under Set My Week. You will get a reminder that it is ahead of the plan.</p></section>`;
@@ -3266,8 +3266,8 @@ const DAY_INFO = {
             how:['Do the full warm-up first: mobility, pre-throw, then plyo.','Throw with game intent.','Stay at or under the pitch count on your card.','Do your post-throw arm care afterward.'] },
   pen:    { t:'Bullpen day', what:'Mound day. You throw a bullpen off the mound at the pitch count on your card.',
             how:['Do the full warm-up first: mobility, pre-throw, then plyo.','Throw with intent and work on command.','Stick to the pitch count on your card.','Do your post-throw arm care afterward.'] },
-  sb:     { t:'Marty’s Short Box day', what:'You still throw off the mound, but your catcher sets up 10–15 feet in front of home plate and you throw at about 80% effort (RPE). It builds feel and command without a full bullpen.',
-            how:['Do the full warm-up first: mobility, pre-throw, then plyo.','Throw off the mound to a catcher 10–15 ft in front of home plate.','About 80% effort. Smooth and in control, not max intent.','Stick to the pitch count and follow your bullpen script.','Do your post-throw arm care afterward.'] },
+  sb:     { t:'Marty’s Short Box day', what:'Your catcher stays in his normal spot behind home plate. You move up: start in front of the rubber, closer to the plate, but stay up on the mound so your stride still goes down the slope. Throw at about 80% effort (RPE). You get a shorter throw with the same downhill feel, which builds feel and command without a full bullpen.',
+            how:['Do the full warm-up first: mobility, pre-throw, then plyo.','Catcher sets up at home plate like a normal bullpen. You start in front of the rubber, still on the mound, and stride down the slope.','About 80% effort. Smooth and in control, not max intent.','Stick to the pitch count and follow your bullpen script.','Do your post-throw arm care afterward.'] },
   toss:   { t:'High-intensity throw', what:'Your hard throwing day when you aren\'t on the mound. It keeps your arm strong between mound days.',
             how:['Warm up fully, then build up your distance step by step.','Work out to long distance and finish with hard, on-line throws.','Do your post-throw arm care afterward.'] },
   mod:    { t:'Moderate day', what:'A firm but controlled throwing day. It keeps your arm building, or gets it ready for a big day tomorrow.',
@@ -3576,7 +3576,7 @@ function dayStepsCore(p,k){
   let n=0; const step=(cls,title,sub,body)=>`<div class="step ${cls}"><div class="stephead"><span class="snum">${++n}</span><div><b>${title}</b><small>${sub}</small></div></div>${body?`<div class="stepbody">${body}</div>`:''}</div>`;
   const throwBody = p.kind==='nothrow'
     ? `<div class="throwc no"><b>No throwing today</b><span>${p._injNone?'You are on the injured list. No throwing until your coaches say so.':'Your arm rests. Don\'t pick up a ball.'}</span></div>`
-    : `<div class="throwc ${rx.cls}">${kindIcon(p.kind)}<div><b>${mound?esc(label(p))+(pc?` · ${pc} pitches`:''):p.kind==='toss'?'High-intensity throw (no mound)':esc(label(p))+' catch play'}</b><span>${p.game?'Game day. Do your full warm-up, then pitch your game. Log your pitch count after.':p.kind==='sb'?`Off the mound, to a catcher 10–15 ft in front of home plate, at about 80% effort${pc?`. ${pc} pitches`:''}. Follow the script below.`:mound?`After your warm-up, throw your ${esc(lcLabel(label(p)))}${pc?`: ${pc} pitches`:''} with game intent. Follow the script below, pitch by pitch.`:`Effort ${rx.rpe} · ${rx.dist} · ${rx.vol}`}</span></div><button type="button" class="whatbtn" data-info="${p.kind}">What's this?</button></div>${earlyNote(p.kind,k)?`<p class="earlynote">${esc(earlyNote(p.kind,k))}</p>`:''}${mound&&!p.game?penScriptHTML(p):''}`;
+    : `<div class="throwc ${rx.cls}">${kindIcon(p.kind)}<div><b>${mound?esc(label(p))+(pc?` · ${pc} pitches`:''):p.kind==='toss'?'High-intensity throw (no mound)':esc(label(p))+' catch play'}</b><span>${p.game?'Game day. Do your full warm-up, then pitch your game. Log your pitch count after.':p.kind==='sb'?`Catcher stays at home plate. You move up in front of the rubber but stay on the mound, so you still stride down the slope. About 80% effort${pc?`. ${pc} pitches`:''}. Follow the script below.`:mound?`After your warm-up, throw your ${esc(lcLabel(label(p)))}${pc?`: ${pc} pitches`:''} with game intent. Follow the script below, pitch by pitch.`:`Effort ${rx.rpe} · ${rx.dist} · ${rx.vol}`}</span></div><button type="button" class="whatbtn" data-info="${p.kind}">What's this?</button></div>${earlyNote(p.kind,k)?`<p class="earlynote">${esc(earlyNote(p.kind,k))}</p>`:''}${mound&&!p.game?penScriptHTML(p):''}`;
   return `<div class="steps">
     ${injStepHTML(p)}
     <div class="lrow"><span class="lbl">Today's work, in order</span><span class="hint">Tap ✓ when a routine is done · tap it for drills and videos</span></div>
@@ -4009,7 +4009,7 @@ function whyDay(p,k,byCoachDay){
   switch(p.kind){
     case 'live': return 'Live day. You face hitters, and the rest of your week is built around today.';
     case 'pen':  return p.auto ? `The plan put your bullpen here, 3 days ${isSP?'before':'after'} your live.` : 'Your bullpen day. The rest of your week is built around it.';
-    case 'sb':   return 'Marty’s Short Box day: off the mound to a catcher 10–15 ft in front of home plate, at about 80% effort.';
+    case 'sb':   return 'Marty’s Short Box day: the catcher stays at home plate and you move up in front of the rubber, still on the slope, at about 80% effort.';
     case 'toss': return `You only have one mound day a week right now, so you get one hard throw without the mound, 3 days before ${nxt}.`;
     case 'nothrow':
       if(p.tag==='afterPen') return 'Rest day after your bullpen, so your arm is fresh for your live.';
