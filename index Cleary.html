@@ -1231,6 +1231,15 @@ body.gated{background:#001B3D}
 .gripl{display:flex;flex-direction:column;gap:6px}
 .gripl .grow .gt span,.grcard .hint{white-space:normal}
 .step.grips .snum{background:var(--accent);color:#04202A}
+.drplus{flex:none;width:46px;height:46px;border-radius:50%;border:0;background:var(--accent);color:#04202A;font:700 28px/1 var(--body);cursor:pointer;display:grid;place-items:center;padding:0 0 3px}
+.drplus:hover{filter:brightness(1.08)}
+.drcard{display:flex;flex-direction:column;gap:8px;padding:12px;border:1px solid var(--line);border-radius:14px;background:var(--bg)}
+.drcard .drn{margin:2px 0 0;font:700 18px var(--display);letter-spacing:.03em}
+.drdays{display:flex;gap:6px;flex-wrap:wrap}
+.drdays[hidden]{display:none}
+.drdays button{width:40px;height:40px;border-radius:50%;border:1px solid var(--line);background:var(--bg);color:inherit;font:700 14px var(--body);cursor:pointer}
+.drdays button[aria-pressed="true"]{border-color:var(--accent);background:var(--accent);color:#04202A}
+.gripl .grow .gt .drcue{font-style:italic}
 .grpick{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:6px}
 .grpick button{text-align:left;padding:9px 11px;border-radius:10px;border:1px solid var(--line);background:var(--bg);color:inherit;font:500 14px var(--body);cursor:pointer}
 .grpick button[aria-pressed="true"]{border-color:var(--accent);background:color-mix(in srgb,var(--accent) 16%,var(--bg));font-weight:700}
@@ -2019,6 +2028,110 @@ function syncPlans(){
   if(dirty) save();
 }
 
+// ===== Coach drills: coaches add drills in Coach's View > Plans (the + button) and assign them to pitchers =====
+// Each assigned drill is copied into the pitcher's coach notes (coach.drills), so it reaches his app the same way grips and plan changes do.
+// The library is shared through the Supabase table team_drills when it exists; until then each coach's own drills save to his account.
+const DRILL_CATS=['Mobility','Pre-throw','Plyo','Mechanics','Arm care','Strength','Conditioning','Other'];
+const DRILL_DOW=['S','M','T','W','T','F','S'];
+const drillsOf=a=>((a&&a.coach&&a.coach.drills)||[]);
+const drillCopy=d=>({id:d.id,n:d.n,cat:d.cat||'',reps:d.reps||'',cue:d.cue||'',url:d.url||'',w:d.w||'all'});
+function drillWhen(w){ w=String(w||'all'); if(w==='all') return 'Every day'; if(w==='throw') return 'Throwing days';
+  const ds=w.split(',').filter(x=>x!=='').map(Number); return ds.length===7?'Every day':ds.length?ds.map(i=>DOWL[i].slice(0,3)).join(', '):'No days picked'; }
+function drillToday(d,k,p){ const w=String(d.w||'all'); if(w==='all') return true;
+  if(w==='throw') return !!p&&!['nothrow','off'].includes(p.kind)&&!p._injNone;
+  return w.split(',').filter(x=>x!=='').map(Number).includes(parse(k).getDay()); }
+const drillWatch=(d,cls)=>d.url?(ytEmbed(d.url)?`<a class="btn sm ${cls||''} vid" href="${esc(d.url)}" target="_blank" rel="noopener noreferrer" data-drill="${esc(d.n)}" data-reps="${esc(d.reps||'')}" data-routine="Coach drill">Watch</a>`:`<a class="btn sm ${cls||''}" href="${esc(d.url)}" target="_blank" rel="noopener noreferrer">Video</a>`):'';
+const drillSub=(d,when)=>[d.cat,d.reps,when?drillWhen(d.w):''].filter(Boolean).join(' · ');
+const drillRow=(d,when)=>`<div class="grow"><div class="gt"><b>${esc(d.n)}</b>${drillSub(d,when)?`<span>${esc(drillSub(d,when))}</span>`:''}${d.cue?`<span class="drcue">${esc(d.cue)}</span>`:''}</div>${drillWatch(d)}</div>`;
+// Pitcher: the drills that fall on this day, on Daily Work
+function myDrillsHTML(k,p){ if(S.program==='personal'||!k) return ''; const list=drillsOf(S).filter(d=>drillToday(d,k,p)); if(!list.length) return '';
+  return `<div class="step grips drills"><div class="stephead"><span class="snum">★</span><div><b>Coach drills</b><small>Added by your coaches. Get ${list.length===1?'this':'these'} in today.</small></div></div><div class="stepbody gripl">${list.map(d=>drillRow(d,false)).join('')}</div></div>`; }
+// Pitcher: every drill he has, on Profile
+function drillsCard(){ if(S.program==='personal') return ''; const list=drillsOf(S); if(!list.length&&!VIEWING()) return '';
+  return `<section class="panel stack" style="gap:8px"><div class="lrow"><span class="lbl">Coach drills</span><span class="hint">${list.length?list.length+' assigned':'From your coaches'}</span></div>
+    ${list.length?`<div class="gripl">${list.map(d=>drillRow(d,true)).join('')}</div>`:`<p class="hint" style="margin:0">No drills assigned yet. Add and assign them in Coach's View > Plans.</p>`}</section>`; }
+// Coach: the library
+let TEAM_DRILLS=[], drillsTable=null;   // null = not checked yet, 'loading', true = shared table in use, false = not set up
+async function loadTeamDrills(){
+  if(!(window.CLOUD_MODE&&typeof sb!=='undefined'&&sb)){ drillsTable=false; return; }
+  drillsTable='loading';
+  try{ const {data,error}=await sb.from('team_drills').select('id,data'); if(error){ drillsTable=false; return; }
+    TEAM_DRILLS=(data||[]).map(r=>({...drillCopy({...(r.data||{}),id:r.id})})); drillsTable=true;
+    const mine=(coachS().drillLib||[]), have=new Set(TEAM_DRILLS.map(d=>d.id)), add=mine.filter(d=>!have.has(d.id)).map(drillCopy);
+    if(add.length){ const r=await sb.from('team_drills').upsert(add.map(d=>({id:d.id,data:d}))); if(r.error) return; TEAM_DRILLS=[...TEAM_DRILLS,...add]; }
+    if(mine.length&&!VIEW){ coachS().drillLib=[]; save(); }   // this coach's own drills now live in the shared table
+  }catch(e){ drillsTable=false; } }
+function drillLib(){ const m=new Map(); TEAM_DRILLS.forEach(d=>m.set(d.id,{...d,shared:true})); ((coachS().drillLib)||[]).forEach(d=>{ if(!m.has(d.id)) m.set(d.id,{...drillCopy(d)}); });
+  try{ for(const id in C.athletes) drillsOf(C.athletes[id]).forEach(d=>{ if(!m.has(d.id)) m.set(d.id,drillCopy(d)); }); }catch(e){}
+  return [...m.values()].sort((x,y)=>String(x.n).localeCompare(String(y.n))); }
+function drillAssign(id,d,on){ const a=C.athletes[id]; if(!a||!isCoachUser()) return; a.coach=a.coach||{weeks:{},overrides:{}};
+  const had=drillsOf(a).some(x=>x.id===d.id); if(had===on) return;
+  const cur=drillsOf(a).filter(x=>x.id!==d.id); if(on) cur.push({...drillCopy(d),at:isoNow(),by:coachBy()});
+  a.coach.drills=cur; coachChanged(id); }
+// Save a new or edited drill to the library, and refresh the copy every assigned pitcher has
+async function drillStore(d){
+  if(drillsTable===true){ const r=await sb.from('team_drills').upsert({id:d.id,data:d}); if(r.error){ toast('Could not save the drill. Check the team_drills table setup in Supabase.'); return false; }
+    TEAM_DRILLS=[...TEAM_DRILLS.filter(x=>x.id!==d.id),d]; }
+  else { const cs=coachS(); cs.drillLib=[...(cs.drillLib||[]).filter(x=>x.id!==d.id),d]; if(!VIEW) save(); }
+  try{ for(const id in C.athletes){ const a=C.athletes[id], cur=drillsOf(a), i=cur.findIndex(x=>x.id===d.id); if(i<0) continue;
+    const old=cur[i], nu={...drillCopy(d),at:old.at||isoNow(),by:old.by||coachBy()}; if(JSON.stringify(old)===JSON.stringify(nu)) continue;
+    a.coach.drills=cur.map((x,j)=>j===i?nu:x); coachChanged(id); } }catch(e){}
+  return true; }
+async function drillDelete(did){
+  if(drillsTable===true&&TEAM_DRILLS.some(x=>x.id===did)){ const r=await sb.from('team_drills').delete().eq('id',did); if(r.error){ toast('Could not delete the drill.'); return false; } TEAM_DRILLS=TEAM_DRILLS.filter(x=>x.id!==did); }
+  { const cs=coachS(); if((cs.drillLib||[]).some(x=>x.id===did)){ cs.drillLib=cs.drillLib.filter(x=>x.id!==did); if(!VIEW) save(); } }
+  try{ for(const id in C.athletes) if(drillsOf(C.athletes[id]).some(x=>x.id===did)) drillAssign(id,{id:did},false); }catch(e){}
+  return true; }
+let drEdit=null, drOpen=null;   // drEdit: null, 'new' or the id of the drill being edited · drOpen: drill whose pitcher picker is open
+function drillsPanelHTML(){
+  if(drillsTable===null){ loadTeamDrills().then(()=>{ if(cvTab==='plans') renderPlans(); }); }
+  const lib=drillLib(), people=staff().filter(x=>!x.a.ex||isLocalDemo()).sort((x,y)=>x.a.name.split(' ').slice(-1)[0].localeCompare(y.a.name.split(' ').slice(-1)[0]));
+  const has=(a,d)=>drillsOf(a).some(x=>x.id===d.id);
+  const form=d=>{ const w=String(d.w||'all'), mode=w==='all'||w==='throw'?w:'days', days=mode==='days'?w.split(',').filter(x=>x!=='').map(Number):[];
+    return `<div class="stack drform" style="gap:8px"><div class="olrow"><label>Type<select id="drCat" class="grsel">${DRILL_CATS.map(c=>`<option ${d.cat===c?'selected':''}>${c}</option>`).join('')}</select></label><label>Drill name<input type="text" id="drN" maxlength="80" placeholder="e.g. Rocker throws, wall hip-hinge holds" value="${esc(d.n||'')}"></label></div>
+      <label class="olx">Sets / reps (optional)<input type="text" id="drR" maxlength="80" placeholder="e.g. 2x10, 30 sec each side" value="${esc(d.reps||'')}"></label>
+      <label class="olx">Cue for the pitcher (optional)<input type="text" id="drC" maxlength="240" placeholder="What to feel or focus on" value="${esc(d.cue||'')}"></label>
+      <label class="olx">Video link (optional, YouTube plays in the app)<input type="url" id="drU" maxlength="300" placeholder="https://..." value="${esc(d.url||'')}"></label>
+      <label class="olx">When it shows on Daily Work<select id="drW" class="grsel"><option value="all" ${mode==='all'?'selected':''}>Every day</option><option value="throw" ${mode==='throw'?'selected':''}>Throwing days only</option><option value="days" ${mode==='days'?'selected':''}>Pick days of the week</option></select></label>
+      <div class="drdays" id="drDays" ${mode==='days'?'':'hidden'}>${DRILL_DOW.map((x,i)=>`<button type="button" data-drdow="${i}" aria-pressed="${days.includes(i)}" aria-label="${DOWL[i]}">${x}</button>`).join('')}</div>
+      <div class="row"><button type="button" class="btn" id="drSave">${drEdit==='new'?'Save drill':'Save changes'}</button><button type="button" class="btn ghost" id="drCancel">Cancel</button></div></div>`; };
+  const card=d=>{ const who=people.filter(({a})=>has(a,d)), open=drOpen===d.id;
+    if(drEdit===d.id) return `<div class="drcard"><span class="lbl">Editing · ${esc(d.n)}</span>${form(d)}</div>`;
+    return `<div class="drcard"><div class="lrow"><div><span class="lbl">${esc([d.cat||'Drill',drillWhen(d.w)].join(' · '))}</span><h3 class="drn">${esc(d.n)}</h3></div><span class="chip ${who.length?'li':'of'}">${who.length} assigned</span></div>
+      ${d.reps||d.cue?`<p class="hint" style="margin:0">${esc([d.reps,d.cue].filter(Boolean).join(' · '))}</p>`:''}
+      ${who.length&&!open?(people.length>1&&who.length===people.length?'<p class="hint" style="margin:0"><b>Every pitcher has this drill.</b></p>':`<div class="chips">${who.map(({id,a})=>`<span class="nchip"><button type="button" data-pid="${id}">${esc(a.name)}</button><button type="button" class="nmsg" data-drun="${id}|${esc(d.id)}" aria-label="Remove ${esc(a.name)}">×</button></span>`).join('')}</div>`):''}
+      <div class="row">${drillWatch(d,'ghost')}<button type="button" class="btn sm" data-dropen="${esc(d.id)}">${open?'Done':'Assign pitchers'}</button><button type="button" class="btn ghost sm" data-dredit="${esc(d.id)}">Edit</button><button type="button" class="btn ghost sm" data-drdel="${esc(d.id)}">Delete</button></div>
+      ${open?`<div class="row"><button type="button" class="btn ghost sm" data-drall="${esc(d.id)}">Assign everyone</button>${who.length?`<button type="button" class="btn ghost sm" data-drnone="${esc(d.id)}">Remove everyone</button>`:''}<span class="hint">Tap a name to assign or remove.</span></div><div class="grpick">${people.map(({id,a})=>`<button type="button" data-drtog="${id}" aria-pressed="${has(a,d)}">${esc(a.name)}</button>`).join('')}</div>`:''}</div>`; };
+  return `<section class="panel stack" style="gap:10px" id="drPanel"><div class="lrow"><div><h2 class="h2" style="font-size:20px">Added drills</h2><p class="hint">Drills you add here. Assign them to pitchers and they show on his Daily Work on the days you pick, and on his Profile. ${drillsTable===true?'Shared with every coach.':drillsTable===false&&window.CLOUD_MODE?'Drills you add save to your account. Assigned drills show for every coach.':''}</p></div><button type="button" class="drplus" id="drAddOpen" aria-label="${drEdit==='new'?'Cancel adding a drill':'Add a drill'}">${drEdit==='new'?'×':'+'}</button></div>
+    ${drEdit==='new'?`<div class="drcard"><span class="lbl">New drill</span>${form({w:'all',cat:'Mechanics'})}</div>`:''}
+    ${lib.length?lib.map(card).join(''):(drEdit==='new'?'':'<p class="hint" style="margin:0">No drills yet. Tap + to add one.</p>')}</section>`;
+}
+document.addEventListener('click',e=>{ if(typeof cvTab==='undefined'||cvTab!=='plans'||!e.target.closest('#drPanel')) return;
+  const keep=fn=>{ const y=window.scrollY; fn(); renderPlans(); window.scrollTo(0,y); };
+  const find=id=>drillLib().find(x=>x.id===id);
+  let b;
+  if((b=e.target.closest('[data-drdow]'))){ b.setAttribute('aria-pressed',b.getAttribute('aria-pressed')==='true'?'false':'true'); return; }
+  if(e.target.closest('#drAddOpen')) return keep(()=>{ drEdit=drEdit==='new'?null:'new'; drOpen=null; });
+  if(e.target.closest('#drCancel')) return keep(()=>{ drEdit=null; });
+  if(e.target.closest('#drSave')){ const v=id=>String((document.getElementById(id)||{}).value||'').trim(), n=v('drN'), u=v('drU');
+    if(!n) return toast('Give the drill a name');
+    if(u&&!/^https?:\/\//i.test(u)) return toast('The link should start with https://');
+    let w=v('drW')||'all'; if(w==='days'){ const ds=[...document.querySelectorAll('#drDays [data-drdow][aria-pressed="true"]')].map(x=>x.dataset.drdow); if(!ds.length) return toast('Pick at least one day'); w=ds.join(','); }
+    const isNew=drEdit==='new', d={id:isNew?'d-'+Date.now().toString(36):drEdit,n,cat:v('drCat'),reps:v('drR'),cue:v('drC'),url:u,w};
+    b=e.target.closest('#drSave'); b.disabled=true;
+    drillStore(d).then(ok=>{ if(!ok){ b.disabled=false; return; } const y=window.scrollY; drEdit=null; if(isNew) drOpen=d.id; renderPlans(); window.scrollTo(0,y); toast(isNew?'Drill added. Now pick who gets it.':'Drill updated'); });
+    return; }
+  if((b=e.target.closest('[data-dredit]'))) return keep(()=>{ drEdit=b.dataset.dredit; drOpen=null; });
+  if((b=e.target.closest('[data-dropen]'))) return keep(()=>{ drOpen=drOpen===b.dataset.dropen?null:b.dataset.dropen; });
+  if((b=e.target.closest('[data-drtog]'))){ const d=find(drOpen); if(!d) return; return keep(()=>drillAssign(b.dataset.drtog,d,b.getAttribute('aria-pressed')!=='true')); }
+  if((b=e.target.closest('[data-drall]'))){ const d=find(b.dataset.drall); if(!d) return; return keep(()=>{ staff().filter(x=>!x.a.ex||isLocalDemo()).forEach(({id})=>drillAssign(id,d,true)); toast('Assigned to every pitcher'); }); }
+  if((b=e.target.closest('[data-drnone]'))){ const d=find(b.dataset.drnone); if(!d) return; return keep(()=>{ staff().forEach(({id})=>drillAssign(id,d,false)); }); }
+  if((b=e.target.closest('[data-drun]'))){ e.stopPropagation(); const [id,did]=b.dataset.drun.split('|'); return keep(()=>drillAssign(id,{id:did},false)); }
+  if((b=e.target.closest('[data-drdel]'))){ if(!b.dataset.arm){ b.dataset.arm='1'; b.textContent='Tap again to delete'; return; }
+    drillDelete(b.dataset.drdel).then(ok=>{ if(!ok) return; const y=window.scrollY; if(drOpen===b.dataset.drdel) drOpen=null; renderPlans(); window.scrollTo(0,y); toast('Drill deleted and removed from every pitcher'); }); return; }
+},true);
+document.addEventListener('change',e=>{ if(e.target&&e.target.id==='drW'){ const dd=document.getElementById('drDays'); if(dd) dd.hidden=e.target.value!=='days'; } });
+
 // ---------- Coach's View > Plans ----------
 let plMonth=null, plOpen=null, plDay=null;
 const PL_CODE={light:'LT',mod:'MOD',toss:'HI',pen:'PEN',sb:'SB',live:'LIVE',nothrow:'NT',off:'OFF'};
@@ -2050,6 +2163,7 @@ function renderPlans(){
       ${can?`<div class="plrel ${shown?'on':''}"><div><b>${shown?`${mName} is showing to players`:`${mName} is hidden from players`}</b><p class="hint">${shown?`Each assigned pitcher's ${mName} follows his plan.`:`Assign pitchers now. Their app keeps the regular schedule until you show ${mName}.`}</p></div>${head?`<button type="button" class="btn sm ${shown?'ghost':''}" id="plShow">${shown?'Hide from players':`Show ${mName} to players`}</button>`:''}</div>`
         :`<p class="hint">Everyone follows the ${mName} plan. It is already built into the schedule formula, so there is nothing to assign.</p>`}
     </section>
+    ${head?drillsPanelHTML():''}
     ${plans.map(P=>{ const who=on(P.id), open=plOpen===P.id;
       return `<section class="panel stack plfile" style="gap:8px"><div class="lrow"><div><span class="lbl">File · ${esc(P.file)}</span><h2 class="h2" style="font-size:19px">${esc(P.title)}</h2></div>${P.auto?'':`<span class="chip ${who.length?'li':'of'}">${who.length} assigned</span>`}</div>
         <p class="hint">${esc(P.sum)}</p>
@@ -2927,7 +3041,7 @@ document.addEventListener('input',e=>{ if(e.target&&e.target.id==='grQ'){ grQ=e.
 document.addEventListener('change',e=>{ if(e.target&&e.target.id==='grWho'){ grWho=e.target.value; const y=window.scrollY; renderGrips(); window.scrollTo(0,y); } });
 
 function renderProfile(){ const el=document.getElementById('profBody'); if(!el) return;
-  el.innerHTML=`${VIEWING()?`<div class="hsec"><h2 class="h2">${esc(S.name||'Pitcher')}'s profile</h2><p class="hint">Anything you change here saves to his app.</p></div>`:''}${injCard()}${pickLockCard()}${ownLockCard()}${profileCard()}${gripsCard()}${!window.CLOUD_MODE&&S.pid&&!VIEWING()?'<p class="hint" style="text-align:center"><button type="button" class="linkbtn" id="demoLeave">Draft testing only: leave this profile and go back to the coach side</button></p>':''}`; }
+  el.innerHTML=`${VIEWING()?`<div class="hsec"><h2 class="h2">${esc(S.name||'Pitcher')}'s profile</h2><p class="hint">Anything you change here saves to his app.</p></div>`:''}${injCard()}${pickLockCard()}${ownLockCard()}${profileCard()}${gripsCard()}${drillsCard()}${!window.CLOUD_MODE&&S.pid&&!VIEWING()?'<p class="hint" style="text-align:center"><button type="button" class="linkbtn" id="demoLeave">Draft testing only: leave this profile and go back to the coach side</button></p>':''}`; }
 document.addEventListener('click',e=>{ if(!e.target.closest('#demoLeave')) return; delete S.pid; delete S.track; delete S.rttStart; save(); try{ localStorage.setItem('clyPickSkip','1'); }catch(err){} location.hash='#home'; location.reload(); });
 
 // ===== Coaches can edit a pitcher's whole page =====
@@ -3718,7 +3832,7 @@ function dayStepsCore(p,k){
   if(p&&(p.rtt||p.nt)) return injStepHTML(p)+rttStepsHTML(p,k);
   p=injApply(p);
   const pre=[p.mobility,p.mobility2,p.preThrow,p.plyo].filter(Boolean), post=[p.post].filter(Boolean), cond=[p.cond].filter(Boolean);
-  if(!pre.length&&!post.length&&!cond.length) return injStepHTML(p);
+  if(!pre.length&&!post.length&&!cond.length) return injStepHTML(p)+myDrillsHTML(k,p);
   const rx=RX[p.intensity], pc=pitchesOf(p), mound=['live','pen','sb'].includes(p.kind);
   let n=0; const step=(cls,title,sub,body)=>`<div class="step ${cls}"><div class="stephead"><span class="snum">${++n}</span><div><b>${title}</b><small>${sub}</small></div></div>${body?`<div class="stepbody">${body}</div>`:''}</div>`;
   const throwBody = p.kind==='nothrow'
@@ -3730,6 +3844,7 @@ function dayStepsCore(p,k){
     ${pre.length?step('pre','Before you throw','Warm-up. Mobility, then pre-throw, then plyo.',pre.map(x=>routineRow(x,k,p)).join('')+(p.preThrow?sheetExtrasHTML():'')):''}
     ${step('thr',p.kind==='nothrow'?'No throw':'Throw',p.kind==='nothrow'?'Rest day for your arm.':'Your throwing for today.',throwBody+(p.rtNote?`<p class="earlynote rtnote">${esc(p.rtNote)}</p>`:''))}
     ${p.kind==='nothrow'?'':myGripsHTML()}
+    ${myDrillsHTML(k,p)}
     ${myVidsHTML(k)}
     ${post.length?step('post','After you throw','Arm care: rotator cuff, scap and mobility work. Do it right after you finish throwing.',post.map(x=>routineRow(x,k,p)).join('')):''}
     ${cond.length?step('cond','Finish','Conditioning, last thing of the day.',cond.map(x=>routineRow(x,k)).join('')):''}
