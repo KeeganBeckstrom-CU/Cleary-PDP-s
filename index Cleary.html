@@ -2,7 +2,7 @@
 <html lang="en" data-theme="dark">
 <head>
 <script>/* STEP 3: paste your Supabase Project URL and Publishable key between the quotes on the next 2 lines */
-window.APP_BUILD='20261125152951';
+window.APP_BUILD='20261125153327';
 window.WLN_SUPABASE_URL = 'https://bxnxbyulbjnlkydcmppn.supabase.co';
 window.WLN_SUPABASE_KEY = 'sb_publishable_8H49HwXFPXTBM4KvjLSGGg_J0J2ZhGI';
 </script>
@@ -7136,8 +7136,16 @@ function pushSheet(){
   const on=document.getElementById('pushOn'); if(on) on.onclick=()=>{ on.disabled=true; on.textContent='Turning on…'; pushTurnOn().catch(()=>{ toast('Something went wrong. Try again.'); on.disabled=false; on.textContent='Turn on reminder'; }); };
   const off=document.getElementById('pushOff'); if(off) off.onclick=()=>pushTurnOff();
 }
-function pushChip(){
+let PUSH_READY=null;   // cloud: only show the reminder once the push_subs table exists
+async function pushReady(){
+  if(!(window.CLOUD_MODE&&typeof sb!=='undefined'&&sb)) return true;
+  if(PUSH_READY!==null) return PUSH_READY;
+  try{ const r=await sb.from('push_subs').select('endpoint',{head:true,count:'exact'}).limit(1); PUSH_READY=!r.error; }catch(e){ PUSH_READY=false; }
+  return PUSH_READY;
+}
+async function pushChip(){
   const el=document.getElementById('clubBody'); if(!el) return;
+  if(!(await pushReady())){ const c=el.querySelector('.push-chip'); if(c) c.remove(); return; }
   let c=el.querySelector('.push-chip'); if(!c){ c=document.createElement('button'); c.type='button'; c.className='push-chip'; c.onclick=pushSheet; el.appendChild(c); }
   const on=pushState()==='on';
   c.classList.toggle('on',on);
@@ -7152,7 +7160,7 @@ const _rc6=renderClubhouse; renderClubhouse=function(allowed){
   pushChip();
 };
 let _tgRs; addEventListener('resize',()=>{ clearTimeout(_tgRs); _tgRs=setTimeout(()=>{ const b=document.querySelector('.tg-bunting'); if(b) b.outerHTML=tgBunting(Math.min(innerWidth,2400)); },200); });
-if(location.hash==='#remind') setTimeout(pushSheet,900);
+if(location.hash==='#remind') setTimeout(async()=>{ if(await pushReady()) pushSheet(); },900);
 
 // ---- auto-update: when a player comes back to the app, load the newest version without closing it ----
 (function(){
