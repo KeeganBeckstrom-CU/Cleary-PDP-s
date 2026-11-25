@@ -2,7 +2,7 @@
 <html lang="en" data-theme="dark">
 <head>
 <script>/* STEP 3: paste your Supabase Project URL and Publishable key between the quotes on the next 2 lines */
-window.APP_BUILD='20261125163139';
+window.APP_BUILD='20261125164133';
 window.WLN_SUPABASE_URL = 'https://bxnxbyulbjnlkydcmppn.supabase.co';
 window.WLN_SUPABASE_KEY = 'sb_publishable_8H49HwXFPXTBM4KvjLSGGg_J0J2ZhGI';
 </script>
@@ -2244,6 +2244,40 @@ body.xmas .club-card{box-shadow:0 0 0 2px #C8102E,0 0 18px rgba(255,210,63,.35)}
   .hol-tree .tk-say,.hol-walk .tk-say{font-size:12px;white-space:normal;width:180px}
   .hol-tree .tk-say{left:auto;right:10px;transform:none!important}
 }
+
+/* ===== realistic coach's clipboard ===== */
+#tab-coach-view .content{border-radius:26px;padding-top:74px;
+  background:
+    radial-gradient(120% 60% at 30% 0%,rgba(255,255,255,.10),transparent 60%),
+    repeating-linear-gradient(92deg,rgba(0,0,0,.05) 0 2px,transparent 2px 7px),
+    repeating-linear-gradient(88deg,rgba(255,220,170,.05) 0 1px,transparent 1px 11px),
+    radial-gradient(circle at 20% 30%,rgba(0,0,0,.08) 0 1px,transparent 1.5px) 0 0/9px 9px,
+    radial-gradient(circle at 70% 80%,rgba(255,240,210,.06) 0 1px,transparent 1.5px) 0 0/13px 13px,
+    linear-gradient(165deg,#8A5A2E 0%,#74491F 45%,#5E3A18 100%);
+  box-shadow:0 34px 60px rgba(0,0,0,.65),0 6px 12px rgba(0,0,0,.4),inset 0 2px 0 rgba(255,230,190,.18),inset 0 -6px 14px rgba(0,0,0,.35),inset 0 0 0 1px rgba(0,0,0,.35)}
+/* paper stack under the sheets */
+#tab-coach-view .content{--paper:#F8F6EE}
+#tab-coach-view .content>.panel:first-of-type,#tab-coach-view #cvBody{position:relative;z-index:1}
+#tab-coach-view #cvBody::before,#tab-coach-view #cvBody::after{content:"";position:absolute;z-index:-1;left:-6px;right:-6px;top:-10px;bottom:-8px;border-radius:3px;background:#EFEBDF;box-shadow:0 2px 4px rgba(0,0,0,.25);transform:rotate(-.6deg)}
+#tab-coach-view #cvBody::after{background:#F4F1E7;transform:rotate(.45deg);left:-3px;right:-3px;top:-6px;bottom:-5px}
+#tab-coach-view .panel{border-radius:3px;background:var(--paper);background-image:linear-gradient(180deg,rgba(0,0,0,.035),transparent 18px);box-shadow:0 1px 1px rgba(0,0,0,.18),0 6px 12px rgba(0,0,0,.18)}
+/* the metal clip: plate, rivets, lever */
+#tab-coach-view .content::before{top:-22px;width:260px;height:86px;margin-left:-130px;border-radius:16px 16px 26px 26px;z-index:4;
+  background:
+    radial-gradient(circle at 34px 58px,#E9ECF0 0 3px,#7D838C 4px,#B9BEC6 6px,transparent 7px),
+    radial-gradient(circle at calc(100% - 34px) 58px,#E9ECF0 0 3px,#7D838C 4px,#B9BEC6 6px,transparent 7px),
+    linear-gradient(180deg,transparent 0 64px,rgba(0,0,0,.18) 64px 66px,rgba(255,255,255,.35) 66px 67px,transparent 67px),
+    repeating-linear-gradient(90deg,rgba(255,255,255,.10) 0 1px,rgba(0,0,0,.04) 1px 3px),
+    linear-gradient(180deg,#F7F8FA 0%,#C9CED5 22%,#8E959F 48%,#B8BDC5 62%,#6E747D 100%);
+  box-shadow:0 10px 16px rgba(0,0,0,.5),inset 0 1px 0 rgba(255,255,255,.9),inset 0 -2px 3px rgba(0,0,0,.35)}
+#tab-coach-view .content::after{top:8px;z-index:5;font:800 12px var(--display);letter-spacing:.24em;color:#3E444D;text-shadow:0 1px 0 rgba(255,255,255,.7),0 -1px 0 rgba(0,0,0,.25)}
+/* wire lever on top of the clip */
+#tab-coach-view .toolbar .cvnav{position:relative}
+@media (max-width:760px){ #tab-coach-view .content{padding-top:66px} #tab-coach-view .content::before{width:190px;margin-left:-95px;height:68px;top:-18px} }
+
+/* Today: checked off but no throwing log */
+.td-chk{margin-top:6px;padding:6px 9px;border-radius:8px;background:rgba(46,160,67,.10);border:1px dashed rgba(31,122,58,.45);color:#1F5E31;font:600 12.5px var(--body);display:flex;flex-wrap:wrap;gap:4px 8px;align-items:center}
+.td-chk b{color:#9A5B00;background:rgba(242,169,0,.18);padding:1px 7px;border-radius:999px;font-weight:700}
 @media (max-width:760px){ .tabs a[data-tab="leaders"]::before{-webkit-mask-image:url("data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20viewBox%3D%220%200%2024%2024%22%20fill%3D%22none%22%20stroke%3D%22black%22%20stroke-width%3D%222%22%20stroke-linecap%3D%22round%22%20stroke-linejoin%3D%22round%22%3E%3Cpath%20d%3D%22M8%2021h8%22%2F%3E%3Cpath%20d%3D%22M12%2017v4%22%2F%3E%3Cpath%20d%3D%22M7%204h10v5a5%205%200%200%201-10%200z%22%2F%3E%3Cpath%20d%3D%22M17%205h3v2a3%203%200%200%201-3%203%22%2F%3E%3Cpath%20d%3D%22M7%205H4v2a3%203%200%200%200%203%203%22%2F%3E%3C%2Fsvg%3E");mask-image:url("data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20viewBox%3D%220%200%2024%2024%22%20fill%3D%22none%22%20stroke%3D%22black%22%20stroke-width%3D%222%22%20stroke-linecap%3D%22round%22%20stroke-linejoin%3D%22round%22%3E%3Cpath%20d%3D%22M8%2021h8%22%2F%3E%3Cpath%20d%3D%22M12%2017v4%22%2F%3E%3Cpath%20d%3D%22M7%204h10v5a5%205%200%200%201-10%200z%22%2F%3E%3Cpath%20d%3D%22M17%205h3v2a3%203%200%200%201-3%203%22%2F%3E%3Cpath%20d%3D%22M7%205H4v2a3%203%200%200%200%203%203%22%2F%3E%3C%2Fsvg%3E")} }
 @media (max-width:760px){ .tabs a[data-tab="clubhouse"]::before{-webkit-mask-image:url("data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20viewBox%3D%220%200%2024%2024%22%20fill%3D%22none%22%20stroke%3D%22black%22%20stroke-width%3D%222%22%20stroke-linecap%3D%22round%22%20stroke-linejoin%3D%22round%22%3E%3Cpath%20d%3D%22M3%2021h18%22%2F%3E%3Cpath%20d%3D%22M5%2021V8l7-4%207%204v13%22%2F%3E%3Cpath%20d%3D%22M10%2021v-6h4v6%22%2F%3E%3C%2Fsvg%3E");mask-image:url("data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20viewBox%3D%220%200%2024%2024%22%20fill%3D%22none%22%20stroke%3D%22black%22%20stroke-width%3D%222%22%20stroke-linecap%3D%22round%22%20stroke-linejoin%3D%22round%22%3E%3Cpath%20d%3D%22M3%2021h18%22%2F%3E%3Cpath%20d%3D%22M5%2021V8l7-4%207%204v13%22%2F%3E%3Cpath%20d%3D%22M10%2021v-6h4v6%22%2F%3E%3C%2Fsvg%3E")} }
 @media (max-width:760px){ .tabs a[data-tab="cheats"]::before{-webkit-mask-image:url("data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20viewBox%3D%220%200%2024%2024%22%20fill%3D%22none%22%20stroke%3D%22black%22%20stroke-width%3D%222%22%20stroke-linecap%3D%22round%22%20stroke-linejoin%3D%22round%22%3E%3Cpolyline%20points%3D%224%2017%2010%2011%204%205%22%2F%3E%3Cline%20x1%3D%2212%22%20y1%3D%2219%22%20x2%3D%2220%22%20y2%3D%2219%22%2F%3E%3C%2Fsvg%3E");mask-image:url("data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20viewBox%3D%220%200%2024%2024%22%20fill%3D%22none%22%20stroke%3D%22black%22%20stroke-width%3D%222%22%20stroke-linecap%3D%22round%22%20stroke-linejoin%3D%22round%22%3E%3Cpolyline%20points%3D%224%2017%2010%2011%204%205%22%2F%3E%3Cline%20x1%3D%2212%22%20y1%3D%2219%22%20x2%3D%2220%22%20y2%3D%2219%22%2F%3E%3C%2Fsvg%3E")} }
@@ -3042,9 +3076,10 @@ function renderToday(){
   const k=ymd(addDays(todayD,-tdOff)), isToday=tdOff===0;
   const end=parse(k);
   const rows=staff().map(({id,a})=>{ const p=planFor(a,k), x=a.logs[k], sp=splitAlerts(id,a,cvM(a,end),end);
-    const why=sp.open.map(al=>[al.sev==='hi'?'hi':'mo',al.title]);
-    const col=why.length?'flag':x?'logged':(p&&p.kind==='off')?'off':'wait';
-    return {id,a,p,x,why,col,done:sp.done.length}; }).sort((r1,r2)=>(r2.why.some(w=>/^Pain/.test(w[1]))-r1.why.some(w=>/^Pain/.test(w[1])))||(r2.why.filter(w=>w[0]==='hi').length-r1.why.filter(w=>w[0]==='hi').length));
+    const chk=tdChecked(a,k,p); let why=sp.open.map(al=>[al.sev==='hi'?'hi':'mo',al.title]);
+    if(!x&&chk) why=why.filter(w=>!/no[- ]?log/i.test(w[1]));
+    const col=why.length?'flag':(x||chk)?'logged':(p&&p.kind==='off')?'off':'wait';
+    return {id,a,p,x,why,col,chk,done:sp.done.length}; }).sort((r1,r2)=>(r2.why.some(w=>/^Pain/.test(w[1]))-r1.why.some(w=>/^Pain/.test(w[1])))||(r2.why.filter(w=>w[0]==='hi').length-r1.why.filter(w=>w[0]==='hi').length));
   const cols=[['logged','Logged','li'],['wait',isToday?'Waiting on a log':'No log','nl'],['flag','Flagged','hi'],['off','Off','of']];
   const by=i=>rows.filter(r=>r.p&&r.p.intensity===i);
   const cats={light:by('light'),mod:by('mod'),high:by('high'),nolog:rows.filter(r=>!r.x&&r.p&&r.p.kind!=='off'&&!HOLIDAY_OFF[k]),flag:rows.filter(r=>r.col==='flag')};
@@ -3058,7 +3093,7 @@ function renderToday(){
       <div class="vs"><span class="sub2">Plan</span>${planChip(r.p)}<span class="arrow">→</span>${logChip(r.x,r.a,k)}</div>
       ${!r.x&&rx&&rx.vol?`<div class="sub2">${rx.rpe} · ${rx.dist} · ${rx.vol}</div>`:''}
       ${r.x?`<div class="pstats">${r.x.t?`<span><b>${r.x.t}</b> throws</span>`:''}${r.x.a?`<span>Arm <b>${r.x.a}</b>/10</span>`:''}${r.x.r?`<span>RPE <b>${r.x.r}%</b></span>`:''}</div>${rxBar(r.id,k,r.a)}`:''}
-      ${r.why.map(w=>`<div class="why ${w[0]==='mo'?'mo':''}">${esc(w[1])}</div>`).join('')}${r.why.length?`<span class="cardchat" role="button" tabindex="0" data-chat="${r.id}">💬 Message ${esc(cvName(r.a.name))}</span>`:''}
+      ${!r.x&&r.chk?`<div class="td-chk">✓ Checked off daily work (${r.chk.n}${r.chk.of?'/'+r.chk.of:''})<b>No throwing log</b></div>`:''}${r.why.map(w=>`<div class="why ${w[0]==='mo'?'mo':''}">${esc(w[1])}</div>`).join('')}${r.why.length?`<span class="cardchat" role="button" tabindex="0" data-chat="${r.id}">💬 Message ${esc(cvName(r.a.name))}</span>`:''}
       ${r.x&&r.x.pn==='y'&&!r.why.some(w=>/^Pain/.test(w[1]))?`<div class="why">Pain: ${esc(painWhere(r.x.pa)||'yes')}</div>`:''}
       ${r.x&&r.x.n?`<div class="sub2">“${esc(r.x.n)}”</div>`:''}
       ${r.done?`<div class="sub2">✓ ${r.done} handled</div>`:''}</button>`; };
@@ -7071,10 +7106,12 @@ const _rc4=renderChat; renderChat=function(){ _rc4.apply(this,arguments); if(!do
 const _rcv4=renderCoach;
 renderCoach=function(){ if(['activity','analytics','week'].includes(cvTab)) cvTab='today'; if(cvTab==='total'){ coachTotal(); return; } _rcv4.apply(this,arguments); };
 window.renderCoachView=renderCoach;
+const isoOk=v=>typeof v==='string'&&/^\d{4}-\d\d-\d\d/.test(v);
+function tdChecked(a,k,p){ const names=acNames(p), d=((a.done&&a.done[k])||[]); const hit=names.length?d.filter(n=>names.includes(n)):d; return hit.length?{n:hit.length,of:names.length}:null; }
 function lastActive(a){
-  let t=a.syncAt||'';
-  for(const d in (a.doneAt||{})) for(const n in a.doneAt[d]) if(a.doneAt[d][n]>t) t=a.doneAt[d][n];
-  const lk=Object.keys(a.logs||{}).sort().pop(); if(lk){ const e=a.logs[lk]; const at=(e&&(e.at||e.t))||(lk+'T12:00:00'); if(at>t) t=at; }
+  let t=isoOk(a.syncAt)?a.syncAt:'';
+  for(const d in (a.doneAt||{})) for(const n in a.doneAt[d]){ const v=a.doneAt[d][n]; if(isoOk(v)&&v>t) t=v; }
+  const lk=Object.keys(a.logs||{}).filter(isoOk).sort().pop(); if(lk){ const e=a.logs[lk]; const at=(e&&isoOk(e.at)&&e.at)||(lk+'T12:00:00'); if(at>t) t=at; }
   return t;
 }
 function coachTotal(){
