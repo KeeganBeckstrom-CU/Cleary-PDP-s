@@ -2,7 +2,7 @@
 <html lang="en" data-theme="dark">
 <head>
 <script>/* STEP 3: paste your Supabase Project URL and Publishable key between the quotes on the next 2 lines */
-window.APP_BUILD='20261125155323';
+window.APP_BUILD='20261125155846';
 window.WLN_SUPABASE_URL = 'https://bxnxbyulbjnlkydcmppn.supabase.co';
 window.WLN_SUPABASE_KEY = 'sb_publishable_8H49HwXFPXTBM4KvjLSGGg_J0J2ZhGI';
 </script>
@@ -2115,8 +2115,39 @@ body.club-coach .push-chip{bottom:calc(76px + env(safe-area-inset-bottom))}
 .tg-sp-card p{margin:0 0 16px;line-height:1.45;color:#E4E9F2}
 .tg-sp-card .btn{width:100%;background:linear-gradient(90deg,#E07B24,#B30838);border:0;color:#fff;font-weight:800;font-size:17px}
 .tg-sp-card small{display:block;margin-top:10px;color:#AEB9CC}
+/* ===== v7: Coach's Cheats ===== */
+body.viewing [data-tab="cheats"]{display:none}
+.ct-term{margin:0 auto;max-width:980px;border-radius:14px;overflow:hidden;border:1px solid #30363d;background:#0d1117;box-shadow:0 20px 50px rgba(0,0,0,.55),0 0 0 1px rgba(46,160,67,.15),0 0 40px rgba(46,160,67,.12)}
+.ct-bar{display:flex;align-items:center;gap:8px;padding:10px 14px;background:#161b22;border-bottom:1px solid #30363d;color:#c9d1d9;font:600 13px ui-monospace,SFMono-Regular,Menlo,Consolas,monospace}
+.ct-bar i{width:12px;height:12px;border-radius:50%;background:#ff5f56}.ct-bar i:nth-child(2){background:#ffbd2e}.ct-bar i:nth-child(3){background:#27c93f}
+.ct-bar b{margin-left:8px;font-weight:600}
+.ct-badge{margin-left:auto;padding:3px 8px;border-radius:6px;background:rgba(46,160,67,.18);color:#7ee787;font-size:11px;letter-spacing:.12em;animation:ctGlow 1.6s ease-in-out infinite alternate}
+@keyframes ctGlow{from{box-shadow:0 0 0 rgba(126,231,135,0)}to{box-shadow:0 0 12px rgba(126,231,135,.55)}}
+.ct-code{counter-reset:ln;padding:12px 0 16px;font:14px/1.65 ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;color:#c9d1d9;overflow-x:auto}
+.ct-l{counter-increment:ln;position:relative;padding:0 16px 0 58px;white-space:pre-wrap;word-break:break-word}
+.ct-l::before{content:counter(ln);position:absolute;left:0;width:42px;text-align:right;color:#484f58;user-select:none}
+.ct-l:hover{background:rgba(110,118,129,.08)}
+.ct-c{color:#8b949e}.ct-k{color:#ff7b72}.ct-v{color:#79c0ff}.ct-s{color:#a5d6ff}.ct-f{color:#d2a8ff}
+.ct-ok{color:#7ee787;font-weight:700}.ct-bad{color:#ff7b72;font-weight:700}.ct-warn{color:#e3b341;font-weight:700}.ct-dim{color:#6e7681;font-weight:700}
+.ct-tok{font:inherit;font-weight:700;padding:1px 8px;margin:0 -2px;border-radius:6px;cursor:pointer;border:1px dashed currentColor;background:rgba(255,255,255,.04)}
+.ct-true{color:#7ee787;background:rgba(46,160,67,.14)}.ct-false{color:#ff7b72;background:rgba(248,81,73,.14)}.ct-str{color:#a5d6ff;background:rgba(56,139,253,.12)}
+.ct-tok:hover{filter:brightness(1.25)}
+.ct-run{font:inherit;font-weight:700;color:#0d1117;background:#7ee787;border:0;border-radius:6px;padding:2px 10px;cursor:pointer;box-shadow:0 0 14px rgba(126,231,135,.45)}
+.ct-run:active{transform:translateY(1px)}
+.ct-out{color:#7ee787}
+.ct-cur{color:#7ee787;animation:ctBlink 1s steps(1) infinite}
+@keyframes ctBlink{50%{opacity:0}}
+@media (max-width:760px){
+  .ct-term{border-radius:10px}
+  .ct-code{font-size:12.5px;line-height:1.6}
+  .ct-l{padding:0 10px 0 36px}
+  .ct-l::before{width:26px}
+  .ct-why{display:block;padding-left:2ch}
+}
+@media (max-width:760px){ .ct-why-min{display:none} }
 @media (max-width:760px){ .tabs a[data-tab="leaders"]::before{-webkit-mask-image:url("data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20viewBox%3D%220%200%2024%2024%22%20fill%3D%22none%22%20stroke%3D%22black%22%20stroke-width%3D%222%22%20stroke-linecap%3D%22round%22%20stroke-linejoin%3D%22round%22%3E%3Cpath%20d%3D%22M8%2021h8%22%2F%3E%3Cpath%20d%3D%22M12%2017v4%22%2F%3E%3Cpath%20d%3D%22M7%204h10v5a5%205%200%200%201-10%200z%22%2F%3E%3Cpath%20d%3D%22M17%205h3v2a3%203%200%200%201-3%203%22%2F%3E%3Cpath%20d%3D%22M7%205H4v2a3%203%200%200%200%203%203%22%2F%3E%3C%2Fsvg%3E");mask-image:url("data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20viewBox%3D%220%200%2024%2024%22%20fill%3D%22none%22%20stroke%3D%22black%22%20stroke-width%3D%222%22%20stroke-linecap%3D%22round%22%20stroke-linejoin%3D%22round%22%3E%3Cpath%20d%3D%22M8%2021h8%22%2F%3E%3Cpath%20d%3D%22M12%2017v4%22%2F%3E%3Cpath%20d%3D%22M7%204h10v5a5%205%200%200%201-10%200z%22%2F%3E%3Cpath%20d%3D%22M17%205h3v2a3%203%200%200%201-3%203%22%2F%3E%3Cpath%20d%3D%22M7%205H4v2a3%203%200%200%200%203%203%22%2F%3E%3C%2Fsvg%3E")} }
 @media (max-width:760px){ .tabs a[data-tab="clubhouse"]::before{-webkit-mask-image:url("data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20viewBox%3D%220%200%2024%2024%22%20fill%3D%22none%22%20stroke%3D%22black%22%20stroke-width%3D%222%22%20stroke-linecap%3D%22round%22%20stroke-linejoin%3D%22round%22%3E%3Cpath%20d%3D%22M3%2021h18%22%2F%3E%3Cpath%20d%3D%22M5%2021V8l7-4%207%204v13%22%2F%3E%3Cpath%20d%3D%22M10%2021v-6h4v6%22%2F%3E%3C%2Fsvg%3E");mask-image:url("data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20viewBox%3D%220%200%2024%2024%22%20fill%3D%22none%22%20stroke%3D%22black%22%20stroke-width%3D%222%22%20stroke-linecap%3D%22round%22%20stroke-linejoin%3D%22round%22%3E%3Cpath%20d%3D%22M3%2021h18%22%2F%3E%3Cpath%20d%3D%22M5%2021V8l7-4%207%204v13%22%2F%3E%3Cpath%20d%3D%22M10%2021v-6h4v6%22%2F%3E%3C%2Fsvg%3E")} }
+@media (max-width:760px){ .tabs a[data-tab="cheats"]::before{-webkit-mask-image:url("data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20viewBox%3D%220%200%2024%2024%22%20fill%3D%22none%22%20stroke%3D%22black%22%20stroke-width%3D%222%22%20stroke-linecap%3D%22round%22%20stroke-linejoin%3D%22round%22%3E%3Cpolyline%20points%3D%224%2017%2010%2011%204%205%22%2F%3E%3Cline%20x1%3D%2212%22%20y1%3D%2219%22%20x2%3D%2220%22%20y2%3D%2219%22%2F%3E%3C%2Fsvg%3E");mask-image:url("data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20viewBox%3D%220%200%2024%2024%22%20fill%3D%22none%22%20stroke%3D%22black%22%20stroke-width%3D%222%22%20stroke-linecap%3D%22round%22%20stroke-linejoin%3D%22round%22%3E%3Cpolyline%20points%3D%224%2017%2010%2011%204%205%22%2F%3E%3Cline%20x1%3D%2212%22%20y1%3D%2219%22%20x2%3D%2220%22%20y2%3D%2219%22%2F%3E%3C%2Fsvg%3E")} }
 </style>
 </head>
 <body>
@@ -2144,6 +2175,7 @@ body.club-coach .push-chip{bottom:calc(76px + env(safe-area-inset-bottom))}
     <a href="#profile" data-tab="profile"><span class="tl">Profile</span></a>
     <a href="#leaders" data-tab="leaders"><span class="tl long">Leaderboards</span><span class="ts">Leaders</span></a>
     <a href="#report" data-tab="report"><span class="tl">Report</span></a>
+    <a href="#cheats" data-tab="cheats"><span class="tl long">Coach's Cheats</span><span class="ts">Cheats</span></a>
     <a href="#coach-view" data-tab="coach-view"><span class="tl long">Coach's View</span><span class="ts">Coach</span></a>
   </nav>
   <div class="tabbar-line" style="margin:0 -20px"></div>
@@ -2155,6 +2187,7 @@ body.club-coach .push-chip{bottom:calc(76px + env(safe-area-inset-bottom))}
 <main id="tab-schedule" hidden><div class="content" id="schedBody"></div></main>
 <main id="tab-lift" hidden><div class="content" id="liftBody"></div></main>
 <main id="tab-leaders" hidden><div class="content" id="leadBody"></div></main>
+<main id="tab-cheats" hidden><div class="content" id="cheatsBody"></div></main>
 <main id="tab-report" hidden><div class="content" id="reportBody"></div></main>
 <main id="tab-chat" hidden><div class="content" id="chatBody"></div></main>
 <main id="tab-profile" hidden><div class="content" id="profBody"></div></main>
@@ -6450,7 +6483,7 @@ const CLUB_STOPS=[
   {k:'board', x:72.7, y:45, px:85,  py:49.5, pflip:true, p:[SCHED_LABEL(),'home'], c:null},
   {k:'locker',x:88.5, y:50, px:52,  py:87, flip:true, p:['My Locker','profile'], c:['Clubhouse Home','home']},
   {k:'phone', x:30.4, y:82, px:16,  py:75, p:['Chat','chat'], c:['Chat','chat']},
-  {k:'laptop',x:72.5, y:73, px:84,  py:69, pflip:true, p:['Log','personal-plan'], c:null},
+  {k:'laptop',x:72.5, y:73, px:84,  py:69, pflip:true, p:['Log','personal-plan'], c:['Coach\'s Cheats','cheats']},
   {k:'door',  x:11.5, y:48, px:83,  py:21, pflip:true, p:['Settings','@account'], c:['Settings','@account']},
   {k:'cork',  x:25,   y:39, px:17,  py:21, p:['Help','@help'], c:['Help','@help']},
   {k:'lead',  x:22.5, y:20, px:44,  py:31, p:['Leaderboards','leaders'], c:['Leaderboards','leaders']},
@@ -7241,7 +7274,7 @@ async function pushAuto(){
   PUSH_ARMED=true;
   const ask=()=>{
     document.removeEventListener('click',ask,true); document.removeEventListener('touchend',ask,true);
-    Notification.requestPermission().then(p=>{ if(p==='granted') pushSubscribeQuiet(); }).catch(()=>{});
+    Notification.requestPermission().then(p=>{ if(window.pushRecord||typeof pushRecord==='function') pushRecord(); if(p==='granted') pushSubscribeQuiet(); }).catch(()=>{});
   };
   document.addEventListener('click',ask,true); document.addEventListener('touchend',ask,true);
 }
@@ -7304,23 +7337,138 @@ const _rc7=renderClubhouse; renderClubhouse=function(allowed){
   setTimeout(tgSplash,700);
 };
 
+// ===== v7: Coach's Cheats + who allowed notifications =====
+let TEAM_SET={push_on:true,tg:'auto'}, TEAM_SET_STATE=null; // null=not loaded, true=ok, false=table missing
+const cloudOn=()=>!!(window.CLOUD_MODE&&typeof sb!=='undefined'&&sb);
+let _tsP=null;
+function loadTeamSet(force){
+  if(_tsP&&!force) return _tsP;
+  _tsP=(async()=>{
+    if(!cloudOn()){ try{ Object.assign(TEAM_SET,JSON.parse(localStorage.getItem('cu_team_set')||'{}')); }catch(e){} TEAM_SET_STATE=true; return TEAM_SET; }
+    try{
+      const r=await sb.from('team_settings').select('data').eq('id','main').maybeSingle();
+      if(r.error){ TEAM_SET_STATE=false; } else { TEAM_SET_STATE=true; if(r.data&&r.data.data) Object.assign(TEAM_SET,r.data.data); }
+    }catch(e){ TEAM_SET_STATE=false; }
+    return TEAM_SET;
+  })();
+  return _tsP;
+}
+async function saveTeamSet(){
+  if(!cloudOn()){ try{ localStorage.setItem('cu_team_set',JSON.stringify(TEAM_SET)); }catch(e){} return {ok:true}; }
+  const r=await sb.from('team_settings').upsert({id:'main',data:TEAM_SET,updated_at:new Date().toISOString()},{onConflict:'id'}).select('id');
+  return {ok:!r.error&&r.data&&r.data.length>0,err:r.error&&r.error.message};
+}
+
+// Thanksgiving mode switch (auto = Nov 15-30)
+const _tgOn7=tgOn; tgOn=function(){ if(TEAM_SET.tg==='on') return true; if(TEAM_SET.tg==='off') return false; return _tgOn7(); };
+
+// what each player chose
+function pushStatusNow(){
+  if(pushIOS()&&!pushStandalone()) return 'safari';
+  if(!pushSupported()) return 'unsupported';
+  const p=Notification.permission; return p==='granted'?'allow':p==='denied'?'deny':'not_asked';
+}
+function pushRecord(){
+  try{
+    if(!window.CLOUD_MODE||window.VIEW_AS||isCoachUser()||typeof S==='undefined'||!S) return;
+    const st=pushStatusNow(); if(S.push&&S.push.st===st) return;
+    S.push={st,at:new Date().toISOString()}; save();
+  }catch(e){}
+}
+document.addEventListener('visibilitychange',()=>{ if(document.visibilityState==='visible') setTimeout(pushRecord,800); });
+
+// reminder respects the coach's switch
+const _pushAuto7=pushAuto; pushAuto=async function(){
+  await loadTeamSet(); pushRecord();
+  if(TEAM_SET.push_on===false) return;
+  return _pushAuto7();
+};
+// re-render the clubhouse once team settings arrive (Thanksgiving switch)
+loadTeamSet().then(()=>{ if(document.body.dataset.tab==='clubhouse'&&TEAM_SET.tg!=='auto'){ try{ showTab(); }catch(e){} } });
+
+// ---------- the Cheats screen ----------
+const CH_STAT={
+  allow:['ALLOW','ct-ok','✓ getting the 9 AM reminder'],
+  deny:['DENIED','ct-bad','✗ tapped Don\'t Allow, has to turn it on in iPhone Settings'],
+  not_asked:['PENDING','ct-warn','opened the app, hasn\'t answered the pop-up yet'],
+  safari:['SAFARI_ONLY','ct-warn','using Safari, not the Home Screen app, so he can\'t be asked'],
+  unsupported:['UNSUPPORTED','ct-dim','browser can\'t get notifications'],
+  none:['NULL','ct-dim','hasn\'t opened the new version yet'],
+  noacct:['NO_ACCOUNT','ct-dim','hasn\'t made an account']
+};
+let CH_DIRTY=false, CH_OUT='';
+const ctBool=(k,v)=>`<button type="button" class="ct-tok ${v?'ct-true':'ct-false'}" data-ct="${k}" title="Tap to flip">${v}</button>`;
+function renderCheats(){
+  const body=document.getElementById('cheatsBody'); if(!body) return;
+  if(!isCoachUser()){ body.innerHTML='<section class="panel"><p>Coaches only.</p></section>'; return; }
+  if(TEAM_SET_STATE===null){ body.innerHTML='<div class="ct-term"><div class="ct-code"><div class="ct-l"><span class="ct-c">// loading cheats…</span></div></div></div>'; loadTeamSet().then(renderCheats); return; }
+  const rows=staff().filter(({a})=>!a.ex||!window.CLOUD_MODE).map(({id,a})=>{
+    const st=a.pre?'noacct':(a.push&&a.push.st)||'none'; return {name:a.name||'Unnamed',st,at:a.push&&a.push.at};
+  }).sort((x,y)=>{ const o=['allow','deny','not_asked','safari','unsupported','none','noacct']; return o.indexOf(x.st)-o.indexOf(y.st)||x.name.localeCompare(y.name); });
+  const n=k=>rows.filter(r=>r.st===k).length;
+  const pad=Math.min(24,Math.max(10,...rows.map(r=>r.name.length+2)));
+  const L=[];
+  const line=h=>L.push(`<div class="ct-l">${h||'&nbsp;'}</div>`);
+  line(`<span class="ct-c">// ██ COACH'S CHEATS ██  staff only. Do not show the players 🤫</span>`);
+  line(`<span class="ct-k">import</span> { pitchers, bullpen } <span class="ct-k">from</span> <span class="ct-s">'@cleary/clubhouse'</span>;`);
+  line();
+  line(`<span class="ct-c">// ── cheat codes · tap a value to flip it, then run save() ──</span>`);
+  line(`<span class="ct-k">const</span> <span class="ct-v">MORNING_REMINDER_9AM</span> = ${ctBool('push_on',TEAM_SET.push_on!==false)};  <span class="ct-c">// daily push to every pitcher who allowed it</span>`);
+  line(`<span class="ct-k">const</span> <span class="ct-v">THANKSGIVING_MODE</span> = <button type="button" class="ct-tok ct-str" data-ct="tg">'${TEAM_SET.tg||'auto'}'</button>;  <span class="ct-c">// 'auto' = Nov 15–30 · 'on' · 'off'</span>`);
+  line();
+  line(`<button type="button" class="ct-run" id="ctSave">▶ save</button><span class="ct-f">()</span>;  ${CH_DIRTY?'<span class="ct-warn">// ● unsaved changes</span>':'<span class="ct-c">// all changes saved</span>'}`);
+  if(CH_OUT) line(`<span class="ct-out">${CH_OUT}</span>`);
+  line();
+  line(`<span class="ct-c">// ── who allowed notifications ──</span>`);
+  line(`<span class="ct-c">// ${n('allow')} allow · ${n('deny')} denied · ${n('not_asked')} pending · ${n('safari')} safari · ${n('none')+n('noacct')+n('unsupported')} no answer yet</span>`);
+  line(`console.<span class="ct-f">table</span>(pitchers.<span class="ct-f">map</span>(p <span class="ct-k">=&gt;</span> p.notifications));`);
+  line(`<span class="ct-k">const</span> <span class="ct-v">permissions</span> = {`);
+  if(!rows.length) line(`&nbsp;&nbsp;<span class="ct-c">// no pitchers loaded yet. Open Coach's View once, then come back</span>`);
+  rows.forEach(r=>{ const [lbl,cls,why]=CH_STAT[r.st];
+    const nm=`'${esc(r.name)}':`; const sp='&nbsp;'.repeat(Math.max(1,pad-r.name.length));
+    line(`&nbsp;&nbsp;<span class="ct-s">${nm}</span>${sp}<span class="${cls}">${lbl}</span>,<span class="ct-c ct-why${r.st==='noacct'||r.st==='none'?' ct-why-min':''}">  // ${why}${r.at&&r.st!=='none'?' · '+esc(acAgo(r.at)):''}</span>`); });
+  line(`};`);
+  line();
+  line(`<span class="ct-c">// tip: DENIED = Settings › Notifications › Cleary Pitching › Allow</span>`);
+  line(`<span class="ct-c">// tip: SAFARI_ONLY = Share › Add to Home Screen, open it from there</span>`);
+  line(`<span class="ct-cur">█</span>`);
+  body.innerHTML=`<div class="ct-term">
+    <div class="ct-bar"><i></i><i></i><i></i><b>coach_cheats.js</b><span class="ct-badge">CHEATS ENABLED</span></div>
+    <div class="ct-code">${L.join('')}</div></div>`;
+  body.querySelectorAll('[data-ct]').forEach(b=>b.onclick=()=>{
+    const k=b.dataset.ct;
+    if(k==='push_on') TEAM_SET.push_on=!(TEAM_SET.push_on!==false);
+    if(k==='tg') TEAM_SET.tg={auto:'on',on:'off',off:'auto'}[TEAM_SET.tg||'auto'];
+    CH_DIRTY=true; CH_OUT=''; renderCheats();
+  });
+  document.getElementById('ctSave').onclick=async()=>{
+    if(TEAM_SET_STATE===false){ CH_OUT='&gt; Error: team_settings table missing. Run the SQL in push/team_settings.sql'; renderCheats(); return; }
+    CH_OUT='&gt; saving…'; renderCheats();
+    const r=await saveTeamSet();
+    if(r.ok){ CH_DIRTY=false; CH_OUT=`&gt; ✓ committed · MORNING_REMINDER_9AM=${TEAM_SET.push_on!==false} · THANKSGIVING_MODE='${TEAM_SET.tg}' · ${new Date().toLocaleTimeString([], {hour:'numeric',minute:'2-digit'})}`; }
+    else CH_OUT='&gt; ✗ save failed'+(r.err?': '+esc(r.err):'')+'. Only coaches can save.';
+    renderCheats();
+  };
+}
+
 // ===== Tabs =====
 function showTab(){
   const t=(location.hash||'#clubhouse').slice(1);
   const coachU=isCoachUser(), viewing=!!window.VIEW_AS;
   const PT=['clubhouse','home','daily-work','personal-plan','schedule','leaders','chat','profile'];   // Month and Lift tabs removed (lifting lives in its own app)
-  const allowed=coachU?(viewing?PT:['clubhouse','home','schedule','leaders','chat','coach-view']):PT;
+  const allowed=coachU?(viewing?PT:['clubhouse','home','schedule','leaders','chat','coach-view','cheats']):PT;
   document.querySelectorAll('.tabs a[data-tab]').forEach(a=>{ a.hidden=!allowed.includes(a.dataset.tab); });
   renderModeBar();
   const tab=allowed.includes(t)?t:'clubhouse';
   document.body.classList.toggle('on-club',tab==='clubhouse'); document.body.dataset.tab=tab;
-  ['clubhouse','leaders','home','daily-work','month','personal-plan','schedule','lift','chat','report','profile','coach-view'].forEach(n=>{ document.getElementById('tab-'+n).hidden=n!==tab; });
+  ['clubhouse','leaders','cheats','home','daily-work','month','personal-plan','schedule','lift','chat','report','profile','coach-view'].forEach(n=>{ document.getElementById('tab-'+n).hidden=n!==tab; });
   document.querySelectorAll('.tabs a').forEach(a=>a.setAttribute('aria-current',a.dataset.tab===tab?'page':'false'));
   render();
   if(tab==='coach-view') renderCoach();
   if(tab==='home') renderHome();
   if(tab==='clubhouse') renderClubhouse(allowed);
   if(tab==='leaders') renderLeaders();
+  if(tab==='cheats') renderCheats();
   if(tab==='schedule') renderSchedule();
   if(tab==='profile') renderProfile();
   if(tab==='chat') renderChat();

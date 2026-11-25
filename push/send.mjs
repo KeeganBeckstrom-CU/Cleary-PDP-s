@@ -29,6 +29,8 @@ if (md === '11-27') body = 'Hope you ate well yesterday 🦃 Time to get back to
 
 webpush.setVapidDetails('mailto:coach@cleary.edu', VAPID_PUBLIC, VAPID_PRIVATE);
 const H = { apikey: SUPABASE_SERVICE_KEY, Authorization: `Bearer ${SUPABASE_SERVICE_KEY}` };
+const ts = await fetch(`${SUPABASE_URL}/rest/v1/team_settings?id=eq.main&select=data`, { headers: H }).then(r => r.ok ? r.json() : []).catch(() => []);
+if (ts[0] && ts[0].data && ts[0].data.push_on === false) { console.log("Coach's Cheats: MORNING_REMINDER_9AM is off. Nothing sent."); process.exit(0); }
 const res = await fetch(`${SUPABASE_URL}/rest/v1/push_subs?select=endpoint,name,sub`, { headers: H });
 if (!res.ok) { console.error('Could not read push_subs:', res.status, await res.text()); process.exit(1); }
 const subs = await res.json();
