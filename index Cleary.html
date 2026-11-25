@@ -2,7 +2,7 @@
 <html lang="en" data-theme="dark">
 <head>
 <script>/* STEP 3: paste your Supabase Project URL and Publishable key between the quotes on the next 2 lines */
-window.APP_BUILD='20261125162742';
+window.APP_BUILD='20261125163139';
 window.WLN_SUPABASE_URL = 'https://bxnxbyulbjnlkydcmppn.supabase.co';
 window.WLN_SUPABASE_KEY = 'sb_publishable_8H49HwXFPXTBM4KvjLSGGg_J0J2ZhGI';
 </script>
@@ -2213,9 +2213,10 @@ body.xmas .club-card{box-shadow:0 0 0 2px #C8102E,0 0 18px rgba(255,210,63,.35)}
 .club-stage .hs{z-index:3}
 .hol-tban,.hol-xban{left:50%;top:.5%;width:30%;transform:translateX(-50%);filter:drop-shadow(0 10px 8px rgba(0,0,0,.55)) brightness(.97);transform-origin:50% 0;animation:holSway 6s ease-in-out infinite alternate}
 @keyframes holSway{from{transform:translateX(-50%) rotate(-.6deg)}to{transform:translateX(-50%) rotate(.6deg)}}
-.hol-amer{left:50%;top:28.6%;transform:translateX(-50%);display:flex;align-items:center;gap:8px;padding:5px 14px;border-radius:999px;white-space:nowrap;
-  background:linear-gradient(90deg,#0B2A5C 0 30%,#B30838 30% 100%);color:#fff;font:700 clamp(11px,1vw,14px) var(--body);border:2px solid #fff;box-shadow:0 6px 14px rgba(0,0,0,.5)}
-.hol-amer b{color:#FFD9A8}.hol-amer span{font-size:10px;letter-spacing:2px}
+.hol-amer{left:50%;top:28.6%;transform:translateX(-50%);display:flex;align-items:center;gap:8px;padding:5px 16px 6px;border-radius:4px;white-space:nowrap;
+  background:#9C7A4E;background-image:repeating-linear-gradient(0deg,rgba(0,0,0,.09) 0 1px,transparent 1px 3px),repeating-linear-gradient(90deg,rgba(255,255,255,.07) 0 1px,transparent 1px 3px);
+  color:#FBEBCB;font:700 clamp(11px,1vw,14px) var(--body);letter-spacing:.04em;border:1.5px dashed rgba(60,35,12,.55);outline:3px solid #9C7A4E;box-shadow:0 8px 14px rgba(0,0,0,.5);text-shadow:0 1px 1px rgba(60,35,12,.5)}
+.hol-amer b{color:#FFF6E3}.hol-amer span{font-size:12px;opacity:.9}
 .hol-feast{left:7%;bottom:-1%;width:25%;filter:drop-shadow(0 14px 12px rgba(0,0,0,.6)) saturate(.95) brightness(.93)}
 .hol-pumpkins{right:5.5%;bottom:0;width:13%;filter:drop-shadow(0 10px 10px rgba(0,0,0,.55)) saturate(.95) brightness(.92)}
 .hol-walk{left:30%;bottom:1%;width:8.5%;animation:holWalk 24s linear infinite}
@@ -7685,7 +7686,7 @@ function holInStage(){
        <button type="button" class="hol hol-tree" aria-label="Christmas tree"><img src="${HOL_IMG('tree')}" alt=""></button>`;
   } else if(tgOn()){
     h=`<img class="hol hol-tban" src="${HOL_IMG('tban')}" alt="">
-       <div class="hol hol-amer"><span>★★</span><b>(American)</b> Thanksgiving · Thu, Nov 26<span>★★</span></div>
+       <div class="hol hol-amer"><span>🍂</span><b>(American)</b> Thanksgiving · Thu, Nov 26<span>🍂</span></div>
        <img class="hol hol-feast" src="${HOL_IMG('feast')}" alt="">
        <img class="hol hol-pumpkins" src="${HOL_IMG('pumpkins')}" alt="">
        <div class="hol hol-walk"><button type="button" class="tk tk2" aria-label="Tap the turkey"><img src="${HOL_IMG('turkey')}" alt=""></button></div>`;
