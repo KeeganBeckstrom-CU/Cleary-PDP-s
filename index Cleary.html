@@ -2,7 +2,7 @@
 <html lang="en" data-theme="dark">
 <head>
 <script>/* STEP 3: paste your Supabase Project URL and Publishable key between the quotes on the next 2 lines */
-window.APP_BUILD='20261125153500';
+window.APP_BUILD='20261125155323';
 window.WLN_SUPABASE_URL = 'https://bxnxbyulbjnlkydcmppn.supabase.co';
 window.WLN_SUPABASE_KEY = 'sb_publishable_8H49HwXFPXTBM4KvjLSGGg_J0J2ZhGI';
 </script>
@@ -2076,6 +2076,45 @@ body.club-coach .push-chip{bottom:calc(76px + env(safe-area-inset-bottom))}
   .tg-stars{font-size:9px}
   .push-chip{white-space:nowrap;font-size:14px;padding:9px 16px}
 }
+/* ===== Thanksgiving turkey ===== */
+.tk-walk{position:fixed;z-index:6;left:12%;bottom:calc(10px + env(safe-area-inset-bottom));pointer-events:none;animation:tkMove 22s linear infinite}
+.tk-walk .tk{animation:tkFlip 22s linear infinite}
+@keyframes tkFlip{0%,46%{transform:scaleX(1)}50%,96%{transform:scaleX(-1)}100%{transform:scaleX(1)}}
+@keyframes tkMove{0%{transform:translateX(0)}48%{transform:translateX(62vw)}98%,100%{transform:translateX(0)}}
+.tk{position:relative;pointer-events:auto;background:none;border:0;padding:0;cursor:pointer;width:96px;-webkit-tap-highlight-color:transparent}
+.tk-svg{width:100%;display:block;overflow:visible;filter:drop-shadow(0 6px 6px rgba(0,0,0,.5));animation:tkBob .5s ease-in-out infinite alternate}
+@keyframes tkBob{from{transform:translateY(0) rotate(-2deg)}to{transform:translateY(-3px) rotate(2deg)}}
+.tk-tail{transform-origin:80px 92px;animation:tkFan 3s ease-in-out infinite}
+@keyframes tkFan{0%,100%{transform:scale(1)}50%{transform:scale(1.06)}}
+.tk-head{transform-origin:80px 82px;animation:tkPeck 2.6s ease-in-out infinite}
+@keyframes tkPeck{0%,80%,100%{transform:rotate(0)}88%{transform:rotate(14deg) translateY(4px)}}
+.tk.gob .tk-svg{animation:tkJump .5s ease-out}
+.tk.gob .tk-tail{animation:tkPuff .6s ease-out}
+@keyframes tkJump{0%{transform:translateY(0)}35%{transform:translateY(-22px) scale(1.08)}100%{transform:translateY(0)}}
+@keyframes tkPuff{0%{transform:scale(1)}40%{transform:scale(1.3)}100%{transform:scale(1)}}
+.tk-say{position:absolute;left:50%;bottom:100%;margin-bottom:8px;transform:translateX(-50%) scale(.6);opacity:0;white-space:nowrap;padding:8px 12px;border-radius:14px;background:#FFF6E5;color:#3B1F0A;font:800 14px var(--body);box-shadow:0 6px 14px rgba(0,0,0,.45);pointer-events:none}
+.tk-say::after{content:"";position:absolute;left:50%;top:100%;margin-left:-7px;border:7px solid transparent;border-top-color:#FFF6E5}
+.tk-say.show{animation:tkSay 2.6s ease forwards}
+@keyframes tkSay{0%{opacity:0;transform:translateX(-50%) scale(.6)}10%{opacity:1;transform:translateX(-50%) scale(1.05)}18%{transform:translateX(-50%) scale(1)}85%{opacity:1}100%{opacity:0;transform:translateX(-50%) scale(1)}}
+.tk-walk{width:78px} @media (min-width:761px){.tk-walk{width:96px}}
+.tk-fx{position:absolute;left:50%;top:40%;width:8px;height:20px;border-radius:50%;background:var(--c);pointer-events:none;animation:tkFx 1s ease-out forwards}
+@keyframes tkFx{from{transform:translate(0,0) rotate(0);opacity:1}to{transform:translate(var(--x),var(--y)) rotate(var(--r));opacity:0}}
+@media (max-width:760px){.tk{width:78px}.tk-walk{left:18%}@keyframes tkMove{0%{transform:translateX(0)}48%{transform:translateX(46vw)}98%,100%{transform:translateX(0)}}}
+@media (prefers-reduced-motion:reduce){.tk-walk,.tk-walk .tk,.tk-svg,.tk-tail,.tk-head{animation:none}}
+/* welcome screen */
+.tg-splash{position:fixed;inset:0;z-index:120;display:grid;place-items:center;padding:20px;background:radial-gradient(circle at 50% 40%,rgba(120,50,10,.85),rgba(10,10,20,.92));animation:tgIn .4s ease}
+.tg-splash.out{animation:tgOut .4s ease forwards}
+@keyframes tgIn{from{opacity:0}to{opacity:1}} @keyframes tgOut{to{opacity:0}}
+.tg-sp-card{width:min(420px,100%);text-align:center;color:#fff;padding:26px 22px 20px;border-radius:22px;border:3px solid #E07B24;
+  background:linear-gradient(180deg,#0B2A5C,#071a3a);box-shadow:0 20px 50px rgba(0,0,0,.6),inset 0 0 0 6px rgba(179,8,56,.6);animation:tgPop .6s cubic-bezier(.2,1.4,.4,1)}
+@keyframes tgPop{from{transform:scale(.7) rotate(-3deg)}to{transform:scale(1) rotate(0)}}
+.tg-sp-turkey{width:150px;margin:-80px auto 4px;position:relative}
+.tg-sp-turkey .tk-svg{width:150px}
+.tg-sp-eye{margin:0;color:#F2C14E;font:700 12px var(--body);letter-spacing:.18em;text-transform:uppercase}
+.tg-sp-card h2{margin:8px 0 8px;font:400 clamp(26px,7vw,34px)/1.1 'Permanent Marker',var(--display);color:#fff;text-shadow:0 3px 0 #B30838}
+.tg-sp-card p{margin:0 0 16px;line-height:1.45;color:#E4E9F2}
+.tg-sp-card .btn{width:100%;background:linear-gradient(90deg,#E07B24,#B30838);border:0;color:#fff;font-weight:800;font-size:17px}
+.tg-sp-card small{display:block;margin-top:10px;color:#AEB9CC}
 @media (max-width:760px){ .tabs a[data-tab="leaders"]::before{-webkit-mask-image:url("data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20viewBox%3D%220%200%2024%2024%22%20fill%3D%22none%22%20stroke%3D%22black%22%20stroke-width%3D%222%22%20stroke-linecap%3D%22round%22%20stroke-linejoin%3D%22round%22%3E%3Cpath%20d%3D%22M8%2021h8%22%2F%3E%3Cpath%20d%3D%22M12%2017v4%22%2F%3E%3Cpath%20d%3D%22M7%204h10v5a5%205%200%200%201-10%200z%22%2F%3E%3Cpath%20d%3D%22M17%205h3v2a3%203%200%200%201-3%203%22%2F%3E%3Cpath%20d%3D%22M7%205H4v2a3%203%200%200%200%203%203%22%2F%3E%3C%2Fsvg%3E");mask-image:url("data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20viewBox%3D%220%200%2024%2024%22%20fill%3D%22none%22%20stroke%3D%22black%22%20stroke-width%3D%222%22%20stroke-linecap%3D%22round%22%20stroke-linejoin%3D%22round%22%3E%3Cpath%20d%3D%22M8%2021h8%22%2F%3E%3Cpath%20d%3D%22M12%2017v4%22%2F%3E%3Cpath%20d%3D%22M7%204h10v5a5%205%200%200%201-10%200z%22%2F%3E%3Cpath%20d%3D%22M17%205h3v2a3%203%200%200%201-3%203%22%2F%3E%3Cpath%20d%3D%22M7%205H4v2a3%203%200%200%200%203%203%22%2F%3E%3C%2Fsvg%3E")} }
 @media (max-width:760px){ .tabs a[data-tab="clubhouse"]::before{-webkit-mask-image:url("data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20viewBox%3D%220%200%2024%2024%22%20fill%3D%22none%22%20stroke%3D%22black%22%20stroke-width%3D%222%22%20stroke-linecap%3D%22round%22%20stroke-linejoin%3D%22round%22%3E%3Cpath%20d%3D%22M3%2021h18%22%2F%3E%3Cpath%20d%3D%22M5%2021V8l7-4%207%204v13%22%2F%3E%3Cpath%20d%3D%22M10%2021v-6h4v6%22%2F%3E%3C%2Fsvg%3E");mask-image:url("data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20viewBox%3D%220%200%2024%2024%22%20fill%3D%22none%22%20stroke%3D%22black%22%20stroke-width%3D%222%22%20stroke-linecap%3D%22round%22%20stroke-linejoin%3D%22round%22%3E%3Cpath%20d%3D%22M3%2021h18%22%2F%3E%3Cpath%20d%3D%22M5%2021V8l7-4%207%204v13%22%2F%3E%3Cpath%20d%3D%22M10%2021v-6h4v6%22%2F%3E%3C%2Fsvg%3E")} }
 </style>
@@ -7157,10 +7196,10 @@ const _rc6=renderClubhouse; renderClubhouse=function(allowed){
   const el=document.getElementById('clubBody'); if(!el) return;
   if(tgOn()){ el.insertAdjacentHTML('beforeend',tgDecor()); document.body.classList.add('tg'); } else document.body.classList.remove('tg');
   if(isCoachUser()&&!window.VIEW_AS) document.body.classList.add('club-coach'); else document.body.classList.remove('club-coach');
-  pushChip();
+  pushAuto();
 };
 let _tgRs; addEventListener('resize',()=>{ clearTimeout(_tgRs); _tgRs=setTimeout(()=>{ const b=document.querySelector('.tg-bunting'); if(b) b.outerHTML=tgBunting(Math.min(innerWidth,2400)); },200); });
-if(location.hash==='#remind') setTimeout(async()=>{ if(await pushReady()) pushSheet(); },900);
+
 
 // ---- auto-update: when a player comes back to the app, load the newest version without closing it ----
 (function(){
@@ -7182,6 +7221,88 @@ if(location.hash==='#remind') setTimeout(async()=>{ if(await pushReady()) pushSh
   addEventListener('pageshow',e=>{ if(e.persisted) check(); });
   setTimeout(check,1500);
 })();
+
+// ---- reminder turns itself on: no button. First tap in the app shows the phone's one-time "Allow" pop-up. ----
+async function pushSubscribeQuiet(){
+  try{
+    const reg=SW_REG||await navigator.serviceWorker.ready;
+    let sub=await reg.pushManager.getSubscription();
+    if(!sub) sub=await reg.pushManager.subscribe({userVisibleOnly:true,applicationServerKey:b64u(VAPID_PUBLIC)});
+    if(await pushSave(sub,true)) localStorage.setItem('cu_push_on','1');
+  }catch(e){}
+}
+let PUSH_ARMED=false;
+async function pushAuto(){
+  if(!pushSupported()||(pushIOS()&&!pushStandalone())) return;
+  if(!(window.CLOUD_MODE&&typeof ME!=='undefined'&&ME)) return;
+  if(!(await pushReady())) return;
+  if(Notification.permission==='granted'){ pushSubscribeQuiet(); return; }
+  if(Notification.permission!=='default'||PUSH_ARMED) return;
+  PUSH_ARMED=true;
+  const ask=()=>{
+    document.removeEventListener('click',ask,true); document.removeEventListener('touchend',ask,true);
+    Notification.requestPermission().then(p=>{ if(p==='granted') pushSubscribeQuiet(); }).catch(()=>{});
+  };
+  document.addEventListener('click',ask,true); document.addEventListener('touchend',ask,true);
+}
+
+// ---- Thanksgiving: strutting turkey in a Cleary cap + welcome screen ----
+const TG_TURKEY=`<svg viewBox="0 0 160 150" class="tk-svg" aria-hidden="true">
+  <g class="tk-tail">${[['#7A3E12',-75],['#C0392B',-50],['#E67E22',-25],['#D4A017',0],['#E67E22',25],['#C0392B',50],['#7A3E12',75]].map(([c,a])=>`<g transform="rotate(${a} 80 92)"><ellipse cx="80" cy="38" rx="15" ry="42" fill="${c}" stroke="#3B1F0A" stroke-width="2"/><ellipse cx="80" cy="24" rx="7" ry="14" fill="#F6E3B0" opacity=".55"/></g>`).join('')}</g>
+  <path d="M68 128 L64 146 M64 146 l-7 2 M64 146 l2 3 M92 128 L96 146 M96 146 l7 2 M96 146 l-2 3" stroke="#E08A1E" stroke-width="4" stroke-linecap="round" fill="none"/>
+  <ellipse cx="80" cy="102" rx="34" ry="30" fill="#6B3A15" stroke="#3B1F0A" stroke-width="2"/>
+  <ellipse cx="62" cy="104" rx="14" ry="20" fill="#56300F" transform="rotate(18 62 104)"/><ellipse cx="98" cy="104" rx="14" ry="20" fill="#56300F" transform="rotate(-18 98 104)"/>
+  <g class="tk-head">
+    <path d="M80 82 C76 70 78 60 82 54" stroke="#6B3A15" stroke-width="13" stroke-linecap="round" fill="none"/>
+    <circle cx="82" cy="52" r="13" fill="#7A4520" stroke="#3B1F0A" stroke-width="2"/>
+    <circle cx="77" cy="50" r="4" fill="#fff"/><circle cx="87" cy="50" r="4" fill="#fff"/><circle cx="78" cy="51" r="2" fill="#111"/><circle cx="88" cy="51" r="2" fill="#111"/>
+    <path d="M80 56 L84 56 L82 63 Z" fill="#F2A900" stroke="#9A6500" stroke-width="1"/>
+    <path d="M85 58 C92 62 90 74 86 76 C83 70 84 64 85 58Z" fill="#D7263D"/>
+    <path d="M68 44 C68 32 96 32 96 44 Z" fill="#0B2A5C" stroke="#061733" stroke-width="1.5"/><path d="M94 43 L108 46 L94 47 Z" fill="#B30838"/>
+    <text x="82" y="43" text-anchor="middle" font-size="9" font-weight="900" fill="#fff" font-family="Arial Black,Arial">C</text>
+  </g></svg>`;
+const TG_GOBBLES=['GOBBLE GOBBLE! 🦃','Thankful for strikeouts 🙏','Pass the arm care, please','Eat up. Recover. Back at it Friday.','Gobble! Throw strikes! 🎯','Leftovers count as recovery, right?','Happy Thanksgiving, Cougars! 🏈🦃'];
+let tgGi=0;
+function tgGobble(el){
+  const t=el.closest('.tk'); if(!t) return;
+  t.classList.remove('gob'); void t.offsetWidth; t.classList.add('gob');
+  const host=t.closest('.tk-walk')||t; let b=host.querySelector('.tk-say'); if(!b){ b=document.createElement('div'); b.className='tk-say'; host.appendChild(b); }
+  b.textContent=TG_GOBBLES[tgGi++%TG_GOBBLES.length]; b.classList.remove('show'); void b.offsetWidth; b.classList.add('show');
+  for(let i=0;i<12;i++){ const f=document.createElement('i'); f.className='tk-fx';
+    const a=Math.random()*Math.PI*2, d=50+Math.random()*70;
+    f.style.cssText=`--x:${Math.cos(a)*d}px;--y:${Math.sin(a)*d-40}px;--r:${Math.random()*360}deg;--c:${['#C0392B','#E67E22','#D4A017','#7A3E12'][i%4]}`;
+    t.appendChild(f); setTimeout(()=>f.remove(),1100); }
+  try{ navigator.vibrate&&navigator.vibrate(30); }catch(e){}
+}
+function tgSplash(tries){
+  tries=tries||0;
+  const tab=document.getElementById('tab-clubhouse');
+  const mid=document.elementFromPoint(innerWidth/2,innerHeight/2);
+  const ready=tab&&!tab.hidden&&tab.offsetParent!==null&&mid&&tab.contains(mid)&&typeof S!=='undefined'&&S&&S.name;
+  if(!ready){ if(tries<20) setTimeout(()=>tgSplash(tries+1),1500); return; }
+  const md=new Date(); const key='cu_tg_splash_'+md.getFullYear()+(md.getMonth()===10&&md.getDate()===26?'_day':'');
+  if(localStorage.getItem(key)||document.querySelector('.tg-splash')) return;
+  localStorage.setItem(key,'1');
+  const first=String((typeof S!=='undefined'&&S&&S.name)||'').trim().split(/\s+/)[0];
+  const isDay=md.getMonth()===10&&md.getDate()===26;
+  const d=document.createElement('div'); d.className='tg-splash';
+  d.innerHTML=`<div class="tg-sp-card"><div class="tg-sp-turkey">${TG_TURKEY}</div>
+    <p class="tg-sp-eye">★ ★ ★ Cleary Pitching ★ ★ ★</p>
+    <h2>${isDay?'Happy Thanksgiving':'Happy Thanksgiving Week'}${first?', '+first:''}!</h2>
+    <p>Thankful for every rep you put in this fall. Enjoy the food and the family. 🦃</p>
+    <button class="btn" type="button">Let's go</button>
+    <small>Tap the turkey in the clubhouse 😉</small></div>`;
+  d.addEventListener('click',e=>{ if(e.target.closest('.tg-sp-turkey')) return tgGobble(e.target); if(e.target===d||e.target.closest('button')) { d.classList.add('out'); setTimeout(()=>d.remove(),400); } });
+  d.querySelector('.tg-sp-turkey').classList.add('tk');
+  document.body.appendChild(d);
+}
+const _rc7=renderClubhouse; renderClubhouse=function(allowed){
+  _rc7(allowed);
+  const el=document.getElementById('clubBody'); if(!el||!tgOn()) return;
+  el.insertAdjacentHTML('beforeend',`<div class="tk-walk"><button class="tk" type="button" aria-label="Tap the turkey">${TG_TURKEY}</button></div>`);
+  el.querySelector('.tk').addEventListener('click',e=>{ e.stopPropagation(); tgGobble(e.currentTarget); });
+  setTimeout(tgSplash,700);
+};
 
 // ===== Tabs =====
 function showTab(){

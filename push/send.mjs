@@ -13,6 +13,8 @@ const offset = ((detHour - now.getUTCHours()) + 24) % 24 - 24;          // -4 in
 const want = offset === -4 ? '45 12 * * *' : '45 13 * * *';
 if (!FORCE && SCHEDULE && SCHEDULE !== want) { console.log(`Skipping ${SCHEDULE}; today's send is the ${want} run.`); process.exit(0); }
 
+const today = new Intl.DateTimeFormat('en-CA', { timeZone: 'America/Detroit', year: 'numeric', month: '2-digit', day: '2-digit' }).format(now); // YYYY-MM-DD
+if (today < '2026-11-27') { console.log('Reminders start Friday, Nov 27. Nothing sent.'); process.exit(0); }
 const md = new Intl.DateTimeFormat('en-CA', { timeZone: 'America/Detroit', month: '2-digit', day: '2-digit' }).format(now); // MM-DD
 const dow = new Intl.DateTimeFormat('en-US', { timeZone: 'America/Detroit', weekday: 'long' }).format(now);
 const lines = [
@@ -23,7 +25,7 @@ const lines = [
 ];
 let body = lines[now.getUTCDate() % lines.length];
 if (dow === 'Monday') body = 'New week. Check your plan in the Clubhouse and get your first day in.';
-if (md === '11-26') body = "Happy Thanksgiving! 🦃 Check today's plan before the turkey.";
+if (md === '11-27') body = 'Hope you ate well yesterday 🦃 Time to get back to work. Open the Clubhouse and get your throwing in.';
 
 webpush.setVapidDetails('mailto:coach@cleary.edu', VAPID_PUBLIC, VAPID_PRIVATE);
 const H = { apikey: SUPABASE_SERVICE_KEY, Authorization: `Bearer ${SUPABASE_SERVICE_KEY}` };
