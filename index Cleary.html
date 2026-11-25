@@ -2,7 +2,7 @@
 <html lang="en" data-theme="dark">
 <head>
 <script>/* STEP 3: paste your Supabase Project URL and Publishable key between the quotes on the next 2 lines */
-window.APP_BUILD='20261125161315';
+window.APP_BUILD='20261125162742';
 window.WLN_SUPABASE_URL = 'https://bxnxbyulbjnlkydcmppn.supabase.co';
 window.WLN_SUPABASE_KEY = 'sb_publishable_8H49HwXFPXTBM4KvjLSGGg_J0J2ZhGI';
 </script>
@@ -2208,6 +2208,41 @@ body.viewing [data-tab="cheats"]{display:none}
 .x-tree .tk-say{left:50%;bottom:100%}
 @media (max-width:760px){.x-tree{right:6px;width:128px;bottom:calc(6px + env(safe-area-inset-bottom))}.x-tree .tk-say{left:auto;right:0;transform:none!important;font-size:12px;white-space:normal;width:200px}}
 body.xmas .club-card{box-shadow:0 0 0 2px #C8102E,0 0 18px rgba(255,210,63,.35)}
+/* ===== v9: Flow holiday art inside the room ===== */
+.hol{position:absolute;z-index:1;pointer-events:none;display:block;max-width:none}
+.club-stage .hs{z-index:3}
+.hol-tban,.hol-xban{left:50%;top:.5%;width:30%;transform:translateX(-50%);filter:drop-shadow(0 10px 8px rgba(0,0,0,.55)) brightness(.97);transform-origin:50% 0;animation:holSway 6s ease-in-out infinite alternate}
+@keyframes holSway{from{transform:translateX(-50%) rotate(-.6deg)}to{transform:translateX(-50%) rotate(.6deg)}}
+.hol-amer{left:50%;top:28.6%;transform:translateX(-50%);display:flex;align-items:center;gap:8px;padding:5px 14px;border-radius:999px;white-space:nowrap;
+  background:linear-gradient(90deg,#0B2A5C 0 30%,#B30838 30% 100%);color:#fff;font:700 clamp(11px,1vw,14px) var(--body);border:2px solid #fff;box-shadow:0 6px 14px rgba(0,0,0,.5)}
+.hol-amer b{color:#FFD9A8}.hol-amer span{font-size:10px;letter-spacing:2px}
+.hol-feast{left:7%;bottom:-1%;width:25%;filter:drop-shadow(0 14px 12px rgba(0,0,0,.6)) saturate(.95) brightness(.93)}
+.hol-pumpkins{right:5.5%;bottom:0;width:13%;filter:drop-shadow(0 10px 10px rgba(0,0,0,.55)) saturate(.95) brightness(.92)}
+.hol-walk{left:30%;bottom:1%;width:8.5%;animation:holWalk 24s linear infinite}
+@keyframes holWalk{0%{transform:translateX(0)}48%{transform:translateX(420%)}50%{transform:translateX(420%)}98%,100%{transform:translateX(0)}}
+.hol-walk .tk2{width:100%;pointer-events:auto;animation:holFlip 24s linear infinite}
+@keyframes holFlip{0%,48%{transform:scaleX(1)}50%,98%{transform:scaleX(-1)}100%{transform:scaleX(1)}}
+.tk2 img{width:100%;display:block;filter:drop-shadow(0 8px 6px rgba(0,0,0,.55));animation:tkBob .45s ease-in-out infinite alternate;transform-origin:50% 100%}
+.tk2.gob img{animation:tkJump .5s ease-out}
+.hol-walk .tk-say{bottom:100%}
+.hol-tree{right:3%;bottom:1%;width:17%;padding:0;border:0;background:none;pointer-events:auto;cursor:pointer;-webkit-tap-highlight-color:transparent}
+.hol-tree img{width:100%;display:block;filter:drop-shadow(0 14px 14px rgba(0,0,0,.6)) drop-shadow(0 0 22px rgba(255,200,90,.25))}
+.hol-tree.jig img{animation:jig .5s ease}
+.hol-tree .tk-say{left:50%;bottom:100%}
+.tg-sp-turkey .tk-img{width:150px;display:block;margin:0 auto;filter:drop-shadow(0 10px 10px rgba(0,0,0,.6))}
+@media (prefers-reduced-motion:reduce){.hol-walk,.hol-walk .tk2,.tk2 img,.hol-tban,.hol-xban{animation:none}}
+/* phone (tall room) */
+@media (max-aspect-ratio:1/1){
+  .hol-tban,.hol-xban{top:7.3%;width:60%}
+  .hol-amer{top:25.4%;font-size:11px;padding:3px 10px}
+  .hol-feast{width:50%;bottom:0;left:8%}
+  .hol-pumpkins{width:30%;right:8%}
+  .hol-walk{left:30%;bottom:6%;width:17%}
+  @keyframes holWalk{0%{transform:translateX(0)}48%{transform:translateX(150%)}50%{transform:translateX(150%)}98%,100%{transform:translateX(0)}}
+  .hol-tree{width:40%;right:8%;bottom:1%}
+  .hol-tree .tk-say,.hol-walk .tk-say{font-size:12px;white-space:normal;width:180px}
+  .hol-tree .tk-say{left:auto;right:10px;transform:none!important}
+}
 @media (max-width:760px){ .tabs a[data-tab="leaders"]::before{-webkit-mask-image:url("data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20viewBox%3D%220%200%2024%2024%22%20fill%3D%22none%22%20stroke%3D%22black%22%20stroke-width%3D%222%22%20stroke-linecap%3D%22round%22%20stroke-linejoin%3D%22round%22%3E%3Cpath%20d%3D%22M8%2021h8%22%2F%3E%3Cpath%20d%3D%22M12%2017v4%22%2F%3E%3Cpath%20d%3D%22M7%204h10v5a5%205%200%200%201-10%200z%22%2F%3E%3Cpath%20d%3D%22M17%205h3v2a3%203%200%200%201-3%203%22%2F%3E%3Cpath%20d%3D%22M7%205H4v2a3%203%200%200%200%203%203%22%2F%3E%3C%2Fsvg%3E");mask-image:url("data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20viewBox%3D%220%200%2024%2024%22%20fill%3D%22none%22%20stroke%3D%22black%22%20stroke-width%3D%222%22%20stroke-linecap%3D%22round%22%20stroke-linejoin%3D%22round%22%3E%3Cpath%20d%3D%22M8%2021h8%22%2F%3E%3Cpath%20d%3D%22M12%2017v4%22%2F%3E%3Cpath%20d%3D%22M7%204h10v5a5%205%200%200%201-10%200z%22%2F%3E%3Cpath%20d%3D%22M17%205h3v2a3%203%200%200%201-3%203%22%2F%3E%3Cpath%20d%3D%22M7%205H4v2a3%203%200%200%200%203%203%22%2F%3E%3C%2Fsvg%3E")} }
 @media (max-width:760px){ .tabs a[data-tab="clubhouse"]::before{-webkit-mask-image:url("data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20viewBox%3D%220%200%2024%2024%22%20fill%3D%22none%22%20stroke%3D%22black%22%20stroke-width%3D%222%22%20stroke-linecap%3D%22round%22%20stroke-linejoin%3D%22round%22%3E%3Cpath%20d%3D%22M3%2021h18%22%2F%3E%3Cpath%20d%3D%22M5%2021V8l7-4%207%204v13%22%2F%3E%3Cpath%20d%3D%22M10%2021v-6h4v6%22%2F%3E%3C%2Fsvg%3E");mask-image:url("data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20viewBox%3D%220%200%2024%2024%22%20fill%3D%22none%22%20stroke%3D%22black%22%20stroke-width%3D%222%22%20stroke-linecap%3D%22round%22%20stroke-linejoin%3D%22round%22%3E%3Cpath%20d%3D%22M3%2021h18%22%2F%3E%3Cpath%20d%3D%22M5%2021V8l7-4%207%204v13%22%2F%3E%3Cpath%20d%3D%22M10%2021v-6h4v6%22%2F%3E%3C%2Fsvg%3E")} }
 @media (max-width:760px){ .tabs a[data-tab="cheats"]::before{-webkit-mask-image:url("data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20viewBox%3D%220%200%2024%2024%22%20fill%3D%22none%22%20stroke%3D%22black%22%20stroke-width%3D%222%22%20stroke-linecap%3D%22round%22%20stroke-linejoin%3D%22round%22%3E%3Cpolyline%20points%3D%224%2017%2010%2011%204%205%22%2F%3E%3Cline%20x1%3D%2212%22%20y1%3D%2219%22%20x2%3D%2220%22%20y2%3D%2219%22%2F%3E%3C%2Fsvg%3E");mask-image:url("data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20viewBox%3D%220%200%2024%2024%22%20fill%3D%22none%22%20stroke%3D%22black%22%20stroke-width%3D%222%22%20stroke-linecap%3D%22round%22%20stroke-linejoin%3D%22round%22%3E%3Cpolyline%20points%3D%224%2017%2010%2011%204%205%22%2F%3E%3Cline%20x1%3D%2212%22%20y1%3D%2219%22%20x2%3D%2220%22%20y2%3D%2219%22%2F%3E%3C%2Fsvg%3E")} }
@@ -7636,6 +7671,38 @@ const _rc8=renderClubhouse; renderClubhouse=function(allowed){
   const t=el.querySelector('.x-hit'); t.addEventListener('click',e=>{ e.stopPropagation(); xSay(t.parentElement); });
 };
 let _xRs; addEventListener('resize',()=>{ clearTimeout(_xRs); _xRs=setTimeout(()=>{ if(!xmasOn()) return; const d=document.querySelector('.x-deco'); if(d){ const w=Math.min(innerWidth,2400); d.querySelector('.x-lights-top').outerHTML=xLightsTop(w); d.querySelectorAll('.x-lights-side').forEach((s,i)=>s.outerHTML=xLightsSide(innerHeight,i===1)); } },250); });
+
+// ===== v9: Google Flow holiday art placed inside the room (under the buttons) =====
+const HOL_IMG=n=>`fest/${n}.webp`;
+function holInStage(){
+  const st=document.querySelector('#clubBody .club-stage'); if(!st) return;
+  // clear the older drawn decorations
+  document.querySelectorAll('#clubBody .feast,#clubBody .tg-corner,#clubBody .fest-banner,#clubBody .tk-walk,#clubBody .x-tree').forEach(n=>n.remove());
+  st.querySelectorAll('.hol').forEach(n=>n.remove());
+  let h='';
+  if(xmasOn()){
+    h=`<img class="hol hol-xban" src="${HOL_IMG('xban')}" alt="">
+       <button type="button" class="hol hol-tree" aria-label="Christmas tree"><img src="${HOL_IMG('tree')}" alt=""></button>`;
+  } else if(tgOn()){
+    h=`<img class="hol hol-tban" src="${HOL_IMG('tban')}" alt="">
+       <div class="hol hol-amer"><span>★★</span><b>(American)</b> Thanksgiving · Thu, Nov 26<span>★★</span></div>
+       <img class="hol hol-feast" src="${HOL_IMG('feast')}" alt="">
+       <img class="hol hol-pumpkins" src="${HOL_IMG('pumpkins')}" alt="">
+       <div class="hol hol-walk"><button type="button" class="tk tk2" aria-label="Tap the turkey"><img src="${HOL_IMG('turkey')}" alt=""></button></div>`;
+  }
+  if(!h) return;
+  const first=st.firstElementChild;
+  (first?first:st).insertAdjacentHTML(first?'afterend':'afterbegin',h);
+  const tk=st.querySelector('.tk2'); if(tk) tk.addEventListener('click',e=>{ e.stopPropagation(); tgGobble(tk); });
+  const tr=st.querySelector('.hol-tree'); if(tr) tr.addEventListener('click',e=>{ e.stopPropagation(); xSay(tr); });
+}
+const _rc9=renderClubhouse; renderClubhouse=function(allowed){ _rc9(allowed); holInStage(); };
+const _tgSplash9=tgSplash; tgSplash=function(t){
+  _tgSplash9(t);
+  const s=document.querySelector('.tg-splash .tg-sp-turkey'); if(s&&!s.querySelector('img')){ while(s.firstChild) s.firstChild.remove(); const i=new Image(); i.src=HOL_IMG('turkey'); i.alt=''; i.className='tk-img'; s.appendChild(i); }
+};
+// preload so the room doesn't pop in
+(()=>{ try{ if(tgOn()) ['tban','feast','pumpkins','turkey'].forEach(n=>{ const i=new Image(); i.src=HOL_IMG(n); }); }catch(e){} })();
 
 // ===== Tabs =====
 function showTab(){
