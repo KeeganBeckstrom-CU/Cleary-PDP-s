@@ -2,7 +2,7 @@
 <html lang="en" data-theme="dark">
 <head>
 <script>/* STEP 3: paste your Supabase Project URL and Publishable key between the quotes on the next 2 lines */
-window.APP_BUILD='20261126064400';
+window.APP_BUILD='20261126070056';
 window.WLN_SUPABASE_URL = 'https://bxnxbyulbjnlkydcmppn.supabase.co';
 window.WLN_SUPABASE_KEY = 'sb_publishable_8H49HwXFPXTBM4KvjLSGGg_J0J2ZhGI';
 </script>
@@ -2330,6 +2330,35 @@ body.egg-8bit *{font-family:"Courier New",monospace!important;letter-spacing:.06
 /* cheats */
 .ct-run2{background:#79c0ff;box-shadow:0 0 14px rgba(121,192,255,.45)}
 .ct-tier{font-weight:700}
+/* ===== v11: clipboard rebuilt with real hardboard + metal clip ===== */
+#tab-coach-view .content{border-radius:24px;padding:92px 34px 34px;
+  background:radial-gradient(130% 90% at 50% 0%,rgba(255,235,200,.10),transparent 55%),radial-gradient(120% 120% at 50% 50%,transparent 60%,rgba(0,0,0,.28)),url(tex/hardboard.jpg) 0 0/300px repeat,#9A6B3E;
+  box-shadow:0 40px 70px rgba(0,0,0,.6),0 8px 16px rgba(0,0,0,.45),inset 0 1px 0 rgba(255,235,200,.35),inset 0 -3px 0 rgba(0,0,0,.25),inset 0 0 0 1px rgba(60,35,12,.6)}
+/* the clip */
+#tab-coach-view .content::before{all:unset;content:"";position:absolute;z-index:6;top:-46px;left:50%;width:320px;height:157px;transform:translateX(-50%);
+  background:url(fest/clip.webp) center/contain no-repeat;filter:drop-shadow(0 12px 10px rgba(0,0,0,.55)) drop-shadow(0 3px 2px rgba(0,0,0,.45));pointer-events:none}
+/* the paper sheet (with a second sheet peeking out under it) */
+#tab-coach-view .content::after{all:unset;content:"";position:absolute;z-index:0;left:20px;right:20px;top:64px;bottom:20px;border-radius:2px;
+  background:linear-gradient(180deg,rgba(0,0,0,.10),transparent 26px),repeating-linear-gradient(0deg,rgba(0,0,0,.012) 0 1px,transparent 1px 3px),#FAF8F1;
+  box-shadow:0 1px 2px rgba(0,0,0,.35),4px 5px 0 -1px #ECE7D8,4px 5px 3px -1px rgba(0,0,0,.35),8px 9px 0 -2px #E4DECC,8px 9px 3px -2px rgba(0,0,0,.3)}
+#tab-coach-view .content>*{position:relative;z-index:1}
+#tab-coach-view #cvBody::before,#tab-coach-view #cvBody::after{display:none!important}
+/* sections print on the sheet instead of floating as cards */
+#tab-coach-view .content>.panel:first-of-type{background:none;box-shadow:none;border:0;border-bottom:2px solid rgba(11,42,91,.85);border-radius:0;margin:0 6px 14px;padding-left:4px;padding-right:4px}
+#tab-coach-view #cvBody>.panel{background:none;box-shadow:none;border:0;border-bottom:1px solid rgba(20,33,61,.14);border-radius:0;margin-left:6px;margin-right:6px}
+#tab-coach-view .kpi,#tab-coach-view .board .col{background:#FFFDF7;border:1px solid rgba(20,33,61,.14);box-shadow:0 1px 0 rgba(0,0,0,.04)}
+#tab-coach-view .board .col.flag{background:rgba(214,38,61,.05);border-color:rgba(214,38,61,.45)}
+#tab-coach-view .pc-card{box-shadow:0 1px 2px rgba(0,0,0,.08)}
+#tab-coach-view .h2,#tab-coach-view h2{color:#0B2A5B}
+@media (max-width:760px){
+  #tab-coach-view .content{padding:70px 14px 20px;border-radius:18px;margin:44px 2px 60px}
+  #tab-coach-view .content::before{width:230px;height:113px;top:-36px}
+  #tab-coach-view .content::after{left:9px;right:9px;top:48px;bottom:10px}
+}
+@media (max-width:760px){
+  #tab-coach-view .cvnav{display:grid!important;grid-template-columns:1fr 1fr;gap:4px;width:100%}
+  #tab-coach-view .cvnav button{white-space:nowrap;font-size:13px;padding:8px 6px}
+}
 @media (max-width:760px){ .tabs a[data-tab="leaders"]::before{-webkit-mask-image:url("data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20viewBox%3D%220%200%2024%2024%22%20fill%3D%22none%22%20stroke%3D%22black%22%20stroke-width%3D%222%22%20stroke-linecap%3D%22round%22%20stroke-linejoin%3D%22round%22%3E%3Cpath%20d%3D%22M8%2021h8%22%2F%3E%3Cpath%20d%3D%22M12%2017v4%22%2F%3E%3Cpath%20d%3D%22M7%204h10v5a5%205%200%200%201-10%200z%22%2F%3E%3Cpath%20d%3D%22M17%205h3v2a3%203%200%200%201-3%203%22%2F%3E%3Cpath%20d%3D%22M7%205H4v2a3%203%200%200%200%203%203%22%2F%3E%3C%2Fsvg%3E");mask-image:url("data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20viewBox%3D%220%200%2024%2024%22%20fill%3D%22none%22%20stroke%3D%22black%22%20stroke-width%3D%222%22%20stroke-linecap%3D%22round%22%20stroke-linejoin%3D%22round%22%3E%3Cpath%20d%3D%22M8%2021h8%22%2F%3E%3Cpath%20d%3D%22M12%2017v4%22%2F%3E%3Cpath%20d%3D%22M7%204h10v5a5%205%200%200%201-10%200z%22%2F%3E%3Cpath%20d%3D%22M17%205h3v2a3%203%200%200%201-3%203%22%2F%3E%3Cpath%20d%3D%22M7%205H4v2a3%203%200%200%200%203%203%22%2F%3E%3C%2Fsvg%3E")} }
 @media (max-width:760px){ .tabs a[data-tab="clubhouse"]::before{-webkit-mask-image:url("data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20viewBox%3D%220%200%2024%2024%22%20fill%3D%22none%22%20stroke%3D%22black%22%20stroke-width%3D%222%22%20stroke-linecap%3D%22round%22%20stroke-linejoin%3D%22round%22%3E%3Cpath%20d%3D%22M3%2021h18%22%2F%3E%3Cpath%20d%3D%22M5%2021V8l7-4%207%204v13%22%2F%3E%3Cpath%20d%3D%22M10%2021v-6h4v6%22%2F%3E%3C%2Fsvg%3E");mask-image:url("data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20viewBox%3D%220%200%2024%2024%22%20fill%3D%22none%22%20stroke%3D%22black%22%20stroke-width%3D%222%22%20stroke-linecap%3D%22round%22%20stroke-linejoin%3D%22round%22%3E%3Cpath%20d%3D%22M3%2021h18%22%2F%3E%3Cpath%20d%3D%22M5%2021V8l7-4%207%204v13%22%2F%3E%3Cpath%20d%3D%22M10%2021v-6h4v6%22%2F%3E%3C%2Fsvg%3E")} }
 @media (max-width:760px){ .tabs a[data-tab="cheats"]::before{-webkit-mask-image:url("data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20viewBox%3D%220%200%2024%2024%22%20fill%3D%22none%22%20stroke%3D%22black%22%20stroke-width%3D%222%22%20stroke-linecap%3D%22round%22%20stroke-linejoin%3D%22round%22%3E%3Cpolyline%20points%3D%224%2017%2010%2011%204%205%22%2F%3E%3Cline%20x1%3D%2212%22%20y1%3D%2219%22%20x2%3D%2220%22%20y2%3D%2219%22%2F%3E%3C%2Fsvg%3E");mask-image:url("data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20viewBox%3D%220%200%2024%2024%22%20fill%3D%22none%22%20stroke%3D%22black%22%20stroke-width%3D%222%22%20stroke-linecap%3D%22round%22%20stroke-linejoin%3D%22round%22%3E%3Cpolyline%20points%3D%224%2017%2010%2011%204%205%22%2F%3E%3Cline%20x1%3D%2212%22%20y1%3D%2219%22%20x2%3D%2220%22%20y2%3D%2219%22%2F%3E%3C%2Fsvg%3E")} }
