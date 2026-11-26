@@ -2,7 +2,7 @@
 <html lang="en" data-theme="dark">
 <head>
 <script>/* STEP 3: paste your Supabase Project URL and Publishable key between the quotes on the next 2 lines */
-window.APP_BUILD='20261126070056';
+window.APP_BUILD='20261126073447';
 window.WLN_SUPABASE_URL = 'https://bxnxbyulbjnlkydcmppn.supabase.co';
 window.WLN_SUPABASE_KEY = 'sb_publishable_8H49HwXFPXTBM4KvjLSGGg_J0J2ZhGI';
 </script>
@@ -7895,6 +7895,7 @@ function cardBadges(st){
 function badgeCheck(){
   try{
     if(typeof S==='undefined'||!S||!S.name||window.VIEW_AS||(isCoachUser()&&!VIEWING())) return;
+    if(window.CLOUD_MODE&&(typeof ME==='undefined'||!ME||ME.role==='coach')) return;
     const L=badgesFor(S).filter(b=>b.got), seen=S.bseen||[], fresh=L.filter(b=>!seen.includes(b.id));
     if(!fresh.length||document.querySelector('.bd-pop,.tg-splash')) return;
     S.bseen=[...new Set([...seen,...fresh.map(b=>b.id)])]; save();
