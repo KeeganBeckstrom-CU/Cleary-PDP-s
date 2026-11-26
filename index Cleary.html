@@ -2,7 +2,7 @@
 <html lang="en" data-theme="dark">
 <head>
 <script>/* STEP 3: paste your Supabase Project URL and Publishable key between the quotes on the next 2 lines */
-window.APP_BUILD='20261126073447';
+window.APP_BUILD='20261126081050';
 window.WLN_SUPABASE_URL = 'https://bxnxbyulbjnlkydcmppn.supabase.co';
 window.WLN_SUPABASE_KEY = 'sb_publishable_8H49HwXFPXTBM4KvjLSGGg_J0J2ZhGI';
 </script>
@@ -2359,6 +2359,43 @@ body.egg-8bit *{font-family:"Courier New",monospace!important;letter-spacing:.06
   #tab-coach-view .cvnav{display:grid!important;grid-template-columns:1fr 1fr;gap:4px;width:100%}
   #tab-coach-view .cvnav button{white-space:nowrap;font-size:13px;padding:8px 6px}
 }
+
+/* ===== v12: announcements ===== */
+.ann-card{border-left:4px solid var(--accent,#B30838)}
+.ann-h{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-bottom:6px}
+.ann-h span{font:700 13px/1 var(--display,inherit);letter-spacing:.12em;text-transform:uppercase;opacity:.85}
+.ann-it{padding:10px 0;border-top:1px solid rgba(255,255,255,.08)}
+.ann-it:first-of-type{border-top:0}
+.ann-it.new .ann-top b::after{content:'NEW';margin-left:8px;padding:1px 6px;border-radius:4px;background:var(--accent,#B30838);color:#fff;font-size:10px;letter-spacing:.08em;vertical-align:2px}
+.ann-top{display:flex;align-items:flex-start;justify-content:space-between;gap:8px}
+.ann-top b{font-size:16px;line-height:1.3}
+.ann-it p{margin:4px 0 4px;line-height:1.45;opacity:.92}
+.ann-it small{opacity:.6;font-size:12px}
+.ann-del{flex:none;border:0;background:rgba(255,255,255,.08);color:inherit;border-radius:6px;padding:3px 8px;font-size:12px;cursor:pointer}
+.ann-del.arm{background:#B3261E;color:#fff}
+.ann-all{margin-top:6px}
+.ann-sheet h3{margin:2px 0 12px}
+.ann-sheet>.btn{margin-bottom:10px}
+.ann-list{max-height:60vh;overflow:auto}
+.ann-f{display:block;margin:0 0 10px;font-size:13px;font-weight:600;opacity:.9}
+.ann-f input,.ann-f textarea{display:block;width:100%;box-sizing:border-box;margin-top:5px;padding:10px 12px;border-radius:10px;border:1px solid rgba(255,255,255,.18);background:rgba(0,0,0,.25);color:inherit;font:inherit;font-size:16px}
+.ann-chk{display:flex;gap:10px;align-items:flex-start;margin:4px 0 14px;font-size:14px;line-height:1.35}
+.ann-chk input{width:20px;height:20px;margin:1px 0 0;flex:none;accent-color:var(--accent,#B30838)}
+.ann-chk small{display:block;opacity:.65;font-size:12px;margin-top:2px}
+/* clubhouse pill: pinned under the top bar */
+.ann-pill{position:fixed;z-index:6;left:50%;transform:translateX(-50%);bottom:calc(env(safe-area-inset-bottom,0px) + 74px);display:flex;align-items:center;gap:10px;max-width:min(92vw,460px);
+  padding:9px 14px 9px 10px;border-radius:14px;border:1px solid rgba(255,255,255,.16);background:rgba(14,14,18,.78);-webkit-backdrop-filter:blur(10px);backdrop-filter:blur(10px);
+  color:#fff;text-align:left;cursor:pointer;box-shadow:0 10px 30px rgba(0,0,0,.45)}
+.ann-pill.hot{border-color:rgba(255,255,255,.35);animation:annPulse 2.4s ease-in-out 3}
+@keyframes annPulse{50%{box-shadow:0 0 0 6px rgba(255,255,255,.12),0 10px 30px rgba(0,0,0,.45)}}
+.ann-pin{font-size:20px}
+.ann-txt{min-width:0;display:flex;flex-direction:column}
+.ann-txt small{font-size:10.5px;letter-spacing:.1em;text-transform:uppercase;opacity:.7}
+.ann-txt b{font-size:14.5px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.ann-pill i{font-style:normal;flex:none;min-width:20px;height:20px;border-radius:10px;background:var(--accent,#B30838);font:700 12px/20px system-ui;text-align:center}
+body:not([data-tab="clubhouse"]) .ann-pill{display:none}
+@media (min-width:761px){.ann-pill{bottom:84px}}
+.ann-sheet h3{padding-right:96px}
 @media (max-width:760px){ .tabs a[data-tab="leaders"]::before{-webkit-mask-image:url("data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20viewBox%3D%220%200%2024%2024%22%20fill%3D%22none%22%20stroke%3D%22black%22%20stroke-width%3D%222%22%20stroke-linecap%3D%22round%22%20stroke-linejoin%3D%22round%22%3E%3Cpath%20d%3D%22M8%2021h8%22%2F%3E%3Cpath%20d%3D%22M12%2017v4%22%2F%3E%3Cpath%20d%3D%22M7%204h10v5a5%205%200%200%201-10%200z%22%2F%3E%3Cpath%20d%3D%22M17%205h3v2a3%203%200%200%201-3%203%22%2F%3E%3Cpath%20d%3D%22M7%205H4v2a3%203%200%200%200%203%203%22%2F%3E%3C%2Fsvg%3E");mask-image:url("data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20viewBox%3D%220%200%2024%2024%22%20fill%3D%22none%22%20stroke%3D%22black%22%20stroke-width%3D%222%22%20stroke-linecap%3D%22round%22%20stroke-linejoin%3D%22round%22%3E%3Cpath%20d%3D%22M8%2021h8%22%2F%3E%3Cpath%20d%3D%22M12%2017v4%22%2F%3E%3Cpath%20d%3D%22M7%204h10v5a5%205%200%200%201-10%200z%22%2F%3E%3Cpath%20d%3D%22M17%205h3v2a3%203%200%200%201-3%203%22%2F%3E%3Cpath%20d%3D%22M7%205H4v2a3%203%200%200%200%203%203%22%2F%3E%3C%2Fsvg%3E")} }
 @media (max-width:760px){ .tabs a[data-tab="clubhouse"]::before{-webkit-mask-image:url("data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20viewBox%3D%220%200%2024%2024%22%20fill%3D%22none%22%20stroke%3D%22black%22%20stroke-width%3D%222%22%20stroke-linecap%3D%22round%22%20stroke-linejoin%3D%22round%22%3E%3Cpath%20d%3D%22M3%2021h18%22%2F%3E%3Cpath%20d%3D%22M5%2021V8l7-4%207%204v13%22%2F%3E%3Cpath%20d%3D%22M10%2021v-6h4v6%22%2F%3E%3C%2Fsvg%3E");mask-image:url("data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20viewBox%3D%220%200%2024%2024%22%20fill%3D%22none%22%20stroke%3D%22black%22%20stroke-width%3D%222%22%20stroke-linecap%3D%22round%22%20stroke-linejoin%3D%22round%22%3E%3Cpath%20d%3D%22M3%2021h18%22%2F%3E%3Cpath%20d%3D%22M5%2021V8l7-4%207%204v13%22%2F%3E%3Cpath%20d%3D%22M10%2021v-6h4v6%22%2F%3E%3C%2Fsvg%3E")} }
 @media (max-width:760px){ .tabs a[data-tab="cheats"]::before{-webkit-mask-image:url("data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20viewBox%3D%220%200%2024%2024%22%20fill%3D%22none%22%20stroke%3D%22black%22%20stroke-width%3D%222%22%20stroke-linecap%3D%22round%22%20stroke-linejoin%3D%22round%22%3E%3Cpolyline%20points%3D%224%2017%2010%2011%204%205%22%2F%3E%3Cline%20x1%3D%2212%22%20y1%3D%2219%22%20x2%3D%2220%22%20y2%3D%2219%22%2F%3E%3C%2Fsvg%3E");mask-image:url("data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20viewBox%3D%220%200%2024%2024%22%20fill%3D%22none%22%20stroke%3D%22black%22%20stroke-width%3D%222%22%20stroke-linecap%3D%22round%22%20stroke-linejoin%3D%22round%22%3E%3Cpolyline%20points%3D%224%2017%2010%2011%204%205%22%2F%3E%3Cline%20x1%3D%2212%22%20y1%3D%2219%22%20x2%3D%2220%22%20y2%3D%2219%22%2F%3E%3C%2Fsvg%3E")} }
@@ -8006,6 +8043,120 @@ function cheatsBind(body){
     renderCheats();
   };
 }
+
+
+/* ===== v12: team announcements (coaches post, everyone sees, optional push) ===== */
+let ANN=[], ANN_STATE=null, _annP=null;
+const annSeenAt=()=>{ try{ return localStorage.getItem('clyAnnSeen')||''; }catch(e){ return ''; } };
+const annMarkSeen=()=>{ if(ANN[0]) try{ localStorage.setItem('clyAnnSeen',ANN[0].created_at); }catch(e){} };
+const annUnread=()=>ANN.filter(a=>a.created_at>annSeenAt()).length;
+function annWhen(iso){ const d=new Date(iso), now=new Date(), m=Math.round((now-d)/6e4);
+  if(m<1) return 'just now'; if(m<60) return m+' min ago'; const h=Math.round(m/60); if(h<24) return h+(h===1?' hour ago':' hours ago');
+  const days=Math.round(h/24); if(days<7) return days===1?'yesterday':days+' days ago';
+  return d.toLocaleDateString('en-US',{month:'short',day:'numeric'}); }
+function loadAnn(force){
+  if(_annP&&!force) return _annP;
+  _annP=(async()=>{
+    if(!cloudOn()){ try{ ANN=JSON.parse(localStorage.getItem('clyAnnLocal')||'[]'); }catch(e){ ANN=[]; } ANN_STATE=true; return ANN; }
+    try{ const r=await sb.from('announcements').select('id,title,body,author,created_at,push,pushed_at').order('created_at',{ascending:false}).limit(25);
+      if(r.error){ ANN_STATE=false; } else { ANN=r.data||[]; ANN_STATE=true; } }catch(e){ ANN_STATE=false; }
+    return ANN;
+  })();
+  return _annP;
+}
+async function annPost(title,body,push){
+  const row={title,body,author:(S&&S.name)||'Coach',push:!!push};
+  if(!cloudOn()){ ANN.unshift({...row,id:Date.now(),created_at:new Date().toISOString()}); try{ localStorage.setItem('clyAnnLocal',JSON.stringify(ANN)); }catch(e){} return {ok:true}; }
+  const r=await sb.from('announcements').insert(row).select('id');
+  if(r.error||!r.data||!r.data.length) return {ok:false,err:r.error&&r.error.message};
+  await loadAnn(true); return {ok:true};
+}
+async function annDelete(id){
+  if(!cloudOn()){ ANN=ANN.filter(a=>a.id!==id); try{ localStorage.setItem('clyAnnLocal',JSON.stringify(ANN)); }catch(e){} return {ok:true}; }
+  const r=await sb.from('announcements').delete().eq('id',id).select('id');
+  await loadAnn(true); return {ok:!r.error&&r.data&&r.data.length>0};
+}
+const annCoach=()=>typeof isCoachUser==='function'&&isCoachUser()&&!window.VIEW_AS;
+function annItem(a,coach){
+  return `<article class="ann-it ${a.created_at>annSeenAt()?'new':''}">
+    <div class="ann-top"><b>${esc(a.title)}</b>${coach?`<button type="button" class="ann-del" data-anndel="${esc(String(a.id))}" aria-label="Delete announcement">✕</button>`:''}</div>
+    ${a.body?`<p>${esc(a.body).replace(/\n/g,'<br>')}</p>`:''}
+    <small>${esc(a.author||'Coach')} · ${annWhen(a.created_at)}${coach&&a.push?(a.pushed_at?' · 🔔 sent':' · 🔔 sending…'):''}</small></article>`;
+}
+function annCard(){
+  const coach=annCoach();
+  if(!ANN.length&&!coach) return '';
+  const list=ANN.slice(0,3);
+  return `<section class="panel ann-card">
+    <div class="ann-h"><span>📌 Announcements</span>${coach?'<button type="button" class="btn sm" data-annnew>+ New</button>':''}</div>
+    ${list.length?list.map(a=>annItem(a,coach)).join(''):'<p class="hint">Nothing posted yet. Tap + New to post one.</p>'}
+    ${ANN.length>3?'<button type="button" class="btn ghost sm ann-all" data-annall>See all</button>':''}
+  </section>`;
+}
+function annSheetAll(){
+  const coach=annCoach();
+  showSheet(`<div class="ann-sheet"><p class="ws-eye">From the staff</p><h3>📌 Announcements</h3>
+    ${coach?'<button type="button" class="btn" data-annnew>+ New announcement</button>':''}
+    <div class="ann-list">${ANN.length?ANN.map(a=>annItem(a,coach)).join(''):'<p class="hint">Nothing posted yet.</p>'}</div></div>`);
+  annMarkSeen(); annRefreshBadges();
+}
+function annCompose(){
+  showSheet(`<div class="ann-sheet"><p class="ws-eye">Coach</p><h3>New announcement</h3>
+    <label class="ann-f">Headline<input type="text" id="annT" maxlength="70" placeholder="Practice moved to 3:30"></label>
+    <label class="ann-f">Details<textarea id="annB" rows="4" maxlength="600" placeholder="Optional"></textarea></label>
+    <label class="ann-chk"><input type="checkbox" id="annP" checked> <span>Also send a notification to everyone's phone<small>Goes out within about 10 minutes to players who allowed notifications.</small></span></label>
+    <div class="push-act"><button type="button" class="btn" id="annGo">Post</button><button type="button" class="btn ghost" id="annX">Cancel</button></div></div>`);
+  setTimeout(()=>{ const t=document.getElementById('annT'); t&&t.focus(); },50);
+  document.getElementById('annX').onclick=()=>closeSheet();
+  document.getElementById('annGo').onclick=async e=>{
+    const title=document.getElementById('annT').value.trim(), body=document.getElementById('annB').value.trim(), push=document.getElementById('annP').checked;
+    if(!title) return toast('Add a headline first');
+    e.target.disabled=true; e.target.textContent='Posting…';
+    const r=await annPost(title,body,push);
+    if(!r.ok){ e.target.disabled=false; e.target.textContent='Post'; return toast('Could not post'+(r.err?': '+r.err:'')); }
+    closeSheet(); annMarkSeen(); toast(push?'Posted. Notification goes out shortly.':'Posted'); annRerender();
+  };
+}
+function annRefreshBadges(){
+  const n=annUnread();
+  document.querySelectorAll('.ann-pill i').forEach(i=>{ i.hidden=!n; i.textContent=n; });
+}
+function annRerender(){
+  const h=document.getElementById('tab-home'); if(h&&!h.hidden) renderHome();
+  const c=document.getElementById('tab-clubhouse'); if(c&&!c.hidden) annClubPill();
+}
+function annClubPill(){
+  const room=document.getElementById('clubBody'); if(!room) return;
+  room.querySelector('.ann-pill')?.remove();
+  const a=ANN[0], coach=annCoach(); if(!a&&!coach) return;
+  const n=annUnread();
+  room.insertAdjacentHTML('beforeend',`<button type="button" class="ann-pill ${n?'hot':''}" data-annall>
+    <span class="ann-pin">📌</span><span class="ann-txt"><small>${a?'Announcement · '+annWhen(a.created_at):'Announcements'}</small><b>${a?esc(a.title):'Post one for the team'}</b></span><i ${n?'':'hidden'}>${n}</i></button>`);
+}
+const _rc12=renderClubhouse; renderClubhouse=function(allowed){
+  _rc12(allowed);
+  annClubPill();
+  if(ANN_STATE===null) loadAnn().then(()=>{ const c=document.getElementById('tab-clubhouse'); if(c&&!c.hidden) annClubPill(); });
+};
+const _rh12=renderHome; renderHome=function(){
+  _rh12.apply(this,arguments);
+  const el=document.getElementById('homeBody'); if(!el||document.getElementById('tab-home').hidden) return;
+  if(ANN_STATE===null){ loadAnn().then(()=>{ const h=document.getElementById('tab-home'); if(h&&!h.hidden) renderHome(); }); return; }
+  if(VIEWING&&VIEWING()) return;
+  const html=annCard(); if(!html) return;
+  const wl=el.querySelector('.welcome'); (wl||el).insertAdjacentHTML(wl?'afterend':'afterbegin',html);
+  if(ANN.length) setTimeout(()=>{ annMarkSeen(); annRefreshBadges(); },1500);
+};
+document.addEventListener('click',async e=>{
+  if(e.target.closest('[data-annnew]')){ e.preventDefault(); annCompose(); return; }
+  if(e.target.closest('[data-annall]')){ e.preventDefault(); if(ANN_STATE===null) await loadAnn(); annSheetAll(); return; }
+  const d=e.target.closest('[data-anndel]'); if(d){ e.preventDefault();
+    if(!d.dataset.arm){ d.dataset.arm='1'; d.textContent='Delete?'; d.classList.add('arm'); setTimeout(()=>{ if(d.isConnected){ delete d.dataset.arm; d.textContent='✕'; d.classList.remove('arm'); } },2500); return; }
+    const id=isNaN(+d.dataset.anndel)?d.dataset.anndel:+d.dataset.anndel; const r=await annDelete(id);
+    toast(r.ok?'Deleted':'Could not delete'); const inSheet=d.closest('.ann-sheet'); if(inSheet) annSheetAll(); annRerender(); }
+});
+// re-check when the app comes back to the front
+document.addEventListener('visibilitychange',()=>{ if(document.visibilityState==='visible'&&ANN_STATE!==null) loadAnn(true).then(()=>{ annRefreshBadges(); annRerender(); }); });
 
 // ===== Tabs =====
 function showTab(){
