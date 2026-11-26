@@ -2,7 +2,7 @@
 <html lang="en" data-theme="dark">
 <head>
 <script>/* STEP 3: paste your Supabase Project URL and Publishable key between the quotes on the next 2 lines */
-window.APP_BUILD='20261125164133';
+window.APP_BUILD='20261126062913';
 window.WLN_SUPABASE_URL = 'https://bxnxbyulbjnlkydcmppn.supabase.co';
 window.WLN_SUPABASE_KEY = 'sb_publishable_8H49HwXFPXTBM4KvjLSGGg_J0J2ZhGI';
 </script>
@@ -2278,6 +2278,58 @@ body.xmas .club-card{box-shadow:0 0 0 2px #C8102E,0 0 18px rgba(255,210,63,.35)}
 /* Today: checked off but no throwing log */
 .td-chk{margin-top:6px;padding:6px 9px;border-radius:8px;background:rgba(46,160,67,.10);border:1px dashed rgba(31,122,58,.45);color:#1F5E31;font:600 12.5px var(--body);display:flex;flex-wrap:wrap;gap:4px 8px;align-items:center}
 .td-chk b{color:#9A5B00;background:rgba(242,169,0,.18);padding:1px 7px;border-radius:999px;font-weight:700}
+/* ===== v10: badges ===== */
+.bd-head{margin:2px 0 10px;color:var(--muted,#9aa7bd);font:600 13px var(--body)}.bd-head b{color:#F2C14E;font-size:18px}
+.bd-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(132px,1fr));gap:10px}
+.bd{position:relative;display:flex;flex-direction:column;align-items:center;text-align:center;gap:3px;padding:12px 8px 10px;border-radius:14px;
+  background:linear-gradient(180deg,rgba(255,255,255,.05),rgba(255,255,255,.02));border:1px solid rgba(255,255,255,.08);color:#8792A6;filter:grayscale(1);opacity:.75}
+.bd i{font-style:normal;font-size:30px;line-height:1.1}
+.bd b{font:800 13px/1.15 var(--display);letter-spacing:.04em;text-transform:uppercase;color:#C9D1DE}
+.bd span{font:500 11px/1.3 var(--body)}
+.bd small{font:600 10.5px var(--body);color:#9AA6BA}
+.bd-bar{width:80%;height:5px;border-radius:9px;background:rgba(255,255,255,.1);overflow:hidden;margin-top:4px}.bd-bar u{display:block;height:100%;background:var(--tc)}
+.bd.got{filter:none;opacity:1;color:#D9E0EA;border-color:color-mix(in srgb,var(--tc) 55%,transparent);
+  background:radial-gradient(120% 90% at 50% 0%,color-mix(in srgb,var(--tc) 28%,transparent),rgba(10,20,40,.4));box-shadow:0 0 0 1px rgba(0,0,0,.25),0 8px 18px rgba(0,0,0,.35),0 0 18px color-mix(in srgb,var(--tc) 25%,transparent)}
+.bd.got b{color:#fff}
+.bd.got i{filter:drop-shadow(0 3px 6px rgba(0,0,0,.5))}
+.bd em{font:800 9.5px var(--body);letter-spacing:.16em;text-transform:uppercase;color:var(--tc);margin-top:2px}
+.bd.got.t-l{animation:bdLegend 3s ease-in-out infinite}
+@keyframes bdLegend{0%,100%{box-shadow:0 8px 18px rgba(0,0,0,.35),0 0 14px rgba(185,140,255,.3)}50%{box-shadow:0 8px 18px rgba(0,0,0,.35),0 0 28px rgba(185,140,255,.65)}}
+/* unlock pop-up */
+.bd-pop{position:fixed;inset:0;z-index:125;display:grid;place-items:center;padding:18px;background:radial-gradient(circle at 50% 40%,rgba(242,193,78,.25),rgba(5,10,22,.92) 60%);animation:tgIn .35s ease}
+.bd-pop.out{animation:tgOut .35s ease forwards}
+.bd-pop-card{width:min(460px,100%);text-align:center;color:#fff;padding:22px 18px 18px;border-radius:20px;background:linear-gradient(180deg,#0B2A5C,#06173a);border:2px solid #F2C14E;box-shadow:0 24px 60px rgba(0,0,0,.6),0 0 50px rgba(242,193,78,.3);animation:tgPop .6s cubic-bezier(.2,1.4,.4,1)}
+.bd-pop-eye{margin:0 0 14px;font:800 clamp(20px,6vw,28px)/1 var(--display);letter-spacing:.12em;color:#F2C14E;text-shadow:0 0 18px rgba(242,193,78,.6);animation:bdFlash 1.2s ease-in-out infinite alternate}
+@keyframes bdFlash{from{opacity:.85}to{opacity:1;text-shadow:0 0 28px rgba(242,193,78,.9)}}
+.bd-pop-list{display:grid;grid-template-columns:repeat(auto-fit,minmax(120px,1fr));gap:10px;margin-bottom:14px}
+.bd-pop-list .bd{animation:bdIn .5s cubic-bezier(.2,1.5,.4,1) both}
+.bd-pop-list .bd:nth-child(2){animation-delay:.12s}.bd-pop-list .bd:nth-child(3){animation-delay:.24s}.bd-pop-list .bd:nth-child(4){animation-delay:.36s}.bd-pop-list .bd:nth-child(5){animation-delay:.48s}.bd-pop-list .bd:nth-child(6){animation-delay:.6s}
+@keyframes bdIn{from{transform:scale(.4) rotate(-8deg);opacity:0}to{transform:none;opacity:1}}
+.bd-more{margin:-4px 0 12px;color:#AEB9CC;font-size:13px}
+.bd-pop-card .btn{width:100%;background:linear-gradient(90deg,#F2C14E,#E07B24);color:#1a1205;border:0;font-weight:800;font-size:17px}
+.bd-pop-card small{display:block;margin-top:10px;color:#AEB9CC}
+/* easter eggs */
+.egg-logo{position:absolute;z-index:2;left:43%;top:4%;width:14%;height:17%;cursor:default;-webkit-tap-highlight-color:transparent}
+@media (max-aspect-ratio:1/1){.egg-logo{left:26%;top:13%;width:48%;height:15%}}
+.egg-toast{position:fixed;z-index:130;left:50%;top:calc(16px + env(safe-area-inset-top));transform:translateX(-50%);display:flex;flex-direction:column;align-items:center;gap:2px;padding:12px 20px;border-radius:16px;
+  background:linear-gradient(135deg,#2a1a4a,#4b2a7a);border:2px solid #B98CFF;color:#fff;box-shadow:0 14px 34px rgba(0,0,0,.55),0 0 24px rgba(185,140,255,.45);text-align:center;animation:eggIn .5s cubic-bezier(.2,1.5,.4,1)}
+.egg-toast b{font:800 15px var(--display);letter-spacing:.1em}.egg-toast span{font:600 14px var(--body)}.egg-toast small{color:#D6C4FF;font-size:12px}
+.egg-toast.out{transition:.4s;opacity:0;transform:translateX(-50%) translateY(-20px)}
+@keyframes eggIn{from{transform:translateX(-50%) scale(.5);opacity:0}to{transform:translateX(-50%) scale(1);opacity:1}}
+.egg-rain{position:fixed;inset:0;z-index:129;pointer-events:none;overflow:hidden}
+.egg-rain img{position:absolute;top:-80px;animation:eggFall linear forwards;filter:drop-shadow(0 4px 6px rgba(0,0,0,.5))}
+@keyframes eggFall{to{transform:translateY(115vh) rotate(var(--r))}}
+.club-card.egg-spin{animation:eggSpin 1s cubic-bezier(.3,1.4,.5,1)}
+@keyframes eggSpin{from{transform:rotateY(0)}to{transform:rotateY(360deg)}}
+.egg-runner{position:fixed;z-index:129;bottom:12%;left:-200px;width:170px;pointer-events:none;animation:eggRun 3s linear forwards;filter:drop-shadow(0 8px 8px rgba(0,0,0,.5))}
+@keyframes eggRun{0%{transform:translateX(0) translateY(0)}25%{transform:translateX(30vw) translateY(-30px)}50%{transform:translateX(60vw) translateY(0)}75%{transform:translateX(90vw) translateY(-30px)}100%{transform:translateX(calc(100vw + 260px)) translateY(0)}}
+.tk2.golden img{filter:sepia(1) saturate(4) hue-rotate(-12deg) brightness(1.15) drop-shadow(0 0 16px rgba(255,210,63,.9))}
+body.egg-8bit{image-rendering:pixelated}
+body.egg-8bit #clubBody,body.egg-8bit main{filter:contrast(1.35) saturate(1.6)}
+body.egg-8bit *{font-family:"Courier New",monospace!important;letter-spacing:.06em}
+/* cheats */
+.ct-run2{background:#79c0ff;box-shadow:0 0 14px rgba(121,192,255,.45)}
+.ct-tier{font-weight:700}
 @media (max-width:760px){ .tabs a[data-tab="leaders"]::before{-webkit-mask-image:url("data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20viewBox%3D%220%200%2024%2024%22%20fill%3D%22none%22%20stroke%3D%22black%22%20stroke-width%3D%222%22%20stroke-linecap%3D%22round%22%20stroke-linejoin%3D%22round%22%3E%3Cpath%20d%3D%22M8%2021h8%22%2F%3E%3Cpath%20d%3D%22M12%2017v4%22%2F%3E%3Cpath%20d%3D%22M7%204h10v5a5%205%200%200%201-10%200z%22%2F%3E%3Cpath%20d%3D%22M17%205h3v2a3%203%200%200%201-3%203%22%2F%3E%3Cpath%20d%3D%22M7%205H4v2a3%203%200%200%200%203%203%22%2F%3E%3C%2Fsvg%3E");mask-image:url("data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20viewBox%3D%220%200%2024%2024%22%20fill%3D%22none%22%20stroke%3D%22black%22%20stroke-width%3D%222%22%20stroke-linecap%3D%22round%22%20stroke-linejoin%3D%22round%22%3E%3Cpath%20d%3D%22M8%2021h8%22%2F%3E%3Cpath%20d%3D%22M12%2017v4%22%2F%3E%3Cpath%20d%3D%22M7%204h10v5a5%205%200%200%201-10%200z%22%2F%3E%3Cpath%20d%3D%22M17%205h3v2a3%203%200%200%201-3%203%22%2F%3E%3Cpath%20d%3D%22M7%205H4v2a3%203%200%200%200%203%203%22%2F%3E%3C%2Fsvg%3E")} }
 @media (max-width:760px){ .tabs a[data-tab="clubhouse"]::before{-webkit-mask-image:url("data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20viewBox%3D%220%200%2024%2024%22%20fill%3D%22none%22%20stroke%3D%22black%22%20stroke-width%3D%222%22%20stroke-linecap%3D%22round%22%20stroke-linejoin%3D%22round%22%3E%3Cpath%20d%3D%22M3%2021h18%22%2F%3E%3Cpath%20d%3D%22M5%2021V8l7-4%207%204v13%22%2F%3E%3Cpath%20d%3D%22M10%2021v-6h4v6%22%2F%3E%3C%2Fsvg%3E");mask-image:url("data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20viewBox%3D%220%200%2024%2024%22%20fill%3D%22none%22%20stroke%3D%22black%22%20stroke-width%3D%222%22%20stroke-linecap%3D%22round%22%20stroke-linejoin%3D%22round%22%3E%3Cpath%20d%3D%22M3%2021h18%22%2F%3E%3Cpath%20d%3D%22M5%2021V8l7-4%207%204v13%22%2F%3E%3Cpath%20d%3D%22M10%2021v-6h4v6%22%2F%3E%3C%2Fsvg%3E")} }
 @media (max-width:760px){ .tabs a[data-tab="cheats"]::before{-webkit-mask-image:url("data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20viewBox%3D%220%200%2024%2024%22%20fill%3D%22none%22%20stroke%3D%22black%22%20stroke-width%3D%222%22%20stroke-linecap%3D%22round%22%20stroke-linejoin%3D%22round%22%3E%3Cpolyline%20points%3D%224%2017%2010%2011%204%205%22%2F%3E%3Cline%20x1%3D%2212%22%20y1%3D%2219%22%20x2%3D%2220%22%20y2%3D%2219%22%2F%3E%3C%2Fsvg%3E");mask-image:url("data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20viewBox%3D%220%200%2024%2024%22%20fill%3D%22none%22%20stroke%3D%22black%22%20stroke-width%3D%222%22%20stroke-linecap%3D%22round%22%20stroke-linejoin%3D%22round%22%3E%3Cpolyline%20points%3D%224%2017%2010%2011%204%205%22%2F%3E%3Cline%20x1%3D%2212%22%20y1%3D%2219%22%20x2%3D%2220%22%20y2%3D%2219%22%2F%3E%3C%2Fsvg%3E")} }
@@ -6800,8 +6852,8 @@ function showCard(st,opt){
   const cell=(big,lbl)=>`<div class="sc-i"><b>${big||'—'}</b><span>${lbl}</span></div>`;
   const edit=opt.editable;
   const photo=st.photo?`<img src="${esc(st.photo)}" alt="">`:`<div class="sc-ph-none"><span>${esc(initials(nm))}</span></div>`;
-  const tabs=[['stats','Season Stats'],['outings','Recent Outings'],['quirks','Quirks'],['awards','Awards'],['shapes','Pitch Shapes']];
-  const body=cardTab==='stats'?cardStats(r):cardTab==='outings'?cardOutings(pid):cardTab==='quirks'?cardQuirks(st,edit):cardTab==='awards'?cardAwards(st,pid):`<div class="sc-shapes">${typeof shapesBlock==='function'?shapesBlock(st)||'<p class="sc-empty">No Rapsodo shapes yet.</p>':''}</div>`;
+  const tabs=[['stats','Season Stats'],['outings','Recent Outings'],['quirks','Quirks'],['awards','Awards'],['badges','Badges'],['shapes','Pitch Shapes']];
+  const body=cardTab==='stats'?cardStats(r):cardTab==='outings'?cardOutings(pid):cardTab==='quirks'?cardQuirks(st,edit):cardTab==='awards'?cardAwards(st,pid):cardTab==='badges'?cardBadges(st):`<div class="sc-shapes">${typeof shapesBlock==='function'?shapesBlock(st)||'<p class="sc-empty">No Rapsodo shapes yet.</p>':''}</div>`;
   return `<section class="showcard" data-pid="${esc(pid||'')}">
     <div class="sc-top">
       <div class="sc-cardwrap"><div class="sc-card">
@@ -7474,7 +7526,7 @@ const _rc7=renderClubhouse; renderClubhouse=function(allowed){
 };
 
 // ===== v7: Coach's Cheats + who allowed notifications =====
-let TEAM_SET={push_on:true,tg:'auto',xmas:'off'}, TEAM_SET_STATE=null; // null=not loaded, true=ok, false=table missing
+let TEAM_SET={push_on:true,tg:'auto',xmas:'off',badges_off:[],push_ask_v:0}, TEAM_SET_STATE=null; // null=not loaded, true=ok, false=table missing
 const cloudOn=()=>!!(window.CLOUD_MODE&&typeof sb!=='undefined'&&sb);
 let _tsP=null;
 function loadTeamSet(force){
@@ -7552,6 +7604,7 @@ function renderCheats(){
   line(`<span class="ct-k">const</span> <span class="ct-v">MORNING_REMINDER_9AM</span> = ${ctBool('push_on',TEAM_SET.push_on!==false)};  <span class="ct-c">// daily push to every pitcher who allowed it</span>`);
   line(`<span class="ct-k">const</span> <span class="ct-v">CHRISTMAS_MODE</span> = <button type="button" class="ct-tok ct-str" data-ct="xmas">'${TEAM_SET.xmas||'off'}'</button>;  <span class="ct-c">// tree, presents, lights, snow · 'off' · 'on' · 'auto' = all of December</span>`);
   line(`<span class="ct-k">const</span> <span class="ct-v">THANKSGIVING_MODE</span> = <button type="button" class="ct-tok ct-str" data-ct="tg">'${TEAM_SET.tg||'auto'}'</button>;  <span class="ct-c">// 'auto' = Nov 15–30 · 'on' · 'off'</span>`);
+  if(typeof cheatsCodes==='function') cheatsCodes(line);
   line();
   line(`<button type="button" class="ct-run" id="ctSave">▶ save</button><span class="ct-f">()</span>;  ${CH_DIRTY?'<span class="ct-warn">// ● unsaved changes</span>':'<span class="ct-c">// all changes saved</span>'}`);
   if(CH_OUT) line(`<span class="ct-out">${CH_OUT}</span>`);
@@ -7566,12 +7619,14 @@ function renderCheats(){
     line(`&nbsp;&nbsp;<span class="ct-s">${nm}</span>${sp}<span class="${cls}">${lbl}</span>,<span class="ct-c ct-why${r.st==='noacct'||r.st==='none'?' ct-why-min':''}">  // ${why}${r.at&&r.st!=='none'?' · '+esc(acAgo(r.at)):''}</span>`); });
   line(`};`);
   line();
+  if(typeof cheatsExtra==='function') cheatsExtra(line);
   line(`<span class="ct-c">// tip: DENIED = Settings › Notifications › Cleary Pitching › Allow</span>`);
   line(`<span class="ct-c">// tip: SAFARI_ONLY = Share › Add to Home Screen, open it from there</span>`);
   line(`<span class="ct-cur">█</span>`);
   body.innerHTML=`<div class="ct-term">
     <div class="ct-bar"><i></i><i></i><i></i><b>coach_cheats.js</b><span class="ct-badge">CHEATS ENABLED</span></div>
     <div class="ct-code">${L.join('')}</div></div>`;
+  if(typeof cheatsBind==='function') cheatsBind(body);
   body.querySelectorAll('[data-ct]').forEach(b=>b.onclick=()=>{
     const k=b.dataset.ct;
     if(k==='push_on') TEAM_SET.push_on=!(TEAM_SET.push_on!==false);
@@ -7741,6 +7796,187 @@ const _tgSplash9=tgSplash; tgSplash=function(t){
 };
 // preload so the room doesn't pop in
 (()=>{ try{ if(tgOn()) ['tban','feast','pumpkins','turkey'].forEach(n=>{ const i=new Image(); i.src=HOL_IMG(n); }); }catch(e){} })();
+
+// ===== v10: badges, easter eggs, re-send the reminder pop-up =====
+const BDG_FIELDS={preThrow:'pre',plyo:'plyo',mobility:'mob',mobility2:'mob',post:'post'};
+const TGIVING=['2026-11-26','2027-11-25','2028-11-23','2029-11-22'];
+const EGGS={logo:'Tapped the CU logo on the wall 5 times',hold:'Held their clubhouse card for 2 seconds',gobble:'Typed "gobble" in a text box',konami:'Entered the Konami code',mascot:'Tapped the turkey (or the tree) 10 times',midnight:'Opened the app after midnight'};
+const nOf=v=>{ const n=parseFloat(v); return isFinite(n)?n:0; };
+function badgeStats(st){
+  const logs=st.logs||{}, done=st.done||{}, doneAt=st.doneAt||{};
+  const lk=Object.keys(logs).filter(k=>/^\d{4}-\d\d-\d\d$/.test(k)).sort();
+  const days=new Set(lk); Object.keys(done).forEach(k=>{ if((done[k]||[]).length&&/^\d{4}-\d\d-\d\d$/.test(k)) days.add(k); });
+  const ds=[...days].sort();
+  let best=0,run=0,prev=null;
+  ds.forEach(k=>{ const t=parse(k); run=(prev&&Math.round((t-prev)/864e5)===1)?run+1:1; prev=t; if(run>best) best=run; });
+  const x={logs:lk.length,streak:best,full:0,cat:{pre:0,plyo:0,mob:0,post:0},early:new Set(),night:0,weekend:0,maxT:0,totT:0,high:0,pain:0,notes:0,arm9:0,match:0,tday:0};
+  Object.keys(done).forEach(k=>{
+    const d=done[k]||[]; if(!d.length) return;
+    let p=null; try{ p=planFor(st,k); }catch(e){}
+    if(p){ const names=acNames(p); if(names.length&&names.every(n=>d.includes(n))) x.full++;
+      for(const f in BDG_FIELDS){ if(p[f]&&d.includes(p[f])) x.cat[BDG_FIELDS[f]]++; } }
+    const at=doneAt[k]||{}; for(const n in at){ const v=at[n]; if(typeof v!=='string') continue; const h=new Date(v).getHours(); if(h<9) x.early.add(k); if(h>=22) x.night++; }
+  });
+  ds.forEach(k=>{ const t=parse(k); if(t.getDay()===6&&days.has(ymd(addDays(t,1)))) x.weekend++; if(TGIVING.includes(k)) x.tday++; });
+  lk.forEach(k=>{ const e=logs[k]||{}; const t=nOf(e.t); x.totT+=t; if(t>x.maxT) x.maxT=t; if(e.i==='high') x.high++; if(e.pn==='y') x.pain++; if(e.n&&String(e.n).trim()) x.notes++; if(nOf(e.a)>=9) x.arm9++;
+    try{ const p=planFor(st,k); if(p&&e.i&&p.intensity===e.i) x.match++; }catch(err){} });
+  x.eggs=Object.keys(st.eggs||{}).length; x.photo=!!st.photo;
+  return x;
+}
+const BADGES=[
+ ['opening_day','🎬','Opening Day','Log your first throwing day','b',x=>[x.logs,1]],
+ ['three_peat','🔥','Three-Peat','3 days in a row of work','b',x=>[x.streak,3]],
+ ['full_week','📅','Full Week','7-day streak','s',x=>[x.streak,7]],
+ ['iron_arm','🦾','Iron Arm','14-day streak','g',x=>[x.streak,14]],
+ ['ironman','🏆','Ironman','30-day streak','l',x=>[x.streak,30]],
+ ['double_digits','🔟','Double Digits','10 throwing logs','b',x=>[x.logs,10]],
+ ['workhorse','🐎','Workhorse','25 throwing logs','s',x=>[x.logs,25]],
+ ['logbook_legend','📚','Logbook Legend','50 throwing logs','g',x=>[x.logs,50]],
+ ['full_send','✅','Full Send','Check off every daily-work item in one day','b',x=>[x.full,1]],
+ ['locked_in','🔒','Locked In','Full daily work on 5 days','s',x=>[x.full,5]],
+ ['warm_ready','🌡️','Warm & Ready','Check off pre-throw 10 times','s',x=>[x.cat.pre,10]],
+ ['plyo_pro','🏐','Plyo Pro','Check off plyos 10 times','s',x=>[x.cat.plyo,10]],
+ ['rubber_band','🧘','Rubber Band','Check off mobility 15 times','s',x=>[x.cat.mob,15]],
+ ['arm_care','🧊','Arm Care King','Check off post-throw recovery 10 times','s',x=>[x.cat.post,10]],
+ ['early_bird','🌅','Early Bird','Check off work before 9 AM','b',x=>[x.early.size,1]],
+ ['sunrise_squad','☀️','Sunrise Squad','Work done before 9 AM on 5 days','g',x=>[x.early.size,5]],
+ ['night_owl','🦉','Night Owl','Check off work after 10 PM','b',x=>[x.night,1]],
+ ['weekend_warrior','🗓️','Weekend Warrior','Put in work Saturday and Sunday','s',x=>[x.weekend,1]],
+ ['century_club','💯','Century Club','Log 100+ throws in one day','s',x=>[x.maxT,100]],
+ ['one_k','🎯','1K Club','1,000 logged throws','s',x=>[x.totT,1000]],
+ ['five_k','💪','5K Arm','5,000 logged throws','l',x=>[x.totT,5000]],
+ ['bullpen_rat','🐀','Bullpen Rat','Log 5 high-intensity days','s',x=>[x.high,5]],
+ ['honest_arm','🩹','Honest Arm','Log a sore day instead of skipping it','b',x=>[x.pain,1]],
+ ['journaler','✍️','Journaler','Write notes on 10 logs','s',x=>[x.notes,10]],
+ ['electric','⚡','Feeling Electric','Arm feel 9+ on 5 logs','s',x=>[x.arm9,5]],
+ ['by_the_book','📋','By the Book','Match the planned intensity 10 times','g',x=>[x.match,10]],
+ ['picture_day','📸','Picture Day','Upload a photo for your player card','b',x=>[x.photo?1:0,1]],
+ ['turkey_grind','🦃','Turkey Day Grind','Put in work on Thanksgiving','g',x=>[x.tday,1]],
+ ['secret_society','🥚','Secret Society','Find an easter egg in the app','s',x=>[x.eggs,1]],
+ ['egg_hunter','🕵️','Egg Hunter','Find 4 easter eggs','l',x=>[x.eggs,4]],
+];
+const TIER={b:['Bronze','#C9824A'],s:['Silver','#BFC7D2'],g:['Gold','#F2C14E'],l:['Legend','#B98CFF']};
+const badgeOn=id=>!(TEAM_SET.badges_off||[]).includes(id);
+function badgesFor(st){ const x=badgeStats(st); return BADGES.filter(b=>badgeOn(b[0])).map(b=>{ const [cur,goal]=b[5](x); return {id:b[0],ic:b[1],nm:b[2],ds:b[3],t:b[4],cur:Math.min(cur,goal),goal,got:cur>=goal}; }); }
+function cardBadges(st){
+  const L=badgesFor(st), got=L.filter(b=>b.got).length;
+  return `<div class="bd-head"><b>${got}</b> of ${L.length} badges</div><div class="bd-grid">${L.sort((a,b)=>b.got-a.got).map(b=>`<div class="bd ${b.got?'got':''} t-${b.t}" style="--tc:${TIER[b.t][1]}" title="${esc(b.ds)}">
+    <i>${b.got?b.ic:'🔒'}</i><b>${esc(b.nm)}</b><span>${esc(b.ds)}</span>${b.got?`<em>${TIER[b.t][0]}</em>`:b.goal>1?`<div class="bd-bar"><u style="width:${Math.round(100*b.cur/b.goal)}%"></u></div><small>${Math.floor(b.cur).toLocaleString()} / ${b.goal.toLocaleString()}</small>`:''}</div>`).join('')}</div>`;
+}
+// badge unlocked pop-up (players only)
+function badgeCheck(){
+  try{
+    if(typeof S==='undefined'||!S||!S.name||window.VIEW_AS||(isCoachUser()&&!VIEWING())) return;
+    const L=badgesFor(S).filter(b=>b.got), seen=S.bseen||[], fresh=L.filter(b=>!seen.includes(b.id));
+    if(!fresh.length||document.querySelector('.bd-pop,.tg-splash')) return;
+    S.bseen=[...new Set([...seen,...fresh.map(b=>b.id)])]; save();
+    const d=document.createElement('div'); d.className='bd-pop';
+    d.innerHTML=`<div class="bd-pop-card"><p class="bd-pop-eye">${fresh.length>1?fresh.length+' BADGES UNLOCKED':'BADGE UNLOCKED'}</p>
+      <div class="bd-pop-list">${fresh.slice(0,6).map(b=>`<div class="bd got t-${b.t}" style="--tc:${TIER[b.t][1]}"><i>${b.ic}</i><b>${esc(b.nm)}</b><span>${esc(b.ds)}</span><em>${TIER[b.t][0]}</em></div>`).join('')}</div>
+      ${fresh.length>6?`<p class="bd-more">+${fresh.length-6} more on your player card</p>`:''}
+      <button class="btn" type="button">Let's go</button><small>See them all: My Locker › Badges</small></div>`;
+    d.addEventListener('click',e=>{ if(e.target===d||e.target.closest('button')){ d.classList.add('out'); setTimeout(()=>d.remove(),350); } });
+    document.body.appendChild(d); try{ navigator.vibrate&&navigator.vibrate([30,40,30]); }catch(e){}
+  }catch(e){}
+}
+
+// ---------- easter eggs ----------
+function eggFound(id,msg){
+  if(typeof S==='undefined'||!S) return;
+  S.eggs=S.eggs||{}; const isNew=!S.eggs[id];
+  if(isNew){ S.eggs[id]=new Date().toISOString(); if(!window.VIEW_AS) save(); }
+  const n=Object.keys(S.eggs).length;
+  const t=document.createElement('div'); t.className='egg-toast'; t.innerHTML=`<b>🥚 ${isNew?'EASTER EGG FOUND':'Already found this one'}</b><span>${msg}</span><small>${n} of ${Object.keys(EGGS).length} found</small>`;
+  document.body.appendChild(t); setTimeout(()=>t.classList.add('out'),3200); setTimeout(()=>t.remove(),3700);
+  if(isNew) setTimeout(badgeCheck,3900);
+}
+function eggRain(src,n){
+  const w=document.createElement('div'); w.className='egg-rain';
+  for(let i=0;i<(n||28);i++){ const im=new Image(); im.src=src; im.style.cssText=`left:${Math.random()*96}%;animation-duration:${2.2+Math.random()*2}s;animation-delay:${Math.random()*1.2}s;width:${34+Math.random()*40}px;--r:${Math.random()*720-360}deg`; w.appendChild(im); }
+  document.body.appendChild(w); setTimeout(()=>w.remove(),5200);
+}
+const tapCount={}; function taps(key,need,win){ const now=Date.now(), t=tapCount[key]=(tapCount[key]||[]).filter(x=>now-x<(win||2500)); t.push(now); if(t.length>=need){ tapCount[key]=[]; return true; } return false; }
+document.addEventListener('click',e=>{
+  if(e.target.closest('.egg-logo')&&taps('logo',5)){ eggRain('cu-logo.svg',30); eggFound('logo','GO COUGARS! 🐾'); }
+  if(HOLD_FIRED&&e.target.closest('.club-card')){ HOLD_FIRED=false; e.preventDefault(); e.stopPropagation(); return; }
+  if(e.target.closest('.tk2, .hol-tree, .tk')&&taps('mascot',10,6000)){ const g=document.querySelector('.tk2'); if(g) g.classList.add('golden'); eggFound('mascot',g?'🏅 GOLDEN GOBBLER unlocked.':'🎄 You found Santa\'s favorite.'); }
+},true);
+let HOLD_T=null, HOLD_FIRED=false;
+document.addEventListener('pointerdown',e=>{ const c=e.target.closest('.club-card'); if(!c) return; clearTimeout(HOLD_T); HOLD_T=setTimeout(()=>{ HOLD_FIRED=true; c.classList.remove('egg-spin'); void c.offsetWidth; c.classList.add('egg-spin'); eggFound('hold','👀 Future All-American spotted.'); },2000); });
+['pointerup','pointercancel','pointerleave'].forEach(ev=>document.addEventListener(ev,()=>clearTimeout(HOLD_T)));
+document.addEventListener('contextmenu',e=>{ if(e.target.closest('.club-card')) e.preventDefault(); });
+document.addEventListener('input',e=>{ const v=String(e.target.value||'').toLowerCase(); if(/gobble/.test(v)&&!e.target.dataset.gob){ e.target.dataset.gob='1';
+  const t=document.createElement('img'); t.src='fest/turkey.webp'; t.className='egg-runner'; document.body.appendChild(t); setTimeout(()=>t.remove(),3200); eggFound('gobble','GOBBLE GOBBLE! 🦃'); } });
+const KONAMI=['ArrowUp','ArrowUp','ArrowDown','ArrowDown','ArrowLeft','ArrowRight','ArrowLeft','ArrowRight','b','a']; let kIdx=0;
+document.addEventListener('keydown',e=>{ const k=e.key.length===1?e.key.toLowerCase():e.key; kIdx=(k===KONAMI[kIdx])?kIdx+1:(k===KONAMI[0]?1:0);
+  if(kIdx===KONAMI.length){ kIdx=0; document.body.classList.add('egg-8bit'); setTimeout(()=>document.body.classList.remove('egg-8bit'),8000); eggFound('konami','CHEAT CODE ACCEPTED: +30 VELO 🎮'); } });
+setTimeout(()=>{ const h=new Date().getHours(); if(h===0&&typeof S!=='undefined'&&S&&S.name) eggFound('midnight','It\'s past midnight. Go to bed, recovery is training too. 😴'); },4000);
+
+// ---------- re-show the reminder pop-up when the coach asks ----------
+function pushAskSheet(st){
+  const body={
+    not_asked:`<p>Coach wants you on the <b>9:00 AM reminder</b> so you never miss your daily work. Tap below and choose <b>Allow</b>.</p>`,
+    deny:`<p>Notifications are turned off for this app. To get the 9 AM reminder:</p><ol class="push-steps"><li>Open your iPhone <b>Settings</b></li><li>Tap <b>Notifications</b>, then <b>Cleary Pitching</b></li><li>Turn on <b>Allow Notifications</b></li></ol>`,
+    safari:`<p>Reminders only work from the app on your Home Screen.</p><ol class="push-steps"><li>Tap <b>Share</b> <span class="push-ic">⬆︎</span> at the bottom of Safari</li><li>Tap <b>Add to Home Screen</b>, then <b>Add</b></li><li>Open <b>Cleary Pitching</b> from your Home Screen</li></ol>`
+  }[st];
+  if(!body) return;
+  showSheet(`<div class="push-sheet"><p class="ws-eye">From Coach</p><h3>🔔 Turn on your 9 AM reminder</h3>${body}${st==='not_asked'?'<div class="push-act"><button class="btn" type="button" id="pushAskGo">Turn on reminder</button></div>':''}</div>`,'Morning reminder');
+  const go=document.getElementById('pushAskGo'); if(go) go.onclick=()=>{ Notification.requestPermission().then(p=>{ pushRecord(); if(p==='granted'){ pushSubscribeQuiet(); toast('You\'re set: 9 AM every morning'); } closeSheet(); }).catch(()=>closeSheet()); };
+}
+const _pushAuto10=pushAuto; pushAuto=async function(){
+  await _pushAuto10();
+  try{
+    if(isCoachUser()||window.VIEW_AS||TEAM_SET.push_on===false) return;
+    const v=TEAM_SET.push_ask_v||0, seen=Number(localStorage.getItem('cu_push_ask_seen')||0);
+    if(v<=seen) return; const st=pushStatusNow(); localStorage.setItem('cu_push_ask_seen',String(v));
+    if(st==='allow'||st==='unsupported') return;
+    setTimeout(()=>{ if(!document.querySelector('.tg-splash,.bd-pop')) pushAskSheet(st); else setTimeout(()=>pushAskSheet(st),6000); },1800);
+  }catch(e){}
+};
+
+// ---------- clubhouse hooks: logo hit area + badge check ----------
+const _rc10=renderClubhouse; renderClubhouse=function(allowed){
+  _rc10(allowed);
+  const st=document.querySelector('#clubBody .club-stage');
+  if(st&&!st.querySelector('.egg-logo')){ const b=document.createElement('span'); b.className='egg-logo'; b.setAttribute('aria-hidden','true'); const first=st.firstElementChild; first?first.after(b):st.appendChild(b); }
+  setTimeout(badgeCheck,1200);
+};
+
+// ---------- Coach's Cheats additions ----------
+function cheatsCodes(line){
+  const at=TEAM_SET.push_ask_at?` · last sent ${esc(acAgo(TEAM_SET.push_ask_at))}`:'';
+  line(`<button type="button" class="ct-run ct-run2" id="ctAsk">▶ pushAgain</button><span class="ct-f">()</span>;  <span class="ct-c">// re-shows the reminder pop-up to everyone not on ALLOW${at}</span>`);
+}
+let CH_BADGES_OPEN=true;
+function cheatsExtra(line){
+  const ath=staff().filter(({a})=>!a.pre).map(({a})=>a);
+  const counts={}; ath.forEach(a=>{ const x=badgeStats(a); BADGES.forEach(b=>{ const [c,g]=b[5](x); if(c>=g) counts[b[0]]=(counts[b[0]]||0)+1; }); });
+  const on=BADGES.filter(b=>badgeOn(b[0])).length;
+  line(`<span class="ct-c">// ── badges (${on} of ${BADGES.length} on) · tap true/false to turn one on or off, then save() ──</span>`);
+  line(`<span class="ct-k">const</span> <span class="ct-v">BADGES</span> = { <button type="button" class="ct-tok ct-str" id="ctBdAll">${on===BADGES.length?'allOff()':'allOn()'}</button>`);
+  const pad=Math.max(...BADGES.map(b=>b[0].length))+1;
+  BADGES.forEach(b=>{ const v=badgeOn(b[0]);
+    line(`&nbsp;&nbsp;<span class="ct-v">${b[0]}</span>:${'&nbsp;'.repeat(pad-b[0].length)}<button type="button" class="ct-tok ${v?'ct-true':'ct-false'}" data-bd="${b[0]}">${v}</button>,<span class="ct-c ct-why">  // ${b[1]} ${esc(b[2])} · ${esc(b[3])} · <span class="ct-tier" style="color:${TIER[b[4]][1]}">${TIER[b[4]][0]}</span> · ${counts[b[0]]||0} earned</span>`); });
+  line(`};`);
+  line();
+  line(`<span class="ct-c">// ── easter eggs hidden in the app (don't tell them 🤫) ──</span>`);
+  Object.entries(EGGS).forEach(([k,v])=>{ const n=ath.filter(a=>a.eggs&&a.eggs[k]).length; line(`<span class="ct-c">//   🥚 ${k.padEnd(9,' ').replace(/ /g,'&nbsp;')} ${esc(v)} · ${n} found</span>`); });
+  line();
+}
+function cheatsBind(body){
+  body.querySelectorAll('[data-bd]').forEach(b=>b.onclick=()=>{ const id=b.dataset.bd, off=new Set(TEAM_SET.badges_off||[]); off.has(id)?off.delete(id):off.add(id); TEAM_SET.badges_off=[...off]; CH_DIRTY=true; CH_OUT=''; renderCheats(); });
+  const all=document.getElementById('ctBdAll'); if(all) all.onclick=()=>{ const allOn=!(TEAM_SET.badges_off||[]).length; TEAM_SET.badges_off=allOn?BADGES.map(b=>b[0]):[]; CH_DIRTY=true; CH_OUT=''; renderCheats(); };
+  const ask=document.getElementById('ctAsk'); if(ask) ask.onclick=async()=>{
+    if(TEAM_SET_STATE===false){ CH_OUT='&gt; Error: team_settings table missing.'; renderCheats(); return; }
+    TEAM_SET.push_ask_v=(TEAM_SET.push_ask_v||0)+1; TEAM_SET.push_ask_at=new Date().toISOString();
+    CH_OUT='&gt; sending…'; renderCheats();
+    const r=await saveTeamSet();
+    const n=staff().filter(({a})=>!a.pre&&!(a.push&&a.push.st==='allow')).length;
+    if(r.ok) CH_DIRTY=false;
+    CH_OUT=r.ok?`&gt; ✓ pushAgain() queued · the pop-up shows next time each of the ${n} pitchers not on ALLOW opens the app`:'&gt; ✗ failed'+(r.err?': '+esc(r.err):'');
+    renderCheats();
+  };
+}
 
 // ===== Tabs =====
 function showTab(){
